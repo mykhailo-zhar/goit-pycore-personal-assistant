@@ -3,6 +3,11 @@ from tests.contacts_bot.shared import RECORD_ERRORS
 
 
 def test_change_contact_updates(book_with_contact, valid_phone):
+    """
+    Given an address book with an existing contact
+    When update_contact is called with a new valid phone
+    Then the updated message is returned and the new phone is stored
+    """
     assert (
         update_contact(book_with_contact, ["JohnDoe", valid_phone])
         == COMMAND_MESSAGES["CONTACT_UPDATED"]
@@ -13,6 +18,11 @@ def test_change_contact_updates(book_with_contact, valid_phone):
 
 
 def test_change_contact_no_such_user(empty_address_book, valid_phone):
+    """
+    Given an empty address book
+    When update_contact is called for a missing user
+    Then the no-such-user message is returned and the book stays empty
+    """
     assert (
         update_contact(empty_address_book, ["Nobody", valid_phone])
         == COMMAND_MESSAGES["NO_SUCH_USER"]
@@ -21,6 +31,11 @@ def test_change_contact_no_such_user(empty_address_book, valid_phone):
 
 
 def test_change_contact_invalid_credentials(book_with_contact, valid_phone):
+    """
+    Given a contact with a valid phone
+    When update_contact is called with an invalid phone string
+    Then a phone validation error is returned and the original phone remains
+    """
     assert (
         update_contact(book_with_contact, ["JohnDoe", "abcdefghijkl"])
         == RECORD_ERRORS["PHONE_NOT_VALID"]
@@ -33,6 +48,11 @@ def test_change_contact_invalid_credentials(book_with_contact, valid_phone):
 def test_change_contact_with_multiple_phones_is_not_allowed(
     book_with_contact, valid_phone_generator
 ):
+    """
+    Given an existing contact
+    When update_contact is called with more than one new phone argument
+    Then the invalid-command message is returned
+    """
     valid_phones = [valid_phone_generator() for _ in range(3)]
     assert (
         update_contact(book_with_contact, ["JohnDoe", *valid_phones])

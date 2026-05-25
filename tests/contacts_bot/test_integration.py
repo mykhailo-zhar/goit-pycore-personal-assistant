@@ -7,6 +7,11 @@ from src.utils.address_book_serializer import AddressBookSerializer
 def test_main_prints_replies_and_goodbye(
     monkeypatch, capsys, valid_phone_generator, tmp_path
 ):
+    """
+    Given scripted input lines (hello, two adds for Pat, exit) and a temp pickle path
+    When main runs the REPL
+    Then hello, contact-added, and goodbye messages appear and Pat has two phones saved
+    """
     file_path = str(tmp_path / "address_book.pkl")
     serializer = AddressBookSerializer(file_path)
     phone1 = valid_phone_generator()

@@ -13,12 +13,22 @@ from src.scripts.contacts_bot import COMMAND_MESSAGES, handle_command
     ],
 )
 def test_handle_command_hello_and_unknown(command, arguments, expected):
+    """
+    Given a parametrized command and arguments (hello, invalid arity, or unknown)
+    When handle_command is dispatched
+    Then the expected hello or invalid-command message is returned
+    """
     assert handle_command({}, command, arguments) == expected
 
 
 def test_handle_command_add_and_update_via_dispatch(
     empty_address_book, valid_phone_generator
 ):
+    """
+    Given an empty address book
+    When add is called twice for the same name then update with a new phone
+    Then added/updated messages are returned and the last phone is stored
+    """
     assert (
         handle_command(empty_address_book, "add", ["x", valid_phone_generator()])
         == COMMAND_MESSAGES["CONTACT_ADDED"]
@@ -38,6 +48,11 @@ def test_handle_command_add_and_update_via_dispatch(
 def test_handle_command_add_birthday_via_dispatch(
     book_with_contact, valid_birthday_str
 ):
+    """
+    Given a contact in the book
+    When add-birthday is dispatched via handle_command
+    Then the birthday-added message is returned and the date is stored
+    """
     assert handle_command(
         book_with_contact, "add-birthday", ["JohnDoe", valid_birthday_str]
     ) == COMMAND_MESSAGES["BIRTHDAY_ADDED"].format(
@@ -49,6 +64,11 @@ def test_handle_command_add_birthday_via_dispatch(
 def test_handle_command_show_birthday_via_dispatch(
     book_with_contact, valid_birthday_str
 ):
+    """
+    Given a contact with a birthday set via handle_command
+    When show-birthday is dispatched
+    Then the formatted birthday message is returned
+    """
     handle_command(book_with_contact, "add-birthday", ["JohnDoe", valid_birthday_str])
 
     assert handle_command(
@@ -59,6 +79,11 @@ def test_handle_command_show_birthday_via_dispatch(
 
 
 def test_handle_command_birthdays_via_dispatch(empty_address_book):
+    """
+    Given a contact with an upcoming birthday on a frozen date (2026-05-19)
+    When birthdays is dispatched via handle_command
+    Then the output contains the formatted upcoming birthday line
+    """
     with time_machine.travel("2026-05-19"):
         handle_command(empty_address_book, "add", ["Alice", "1234567890"])
         handle_command(empty_address_book, "add-birthday", ["Alice", "20.05.1990"])
@@ -81,6 +106,11 @@ def test_handle_command_birthdays_via_dispatch(empty_address_book):
     ],
 )
 def test_handle_command_wrong_arity(empty_address_book, command, arguments, expected):
+    """
+    Given an address book and parametrized commands with wrong argument counts
+    When handle_command is dispatched
+    Then the invalid-command message is returned
+    """
     assert handle_command(empty_address_book, command, arguments) == expected
 
 
@@ -94,10 +124,20 @@ def test_handle_command_wrong_arity(empty_address_book, command, arguments, expe
 def test_handle_command_empty_line_invalid(
     empty_address_book, command, arguments, expected
 ):
+    """
+    Given an empty or whitespace command string
+    When handle_command is dispatched
+    Then the invalid-command message is returned
+    """
     assert handle_command(empty_address_book, command, arguments) == expected
 
 
 def test_handle_command_phone_no_user(empty_address_book):
+    """
+    Given an empty address book
+    When phone is dispatched for a missing user
+    Then the no-such-user message is returned
+    """
     assert (
         handle_command(empty_address_book, "phone", ["Ghost"])
         == COMMAND_MESSAGES["NO_SUCH_USER"]
@@ -105,6 +145,11 @@ def test_handle_command_phone_no_user(empty_address_book):
 
 
 def test_handle_command_update_no_user(empty_address_book, valid_phone):
+    """
+    Given an empty address book
+    When update is dispatched for a missing user
+    Then the no-such-user message is returned
+    """
     assert (
         handle_command(empty_address_book, "update", ["Ghost", valid_phone])
         == COMMAND_MESSAGES["NO_SUCH_USER"]
@@ -112,6 +157,11 @@ def test_handle_command_update_no_user(empty_address_book, valid_phone):
 
 
 def test_handle_command_exit_close_returns_none(empty_address_book):
+    """
+    Given an address book
+    When exit or close is dispatched
+    Then the goodbye message is returned and the book is unchanged
+    """
     assert (
         handle_command(empty_address_book, "exit", []) == COMMAND_MESSAGES["GOOD_BYE"]
     )

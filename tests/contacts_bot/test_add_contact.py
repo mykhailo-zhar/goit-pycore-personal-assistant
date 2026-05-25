@@ -5,6 +5,11 @@ from tests.contacts_bot.shared import INVALID_PHONE_12, RECORD_ERRORS
 
 
 def test_add_contact_inserts_and_message(empty_address_book, valid_phone):
+    """
+    Given an empty address book and valid name and phone arguments
+    When add_contact is called
+    Then the success message is returned and one contact is stored
+    """
     assert (
         add_contact(empty_address_book, ["Zoe", valid_phone])
         == COMMAND_MESSAGES["CONTACT_ADDED"]
@@ -13,6 +18,11 @@ def test_add_contact_inserts_and_message(empty_address_book, valid_phone):
 
 
 def test_add_contact_duplicate_phones(empty_address_book, valid_phone):
+    """
+    Given a contact that already has a phone
+    When add_contact is called again with the same phone
+    Then a duplicate-phone error is returned and only one contact remains
+    """
     assert (
         add_contact(empty_address_book, ["Zoe", valid_phone])
         == COMMAND_MESSAGES["CONTACT_ADDED"]
@@ -35,6 +45,11 @@ def test_add_contact_duplicate_phones(empty_address_book, valid_phone):
     ],
 )
 def test_add_contact_invalid_name_or_phone(empty_address_book, arguments, expected):
+    """
+    Given an empty address book and parametrized invalid arguments
+    When add_contact is called
+    Then the expected error message is returned and the book stays empty
+    """
     assert add_contact(empty_address_book, arguments) == expected
     assert len(empty_address_book.data) == 0
 
@@ -46,6 +61,11 @@ def add_contact_fixture(valid_phone):
 
 @pytest.mark.parametrize("add_contact_fixture", [i for i in range(10)], indirect=True)
 def test_add_valid_name_and_phone(empty_address_book, add_contact_fixture):
+    """
+    Given an empty address book and valid add arguments (10 parametrized runs)
+    When add_contact is called
+    Then the success message is returned and one phone is stored for JohnDoe
+    """
     assert (
         add_contact(empty_address_book, add_contact_fixture)
         == COMMAND_MESSAGES["CONTACT_ADDED"]
@@ -55,6 +75,11 @@ def test_add_valid_name_and_phone(empty_address_book, add_contact_fixture):
 
 
 def test_add_multiple_phones(empty_address_book, valid_phone_generator):
+    """
+    Given an empty address book
+    When add_contact is called three times for the same name with different phones
+    Then each call succeeds and all three phones are on one contact
+    """
     valid_phones = [valid_phone_generator() for _ in range(3)]
     for phone in valid_phones:
         assert (

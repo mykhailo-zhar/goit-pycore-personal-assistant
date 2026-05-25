@@ -31,6 +31,11 @@ from tests.contacts_bot.shared import INVALID_PHONE_12, INVALID_PHONE_15
     ],
 )
 def test_parse_input_tokenization(line, expected_cmd, expected_args):
+    """
+    Given a parametrized command line (mixed case and spacing)
+    When parse_input is called
+    Then the command is lowercased and arguments are split as expected
+    """
     cmd, args = parse_input(line)
     assert cmd == expected_cmd
     assert args == expected_args
@@ -44,6 +49,11 @@ def test_parse_input_tokenization(line, expected_cmd, expected_args):
     ],
 )
 def test_parse_input_empty_and_blank(line, expected_cmd, expected_args):
+    """
+    Given an empty or whitespace-only line
+    When parse_input is called
+    Then the command is empty and arguments are an empty list
+    """
     cmd, args = parse_input(line)
     assert cmd == expected_cmd
     assert args == expected_args
