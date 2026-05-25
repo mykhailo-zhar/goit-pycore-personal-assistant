@@ -217,6 +217,8 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+# Idea configuration files
+.idea/
 
 # Custom files
 *.pkl
