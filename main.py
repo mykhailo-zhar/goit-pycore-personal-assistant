@@ -1,6 +1,4 @@
-def main():
-    print("Hello from goit-pycore-hw-04!")
-
+from src.scripts.contacts_bot import main
 
 if __name__ == "__main__":
     main()

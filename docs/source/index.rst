@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-goit-pycore-hw-04 documentation
+goit-pycore-hw-07 documentation
 ===============================
 
 Add your content using ``reStructuredText`` syntax. See the
@@ -14,3 +14,6 @@ documentation for details.
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   class-diagram
+   modules
