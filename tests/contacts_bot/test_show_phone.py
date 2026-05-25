@@ -32,14 +32,14 @@ def test_show_phone(empty_address_book, arguments, expected):
 
 
 def test_show_phone_multiple_phones(empty_address_book, valid_phone_generator):
-    """Перевіряє вивід кількох телефонів через ``; ``.
+    """Перевіряє вивід кількох телефонів через "; ".
 
     Дано:
         Контакт з трьома телефонами, доданими через ``add_contact``.
     Коли:
         ``show_phone`` викликається для цього контакту.
     Тоді:
-        Усі номери повертаються, з'єднані через ``"; "``.
+        Усі номери повертаються, з'єднані через "; ".
 
     Args:
         empty_address_book: Книга з контактом.
