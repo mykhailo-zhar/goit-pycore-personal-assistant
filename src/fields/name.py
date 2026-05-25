@@ -5,18 +5,18 @@ from ..fields.field import Field
 
 class Name(Field):
     """
-    Stores the contact name. Required field.
+    Зберігає ім'я контакту. Обов'язкове поле.
 
-    Args:
-        Field: Base class for all fields.
+    Аргументи:
+        Field: Базовий клас для всіх полів.
     """
 
     def validate(self):
         """
-        Validate the name.
+        Перевіряє ім'я.
 
-        Returns:
-            bool: True if the name is valid, False otherwise.
+        Повертає:
+            bool: True, якщо ім'я валідне, інакше False.
         """
         return (
             isinstance(self.value, str)

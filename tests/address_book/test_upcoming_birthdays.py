@@ -41,7 +41,7 @@ def address_book_with_records(users):
 
 dates = [datetime(2026, 4, 26), datetime(2026, 5, 1), datetime(2026, 4, 23)]
 
-# Validation of input parameters
+# Валідація параметрів виводу
 
 
 def test_output_parameters(address_book_with_records):
@@ -64,7 +64,7 @@ def test_empty_address_book_returns_empty_list(empty_address_book):
     assert empty_address_book.get_upcoming_birthdays() == []
 
 
-# Logic
+# Логіка
 
 
 @pytest.fixture
@@ -99,8 +99,8 @@ def _is_congratulation_date_not_on_weekend(record: Record, today: datetime) -> b
     ]
 
 
-# BUG: Assertion uses raw birthday weekday on Record, not ProcessedRecord's
-# adjusted congratulation_date. Resulting records are not moved to Monday;
+# BUG: перевірка використовує день тижня сирого birthday на Record,
+# а не скориговану congratulation_date з ProcessedRecord; записи не переносяться на понеділок
 @pytest.mark.parametrize("date", dates)
 def test_congratulation_date_is_not_on_weekend(address_book_with_records, date):
     """

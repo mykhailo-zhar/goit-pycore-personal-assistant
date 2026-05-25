@@ -1,28 +1,24 @@
 class Field:
-    """
-    Base class for all fields.
-    """
+    """Базовий клас для всіх полів запису."""
 
     def __init__(self, value):
         """
-        Initialize the field with a value.
+        Ініціалізує поле значенням.
 
-        Args:
-            value: The value to store in the field.
+        Аргументи:
+            value: Значення для збереження.
         """
         self.value = value
 
     def __str__(self):
-        """
-        Return the string representation of the field.
-        """
+        """Повертає рядкове подання поля."""
         return str(self.value)
 
     def validate(self):
         """
-        Validate the instance value.
+        Перевіряє коректність значення.
 
-        Returns:
-            bool: True if the value is valid, False otherwise.
+        Повертає:
+            bool: True, якщо значення валідне, інакше False.
         """
         return True

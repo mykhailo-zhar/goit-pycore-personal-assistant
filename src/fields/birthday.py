@@ -6,16 +6,14 @@ from src.fields.field import Field
 class Birthday(Field):
     DATE_FORMAT = "%d.%m.%Y"
     """
-    Stores the contact birthday.
+    Зберігає день народження контакту.
 
-    Args:
-        Field: Base class for all fields.
+    Аргументи:
+        Field: Базовий клас для всіх полів.
     """
 
     def validate(self):
-        """
-        Validate the birthday.
-        """
+        """Перевіряє день народження."""
 
         try:
             datetime.strptime(self.value, self.DATE_FORMAT)
@@ -25,13 +23,13 @@ class Birthday(Field):
 
     def format(self, today=datetime.now()):
         """
-        Format the birthday in the format DD.MM.YYYY (Weekday).
+        Форматує день народження як DD.MM.YYYY (День тижня).
 
-        Args:
-            today (datetime): The today's date.
+        Аргументи:
+            today (datetime): Поточна дата.
 
-        Returns:
-            str: The formatted birthday in the format DD.MM.YYYY (Weekday).
+        Повертає:
+            str: Відформатована дата у вигляді DD.MM.YYYY (День тижня).
         """
         birthdate = datetime.strptime(self.value, self.DATE_FORMAT)
         birthdate = birthdate.replace(year=today.year)

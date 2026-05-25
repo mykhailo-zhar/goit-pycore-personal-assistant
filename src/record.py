@@ -14,13 +14,13 @@ BIRTHDAY_NOT_VALID_ERROR = (
 class Record:
     def __init__(self, name: str):
         """
-        Initialize the record with a name.
+        Ініціалізує запис ім'ям контакту.
 
-        Args:
-            name (str): The name of the record.
+        Аргументи:
+            name (str): Ім'я контакту.
 
-        Raises:
-            ValueError: If the name is not valid.
+        Винятки:
+            ValueError: Якщо ім'я невалідне.
         """
         self.name = name
         self._phones = []
@@ -31,23 +31,23 @@ class Record:
     @property
     def name(self) -> Name:
         """
-        Get the name of the record.
+        Повертає ім'я запису.
 
-        Returns:
-            Name: The name of the record.
+        Повертає:
+            Name: Ім'я контакту.
         """
         return self._name
 
     @name.setter
     def name(self, name):
         """
-        Set the name of the record.
+        Встановлює ім'я запису.
 
-        Args:
-            name: The name to set.
+        Аргументи:
+            name: Ім'я для встановлення.
 
-        Raises:
-            ValueError: If the name is not valid.
+        Винятки:
+            ValueError: Якщо ім'я невалідне.
         """
         name_obj = Name(name)
         if not name_obj.validate():
@@ -57,18 +57,16 @@ class Record:
     @property
     def birthday(self) -> Birthday | None:
         """
-        Get the birthday of the record.
+        Повертає день народження запису.
 
-        Returns:
-            Birthday | None: The birthday of the record.
+        Повертає:
+            Birthday | None: День народження контакту.
         """
         return self._birthday
 
     @birthday.setter
     def birthday(self, birthday):
-        """
-        Set the birthday of the record.
-        """
+        """Встановлює день народження запису."""
         birthday_obj = Birthday(birthday)
         if not birthday_obj.validate():
             raise ValueError(BIRTHDAY_NOT_VALID_ERROR.format(birthday=birthday))
@@ -76,9 +74,7 @@ class Record:
 
     @property
     def phones(self) -> list[Phone]:
-        """
-        Get the phones of the record.
-        """
+        """Повертає список телефонів запису."""
         return self._phones
 
     # endregion
@@ -87,25 +83,25 @@ class Record:
 
     def add_birthday(self, birthday: str):
         """
-        Add a birthday to the record.
+        Додає день народження до запису.
 
-        Args:
-            birthday (str): The birthday to add.
+        Аргументи:
+            birthday (str): День народження у форматі DD.MM.YYYY.
 
-        Raises:
-            ValueError: If the birthday is not valid.
+        Винятки:
+            ValueError: Якщо дата невалідна.
         """
         self.birthday = birthday
 
     def add_phone(self, phone: str):
         """
-        Add a phone to the record.
+        Додає телефон до запису.
 
-        Args:
-            phone (str): The phone number to add.
+        Аргументи:
+            phone (str): Номер телефону.
 
-        Raises:
-            ValueError: If the phone number is not valid.
+        Винятки:
+            ValueError: Якщо номер невалідний або вже існує.
         """
         phone_obj = Phone(phone)
         if not phone_obj.validate():
@@ -118,13 +114,13 @@ class Record:
 
     def remove_phone(self, phone: str) -> bool:
         """
-        Remove a phone from the record.
+        Видаляє телефон з запису.
 
-        Args:
-            phone (str): The phone number to remove.
+        Аргументи:
+            phone (str): Номер для видалення.
 
-        Returns:
-            bool: True if the phone number was removed, False otherwise.
+        Повертає:
+            bool: True, якщо телефон видалено, інакше False.
         """
         phone_to_remove = self.find_phone(phone)
         if phone_to_remove is None:
@@ -134,27 +130,26 @@ class Record:
 
     def find_phone(self, phone: str) -> Phone | None:
         """
-        Find a phone in the record.
+        Шукає телефон у записі.
 
-        Args:
-            phone (str): The phone number to find.
+        Аргументи:
+            phone (str): Номер для пошуку.
 
-        Returns:
-            Phone | None: The phone object if found, None otherwise.
+        Повертає:
+            Phone | None: Об'єкт телефону, якщо знайдено, інакше None.
         """
         return next((x for x in self.phones if x.value == phone), None)
 
     def edit_phone(self, old_phone, new_phone):
         """
-        Edit a phone in the record.
+        Замінює телефон у записі.
 
-        Args:
-            old_phone (_type_): The old phone number to edit.
-            new_phone (_type_): The new phone number to insert.
+        Аргументи:
+            old_phone: Старий номер.
+            new_phone: Новий номер.
 
-        Raises:
-            ValueError: If the old phone number is not found.
-            ValueError: If the new phone number is not valid.
+        Винятки:
+            ValueError: Якщо старий номер не знайдено або новий невалідний.
         """
         phone_index = next(
             (i for i, x in enumerate(self.phones) if x.value == old_phone), None
