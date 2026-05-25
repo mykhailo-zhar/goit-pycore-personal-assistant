@@ -5,10 +5,14 @@ from src.fields.field import Field
 
 
 def test_birthday_is_subclass_of_field():
-    """
-    Given the Birthday and Field classes
-    When checking the class hierarchy
-    Then Birthday is a subclass of Field
+    """Перевіряє ієрархію класу Birthday.
+
+    Дано:
+        Класи ``Birthday`` та ``Field``.
+    Коли:
+        Перевіряється ієрархія класів.
+    Тоді:
+        ``Birthday`` є підкласом ``Field``.
     """
     assert issubclass(Birthday, Field)
 
@@ -24,28 +28,51 @@ def valid_birthday(valid_birthday_str):
 
 
 def test_birthday_init(valid_birthday, valid_birthday_str):
-    """
-    Given a Birthday constructed with a valid DD.MM.YYYY string
-    When the value attribute is read
-    Then it equals the input string
+    """Перевіряє збереження дати народження.
+
+    Дано:
+        ``Birthday`` з валідним рядком DD.MM.YYYY.
+    Коли:
+        Зчитується атрибут ``value``.
+    Тоді:
+        Значення збігається з вхідним рядком.
+
+    Args:
+        valid_birthday: Екземпляр дня народження.
+        valid_birthday_str: Очікуваний рядок дати.
     """
     assert valid_birthday.value == valid_birthday_str
 
 
 def test_birthday_str(valid_birthday, valid_birthday_str):
-    """
-    Given a Birthday with a valid date string
-    When str() is called on the birthday
-    Then the result equals the stored value
+    """Перевіряє рядкове подання дня народження.
+
+    Дано:
+        ``Birthday`` з валідним рядком дати.
+    Коли:
+        Викликається ``str()`` на полі.
+    Тоді:
+        Результат дорівнює збереженому значенню.
+
+    Args:
+        valid_birthday: Екземпляр дня народження.
+        valid_birthday_str: Очікуваний рядок.
     """
     assert str(valid_birthday) == valid_birthday_str
 
 
 def test_birthday_validate(valid_birthday):
-    """
-    Given a Birthday with value "10.01.1990"
-    When validate() is called
-    Then it returns True
+    """Перевіряє валідацію коректної дати.
+
+    Дано:
+        ``Birthday`` зі значенням ``"10.01.1990"``.
+    Коли:
+        Викликається ``validate()``.
+    Тоді:
+        Повертається ``True``.
+
+    Args:
+        valid_birthday: Валідний день народження.
     """
     assert valid_birthday.validate()
 
@@ -68,9 +95,16 @@ def test_birthday_validate(valid_birthday):
     ],
 )
 def test_birthday_validate_invalid(birthday):
-    """
-    Given a parametrized invalid birthday value
-    When Birthday(birthday).validate() is called
-    Then it returns False
+    """Перевіряє відхилення невалідних значень дати.
+
+    Дано:
+        Параметризоване невалідне значення дня народження.
+    Коли:
+        Викликається ``Birthday(birthday).validate()``.
+    Тоді:
+        Повертається ``False``.
+
+    Args:
+        birthday: Невалідне значення для перевірки.
     """
     assert not Birthday(birthday).validate()

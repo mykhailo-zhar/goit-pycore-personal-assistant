@@ -20,48 +20,87 @@ def address_book():
 
 
 def test_address_book_init(address_book):
-    """
-    Given a new AddressBook
-    When the data attribute is read
-    Then it is an empty dict
+    """Перевіряє початковий стан нової адресної книги.
+
+    Дано:
+        Нова ``AddressBook``.
+    Коли:
+        Зчитується атрибут ``data``.
+    Тоді:
+        Це порожній словник.
     """
     assert address_book.data == {}
 
 
 def test_address_book_add_record(address_book, record, valid_name):
-    """
-    Given an empty AddressBook and a Record
-    When add_record is called
-    Then the record is stored under the contact name key
+    """Перевіряє додавання запису до книги.
+
+    Дано:
+        Порожня ``AddressBook`` і ``Record``.
+    Коли:
+        Викликається ``add_record``.
+    Тоді:
+        Запис зберігається за ключем імені контакту.
+
+    Args:
+        address_book: Порожня адресна книга.
+        record: Запис контакту.
+        valid_name: Ім'я контакту.
     """
     address_book.add_record(record)
     assert address_book.data == {valid_name: record}
 
 
 def test_address_book_find_record(address_book, record, valid_name):
-    """
-    Given an AddressBook containing a record
-    When find_record is called with that contact name
-    Then the same Record instance is returned
+    """Перевіряє пошук наявного запису.
+
+    Дано:
+        ``AddressBook`` із доданим записом.
+    Коли:
+        Викликається ``find_record`` з іменем контакту.
+    Тоді:
+        Повертається той самий екземпляр ``Record``.
+
+    Args:
+        address_book: Книга з одним записом.
+        record: Очікуваний запис.
+        valid_name: Ім'я контакту.
     """
     address_book.add_record(record)
     assert address_book.find_record(valid_name) == record
 
 
 def test_address_book_find_non_existent_record(address_book, valid_name):
-    """
-    Given an empty AddressBook
-    When find_record is called with a name that was never added
-    Then None is returned
+    """Перевіряє пошук відсутнього запису.
+
+    Дано:
+        Порожня ``AddressBook``.
+    Коли:
+        Викликається ``find_record`` для неіснуючого імені.
+    Тоді:
+        Повертається ``None``.
+
+    Args:
+        address_book: Порожня адресна книга.
+        valid_name: Ім'я, якого немає в книзі.
     """
     assert address_book.find_record(valid_name) is None
 
 
 def test_address_book_remove_record(address_book, record, valid_name):
-    """
-    Given an AddressBook containing a record
-    When remove_record is called with that name
-    Then it returns True and the record is no longer findable
+    """Перевіряє видалення наявного запису.
+
+    Дано:
+        ``AddressBook`` із записом.
+    Коли:
+        Викликається ``remove_record`` з іменем контакту.
+    Тоді:
+        Повертається ``True`` і запис більше не знаходиться.
+
+    Args:
+        address_book: Книга з одним записом.
+        record: Запис для видалення.
+        valid_name: Ім'я контакту.
     """
     address_book.add_record(record)
     assert address_book.remove_record(valid_name)
@@ -69,9 +108,17 @@ def test_address_book_remove_record(address_book, record, valid_name):
 
 
 def test_address_book_remove_non_existent_record(address_book, valid_name):
-    """
-    Given an empty AddressBook
-    When remove_record is called with a missing name
-    Then it returns False
+    """Перевіряє видалення відсутнього запису.
+
+    Дано:
+        Порожня ``AddressBook``.
+    Коли:
+        Викликається ``remove_record`` для неіснуючого імені.
+    Тоді:
+        Повертається ``False``.
+
+    Args:
+        address_book: Порожня адресна книга.
+        valid_name: Ім'я, якого немає в книзі.
     """
     assert not address_book.remove_record(valid_name)

@@ -2,10 +2,18 @@ from src.scripts.contacts_bot import COMMAND_MESSAGES, add_contact, show_all
 
 
 def test_show_all_empty_and_sorted_lines(empty_address_book, valid_phone_generator):
-    """
-    Given an empty address book, then contacts Amy, JohnDoe, and Zed added
-    When show_all is called before and after adding contacts
-    Then empty-book message appears first, then header and all contacts sorted by name
+    """Перевіряє вивід усіх контактів до і після наповнення.
+
+    Дано:
+        Порожня книга, потім додаються Amy, JohnDoe і Zed.
+    Коли:
+        ``show_all`` викликається до і після додавання контактів.
+    Тоді:
+        Спочатку повідомлення про порожню книгу, потім заголовок і контакти за іменем.
+
+    Args:
+        empty_address_book: Адресна книга.
+        valid_phone_generator: Генератор валідних номерів.
     """
     assert show_all(empty_address_book) == COMMAND_MESSAGES["NO_USERS"]
     add_contact(empty_address_book, ["JohnDoe", valid_phone_generator()])

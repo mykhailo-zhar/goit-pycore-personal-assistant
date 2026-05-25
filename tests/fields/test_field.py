@@ -12,27 +12,48 @@ def field():
 
 
 def test_field_init(field):
-    """
-    Given a Field instance with value "test"
-    When the value attribute is read
-    Then it equals "test"
+    """Перевіряє збереження значення поля.
+
+    Дано:
+        Екземпляр ``Field`` зі значенням ``"test"``.
+    Коли:
+        Зчитується атрибут ``value``.
+    Тоді:
+        Значення дорівнює ``"test"``.
+
+    Args:
+        field: Поле з тестовим значенням.
     """
     assert field.value == "test"
 
 
 def test_field_str(field):
-    """
-    Given a Field instance with value "test"
-    When str() is called on the field
-    Then the result is "test"
+    """Перевіряє рядкове подання поля.
+
+    Дано:
+        Екземпляр ``Field`` зі значенням ``"test"``.
+    Коли:
+        Викликається ``str()`` на полі.
+    Тоді:
+        Результат — ``"test"``.
+
+    Args:
+        field: Поле з тестовим значенням.
     """
     assert str(field) == "test"
 
 
 def test_field_has_validate(field):
-    """
-    Given a Field instance
-    When validate is accessed
-    Then it is a callable that takes no arguments and returns bool
+    """Перевіряє наявність методу validate.
+
+    Дано:
+        Екземпляр ``Field``.
+    Коли:
+        Звертаються до ``validate``.
+    Тоді:
+        Це викликабельний без аргументів, що повертає ``bool``.
+
+    Args:
+        field: Базове поле.
     """
     assert assert_type(field.validate, Callable[[], bool])

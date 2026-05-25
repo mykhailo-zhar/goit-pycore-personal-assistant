@@ -26,10 +26,14 @@ def serializer(tmp_path):
 
 
 def test_serializer_without_file_path():
-    """
-    Given the AddressBookSerializer class
-    When __init__ type hints are inspected
-    Then file_path is str and send_error_message is Callable[[str], None]
+    """Перевіряє анотації типів конструктора серіалізатора.
+
+    Дано:
+        Клас ``AddressBookSerializer``.
+    Коли:
+        Переглядаються type hints ``__init__``.
+    Тоді:
+        ``file_path`` — ``str``, ``send_error_message`` — ``Callable[[str], None]``.
     """
     hints = get_type_hints(AddressBookSerializer.__init__)
     assert hints["file_path"] is str
@@ -37,20 +41,35 @@ def test_serializer_without_file_path():
 
 
 def test_serializer_constructor_checks_whether_file_path_is_a_directory(tmp_path):
-    """
-    Given a path that points to an existing directory
-    When AddressBookSerializer is constructed with that path
-    Then FileNotFoundError is raised
+    """Перевіряє заборону шляху до директорії.
+
+    Дано:
+        Шлях до існуючої директорії.
+    Коли:
+        Створюється ``AddressBookSerializer`` з цим шляхом.
+    Тоді:
+        Виникає ``FileNotFoundError``.
+
+    Args:
+        tmp_path: Тимчасова директорія pytest.
     """
     with pytest.raises(FileNotFoundError):
         AddressBookSerializer(tmp_path.absolute())
 
 
 def test_serialize_address_book(address_book, serializer):
-    """
-    Given a populated AddressBook and a serializer targeting a file
-    When serialize then deserialize is performed
-    Then the restored book contains the same contact data
+    """Перевіряє round-trip серіалізації книги.
+
+    Дано:
+        Заповнена ``AddressBook`` і серіалізатор з файлом.
+    Коли:
+        Виконуються ``serialize`` і ``deserialize``.
+    Тоді:
+        Відновлена книга містить ті самі дані контакту.
+
+    Args:
+        address_book: Книга з контактом JohnDoe.
+        serializer: Серіалізатор у ``tmp_path``.
     """
     serializer.serialize(address_book)
     deserialized_address_book = serializer.deserialize()
@@ -66,10 +85,18 @@ def test_serialize_address_book(address_book, serializer):
 
 
 def test_deserialize_address_book_with_empty_file(serializer, capsys):
-    """
-    Given a serializer with no existing pickle file
-    When deserialize is called
-    Then an empty AddressBook is returned and a warning is printed
+    """Перевіряє десеріалізацію при відсутньому файлі.
+
+    Дано:
+        Серіалізатор без існуючого pickle-файлу.
+    Коли:
+        Викликається ``deserialize``.
+    Тоді:
+        Повертається порожня ``AddressBook`` і виводиться попередження.
+
+    Args:
+        serializer: Серіалізатор у ``tmp_path``.
+        capsys: Захоплення stdout pytest.
     """
     deserialized_address_book = serializer.deserialize()
     out = capsys.readouterr().out
@@ -78,10 +105,18 @@ def test_deserialize_address_book_with_empty_file(serializer, capsys):
 
 
 def test_deserialize_address_book_with_permissions_(serializer, capsys):
-    """
-    Given a serializer file that exists but is not readable (chmod 0)
-    When deserialize is called
-    Then an empty AddressBook is returned and a warning is printed
+    """Перевіряє десеріалізацію при відсутності прав на читання.
+
+    Дано:
+        Файл серіалізатора існує, але недоступний для читання (chmod 0).
+    Коли:
+        Викликається ``deserialize``.
+    Тоді:
+        Повертається порожня ``AddressBook`` і виводиться попередження.
+
+    Args:
+        serializer: Серіалізатор із файлом.
+        capsys: Захоплення stdout pytest.
     """
     file = Path(serializer.file_path)
     file.write_text("test", encoding="utf-8")
@@ -93,10 +128,18 @@ def test_deserialize_address_book_with_permissions_(serializer, capsys):
 
 
 def test_serialize_address_book_with_permissions_(serializer, capsys):
-    """
-    Given a serializer file that exists but is not writable (chmod 0)
-    When serialize is called with an AddressBook
-    Then a warning is printed and no exception is raised
+    """Перевіряє серіалізацію при відсутності прав на запис.
+
+    Дано:
+        Файл існує, але недоступний для запису (chmod 0).
+    Коли:
+        Викликається ``serialize`` з ``AddressBook``.
+    Тоді:
+        Виводиться попередження, виняток не виникає.
+
+    Args:
+        serializer: Серіалізатор із файлом.
+        capsys: Захоплення stdout pytest.
     """
     file = Path(serializer.file_path)
     file.write_text("test", encoding="utf-8")

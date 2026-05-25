@@ -31,10 +31,19 @@ from tests.contacts_bot.shared import INVALID_PHONE_12, INVALID_PHONE_15
     ],
 )
 def test_parse_input_tokenization(line, expected_cmd, expected_args):
-    """
-    Given a parametrized command line (mixed case and spacing)
-    When parse_input is called
-    Then the command is lowercased and arguments are split as expected
+    """Перевіряє розбір командного рядка.
+
+    Дано:
+        Параметризований рядок (різний регістр і пробіли).
+    Коли:
+        Викликається ``parse_input``.
+    Тоді:
+        Команда в нижньому регістрі, аргументи розділені очікувано.
+
+    Args:
+        line: Вхідний рядок.
+        expected_cmd: Очікувана команда.
+        expected_args: Очікувані аргументи.
     """
     cmd, args = parse_input(line)
     assert cmd == expected_cmd
@@ -49,10 +58,19 @@ def test_parse_input_tokenization(line, expected_cmd, expected_args):
     ],
 )
 def test_parse_input_empty_and_blank(line, expected_cmd, expected_args):
-    """
-    Given an empty or whitespace-only line
-    When parse_input is called
-    Then the command is empty and arguments are an empty list
+    """Перевіряє порожній або пробільний рядок.
+
+    Дано:
+        Порожній або лише з пробілів рядок.
+    Коли:
+        Викликається ``parse_input``.
+    Тоді:
+        Команда порожня, аргументи — порожній список.
+
+    Args:
+        line: Вхідний рядок.
+        expected_cmd: Очікувана команда.
+        expected_args: Очікувані аргументи.
     """
     cmd, args = parse_input(line)
     assert cmd == expected_cmd
