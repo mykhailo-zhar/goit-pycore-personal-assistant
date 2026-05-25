@@ -1,10 +1,10 @@
-tests.fields package
+tests.fields пакет
 ====================
 
-Submodules
+Підмодулі
 ----------
 
-tests.fields.test\_birthday module
+tests.fields.test\_birthday модуль
 ----------------------------------
 
 .. automodule:: tests.fields.test_birthday
@@ -12,7 +12,7 @@ tests.fields.test\_birthday module
    :show-inheritance:
    :undoc-members:
 
-tests.fields.test\_field module
+tests.fields.test\_field модуль
 -------------------------------
 
 .. automodule:: tests.fields.test_field
@@ -20,7 +20,7 @@ tests.fields.test\_field module
    :show-inheritance:
    :undoc-members:
 
-tests.fields.test\_name module
+tests.fields.test\_name модуль
 ------------------------------
 
 .. automodule:: tests.fields.test_name
@@ -28,7 +28,7 @@ tests.fields.test\_name module
    :show-inheritance:
    :undoc-members:
 
-tests.fields.test\_phone module
+tests.fields.test\_phone модуль
 -------------------------------
 
 .. automodule:: tests.fields.test_phone
@@ -36,7 +36,7 @@ tests.fields.test\_phone module
    :show-inheritance:
    :undoc-members:
 
-Module contents
+Вміст модуля
 ---------------
 
 .. automodule:: tests.fields

@@ -12,13 +12,14 @@ class AddressBookSerializer:
         send_error_message: Callable[[str], None] = lambda message: None,
     ):
         """
-        Initialize the address book serializer.
+        Ініціалізує серіалізатор адресної книги.
 
-        Args:
-            file_path (str): The path to the file to serialize the address book to.
-            send_error_message (Callable[[str], None]): The function to send error messages.
-        Raises:
-            FileNotFoundError: If the file path is not a file or does not exist.
+        Аргументи:
+            file_path (str): Шлях до файлу збереження.
+            send_error_message (Callable[[str], None]): Функція для виводу попереджень.
+
+        Винятки:
+            FileNotFoundError: Якщо шлях вказує на директорію.
         """
         self.file_path = Path(file_path)
         self.send_error_message = send_error_message
@@ -27,13 +28,10 @@ class AddressBookSerializer:
 
     def serialize(self, address_book: AddressBook) -> None:
         """
-        Serialize the address book to the file.
+        Зберігає адресну книгу у файл.
 
-        Args:
-            address_book (AddressBook): The address book to serialize.
-
-        Returns:
-            str: The serialized address book.
+        Аргументи:
+            address_book (AddressBook): Книга для збереження.
         """
         try:
             with open(self.file_path, "wb") as f:
@@ -45,10 +43,10 @@ class AddressBookSerializer:
 
     def deserialize(self) -> AddressBook:
         """
-        Deserialize the address book from the file.
+        Завантажує адресну книгу з файлу.
 
-        Returns:
-            AddressBook: The deserialized address book.
+        Повертає:
+            AddressBook: Завантажена книга або порожня при помилці.
         """
 
         try:

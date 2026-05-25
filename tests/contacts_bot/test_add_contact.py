@@ -5,10 +5,18 @@ from tests.contacts_bot.shared import INVALID_PHONE_12, RECORD_ERRORS
 
 
 def test_add_contact_inserts_and_message(empty_address_book, valid_phone):
-    """
-    Given an empty address book and valid name and phone arguments
-    When add_contact is called
-    Then the success message is returned and one contact is stored
+    """Перевіряє додавання нового контакту.
+
+    Дано:
+        Порожня адресна книга та валідні ім'я і телефон.
+    Коли:
+        Викликається ``add_contact``.
+    Тоді:
+        Повертається повідомлення про успіх і зберігається один контакт.
+
+    Args:
+        empty_address_book: Порожня книга.
+        valid_phone: Валідний номер телефону.
     """
     assert (
         add_contact(empty_address_book, ["Zoe", valid_phone])
@@ -18,10 +26,18 @@ def test_add_contact_inserts_and_message(empty_address_book, valid_phone):
 
 
 def test_add_contact_duplicate_phones(empty_address_book, valid_phone):
-    """
-    Given a contact that already has a phone
-    When add_contact is called again with the same phone
-    Then a duplicate-phone error is returned and only one contact remains
+    """Перевіряє заборону дублювання телефону.
+
+    Дано:
+        Контакт, у якого вже є цей телефон.
+    Коли:
+        ``add_contact`` викликається знову з тим самим номером.
+    Тоді:
+        Повертається помилка дубліката, залишається один контакт.
+
+    Args:
+        empty_address_book: Книга з одним контактом.
+        valid_phone: Номер, який уже додано.
     """
     assert (
         add_contact(empty_address_book, ["Zoe", valid_phone])
@@ -45,10 +61,19 @@ def test_add_contact_duplicate_phones(empty_address_book, valid_phone):
     ],
 )
 def test_add_contact_invalid_name_or_phone(empty_address_book, arguments, expected):
-    """
-    Given an empty address book and parametrized invalid arguments
-    When add_contact is called
-    Then the expected error message is returned and the book stays empty
+    """Перевіряє помилки при невалідних аргументах add.
+
+    Дано:
+        Порожня книга та параметризовані невалідні аргументи.
+    Коли:
+        Викликається ``add_contact``.
+    Тоді:
+        Повертається очікуване повідомлення про помилку, книга порожня.
+
+    Args:
+        empty_address_book: Порожня адресна книга.
+        arguments: Аргументи команди.
+        expected: Очікуване повідомлення.
     """
     assert add_contact(empty_address_book, arguments) == expected
     assert len(empty_address_book.data) == 0
@@ -61,10 +86,18 @@ def add_contact_fixture(valid_phone):
 
 @pytest.mark.parametrize("add_contact_fixture", [i for i in range(10)], indirect=True)
 def test_add_valid_name_and_phone(empty_address_book, add_contact_fixture):
-    """
-    Given an empty address book and valid add arguments (10 parametrized runs)
-    When add_contact is called
-    Then the success message is returned and one phone is stored for JohnDoe
+    """Перевіряє стабільність додавання валідного контакту.
+
+    Дано:
+        Порожня книга та валідні аргументи (10 параметризованих запусків).
+    Коли:
+        Викликається ``add_contact``.
+    Тоді:
+        Повертається успіх і один телефон зберігається для JohnDoe.
+
+    Args:
+        empty_address_book: Порожня адресна книга.
+        add_contact_fixture: Ім'я та телефон для додавання.
     """
     assert (
         add_contact(empty_address_book, add_contact_fixture)
@@ -75,10 +108,18 @@ def test_add_valid_name_and_phone(empty_address_book, add_contact_fixture):
 
 
 def test_add_multiple_phones(empty_address_book, valid_phone_generator):
-    """
-    Given an empty address book
-    When add_contact is called three times for the same name with different phones
-    Then each call succeeds and all three phones are on one contact
+    """Перевіряє додавання кількох телефонів одному контакту.
+
+    Дано:
+        Порожня адресна книга.
+    Коли:
+        ``add_contact`` викликається тричі для одного імені з різними номерами.
+    Тоді:
+        Кожен виклик успішний, у контакту три телефони.
+
+    Args:
+        empty_address_book: Порожня адресна книга.
+        valid_phone_generator: Генератор валідних номерів.
     """
     valid_phones = [valid_phone_generator() for _ in range(3)]
     for phone in valid_phones:

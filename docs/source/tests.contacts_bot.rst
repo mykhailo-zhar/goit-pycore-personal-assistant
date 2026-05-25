@@ -1,10 +1,10 @@
-tests.contacts\_bot package
+tests.contacts\_bot пакет
 ===========================
 
-Submodules
+Підмодулі
 ----------
 
-tests.contacts\_bot.conftest module
+tests.contacts\_bot.conftest модуль
 -----------------------------------
 
 .. automodule:: tests.contacts_bot.conftest
@@ -12,7 +12,7 @@ tests.contacts\_bot.conftest module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.shared module
+tests.contacts\_bot.shared модуль
 ---------------------------------
 
 .. automodule:: tests.contacts_bot.shared
@@ -20,7 +20,7 @@ tests.contacts\_bot.shared module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_add\_birthday module
+tests.contacts\_bot.test\_add\_birthday модуль
 ----------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_add_birthday
@@ -28,7 +28,7 @@ tests.contacts\_bot.test\_add\_birthday module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_add\_contact module
+tests.contacts\_bot.test\_add\_contact модуль
 ---------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_add_contact
@@ -36,7 +36,7 @@ tests.contacts\_bot.test\_add\_contact module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_birthdays module
+tests.contacts\_bot.test\_birthdays модуль
 ------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_birthdays
@@ -44,7 +44,7 @@ tests.contacts\_bot.test\_birthdays module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_handle\_command module
+tests.contacts\_bot.test\_handle\_command модуль
 ------------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_handle_command
@@ -52,7 +52,7 @@ tests.contacts\_bot.test\_handle\_command module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_integration module
+tests.contacts\_bot.test\_integration модуль
 --------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_integration
@@ -60,7 +60,7 @@ tests.contacts\_bot.test\_integration module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_parse\_input module
+tests.contacts\_bot.test\_parse\_input модуль
 ---------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_parse_input
@@ -68,7 +68,7 @@ tests.contacts\_bot.test\_parse\_input module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_show\_all module
+tests.contacts\_bot.test\_show\_all модуль
 ------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_show_all
@@ -76,7 +76,7 @@ tests.contacts\_bot.test\_show\_all module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_show\_birthday module
+tests.contacts\_bot.test\_show\_birthday модуль
 -----------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_show_birthday
@@ -84,7 +84,7 @@ tests.contacts\_bot.test\_show\_birthday module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_show\_phone module
+tests.contacts\_bot.test\_show\_phone модуль
 --------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_show_phone
@@ -92,7 +92,7 @@ tests.contacts\_bot.test\_show\_phone module
    :show-inheritance:
    :undoc-members:
 
-tests.contacts\_bot.test\_update\_contact module
+tests.contacts\_bot.test\_update\_contact модуль
 ------------------------------------------------
 
 .. automodule:: tests.contacts_bot.test_update_contact
@@ -100,7 +100,7 @@ tests.contacts\_bot.test\_update\_contact module
    :show-inheritance:
    :undoc-members:
 
-Module contents
+Вміст модуля
 ---------------
 
 .. automodule:: tests.contacts_bot

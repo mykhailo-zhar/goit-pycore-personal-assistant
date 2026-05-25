@@ -1,19 +1,14 @@
-.. goit-pycore-hw-04 documentation master file, created by
-   sphinx-quickstart on Thu Apr 30 15:23:27 2026.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. goit-pycore-hw-08 documentation master file
 
-goit-pycore-hw-08 documentation
+Документація goit-pycore-hw-08
 ===============================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+Бот-асистент контактів: адресна книга, поля запису, серіалізація та CLI.
+Документація API генерується з docstring-ів модулів ``src`` та ``tests``.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Зміст:
 
    class-diagram
    modules

@@ -10,11 +10,11 @@ from src.record import Record
 @dataclass(init=False)
 class ProcessedRecord:
     """
-    Processed record.
+    Оброблений запис з датою привітання.
 
-    Args:
-        record (Record): The record to process.
-        today (datetime): The today's date.
+    Аргументи:
+        record (Record): Запис контакту.
+        today (datetime): Поточна дата.
     """
 
     record: Record
@@ -22,11 +22,11 @@ class ProcessedRecord:
 
     def __init__(self, record: Record, today: datetime):
         """
-        Initialize the processed record.
+        Ініціалізує оброблений запис.
 
-        Args:
-            record (Record): The record to process.
-            today (datetime): The today's date.
+        Аргументи:
+            record (Record): Запис контакту.
+            today (datetime): Поточна дата.
         """
         self.__record = record
         self.__today = today
@@ -35,23 +35,23 @@ class ProcessedRecord:
     @property
     def record(self) -> Record:
         """
-        Get the record.
+        Повертає запис.
 
-        Returns:
-            Record: The record.
+        Повертає:
+            Record: Запис контакту.
         """
         return self.__record
 
     @record.setter
     def record(self, record: Record):
         """
-        Set the record.
+        Встановлює запис.
 
-        Args:
-            record: The record to set.
+        Аргументи:
+            record: Запис для встановлення.
 
-        Notes:
-            This method will recalculate the congratulation date.
+        Примітки:
+            Перераховує дату привітання.
         """
         self.__record = record
         self.__congratulation_date = self.__calculate_congratulation_date()
@@ -59,10 +59,10 @@ class ProcessedRecord:
     @property
     def congratulation_date(self) -> datetime:
         """
-        Get the congratulation date.
+        Повертає дату привітання.
 
-        Returns:
-            datetime: The congratulation date.
+        Повертає:
+            datetime: Дата привітання.
         """
         return self.__congratulation_date
 
@@ -71,13 +71,13 @@ class ProcessedRecord:
         today: datetime,
     ) -> Callable[[Self], bool]:
         """
-        Check if the congratulation date is in the next 7 days.
+        Перевіряє, чи дата привітання потрапляє в наступні 7 днів.
 
-        Args:
-            today: The today's date.
+        Аргументи:
+            today: Поточна дата.
 
-        Returns:
-            Callable[[ProcessedRecord], bool]: Curry function
+        Повертає:
+            Callable[[ProcessedRecord], bool]: Функція-фільтр.
         """
         return lambda record: (
             record.congratulation_date >= today
@@ -86,13 +86,10 @@ class ProcessedRecord:
 
     def __calculate_congratulation_date(self) -> datetime:
         """
-        Transform the birthday to the congratulation date.
+        Обчислює дату привітання з дня народження.
 
-        Args:
-            birthday: The birthday of the user.
-
-        Returns:
-            The congratulation date.
+        Повертає:
+            datetime: Дата привітання (з урахуванням вихідних).
         """
         birthday_date = datetime.strptime(
             self.record.birthday.value, Birthday.DATE_FORMAT
@@ -101,7 +98,7 @@ class ProcessedRecord:
 
         weekday = congratulation_date.weekday()
 
-        # Move the congratulation date to the next Monday if it's on a weekend
+        # Перенос дати привітання на понеділок, якщо випадає на вихідні
         if weekday in [5, 6]:
             congratulation_date = congratulation_date + timedelta(days=7 - weekday)
 

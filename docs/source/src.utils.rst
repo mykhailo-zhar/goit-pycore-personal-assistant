@@ -1,10 +1,10 @@
-src.utils package
+src.utils пакет
 =================
 
-Submodules
+Підмодулі
 ----------
 
-src.utils.processed\_record module
+src.utils.processed\_record модуль
 ----------------------------------
 
 .. automodule:: src.utils.processed_record
@@ -12,7 +12,7 @@ src.utils.processed\_record module
    :show-inheritance:
    :undoc-members:
 
-Module contents
+Вміст модуля
 ---------------
 
 .. automodule:: src.utils

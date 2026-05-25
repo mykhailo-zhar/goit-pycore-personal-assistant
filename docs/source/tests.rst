@@ -1,7 +1,7 @@
-tests package
+tests пакет
 =============
 
-Subpackages
+Підпакети
 -----------
 
 .. toctree::
@@ -11,10 +11,10 @@ Subpackages
    tests.address_book
    tests.contacts_bot
 
-Submodules
+Підмодулі
 ----------
 
-tests.test\_record module
+tests.test\_record модуль
 -------------------------
 
 .. automodule:: tests.test_record
@@ -22,7 +22,7 @@ tests.test\_record module
    :show-inheritance:
    :undoc-members:
 
-Module contents
+Вміст модуля
 ---------------
 
 .. automodule:: tests

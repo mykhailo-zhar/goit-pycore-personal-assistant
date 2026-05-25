@@ -5,17 +5,17 @@ from ..fields.field import Field
 
 class Phone(Field):
     """
-    Stores the contact phone number.
+    Зберігає номер телефону контакту.
 
-    Args:
-        Field: Base class for all fields.
+    Аргументи:
+        Field: Базовий клас для всіх полів.
     """
 
     def validate(self):
         """
-        Validate the phone number.
+        Перевіряє номер телефону.
 
-        Returns:
-            bool: True if the phone number is valid, False otherwise.
+        Повертає:
+            bool: True, якщо номер валідний, інакше False.
         """
         return re.match(r"^\d{10}$", self.value) is not None

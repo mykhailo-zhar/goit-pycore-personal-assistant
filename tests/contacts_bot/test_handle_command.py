@@ -13,10 +13,19 @@ from src.scripts.contacts_bot import COMMAND_MESSAGES, handle_command
     ],
 )
 def test_handle_command_hello_and_unknown(command, arguments, expected):
-    """
-    Given a parametrized command and arguments (hello, invalid arity, or unknown)
-    When handle_command is dispatched
-    Then the expected hello or invalid-command message is returned
+    """Перевіряє hello, невалідну арність і невідому команду.
+
+    Дано:
+        Параметризована команда та аргументи (hello, зайві аргументи або невідома команда).
+    Коли:
+        Викликається ``handle_command``.
+    Тоді:
+        Повертається очікуване привітання або ``Invalid command.``.
+
+    Args:
+        command: Назва команди.
+        arguments: Аргументи команди.
+        expected: Очікувана відповідь.
     """
     assert handle_command({}, command, arguments) == expected
 
@@ -24,10 +33,18 @@ def test_handle_command_hello_and_unknown(command, arguments, expected):
 def test_handle_command_add_and_update_via_dispatch(
     empty_address_book, valid_phone_generator
 ):
-    """
-    Given an empty address book
-    When add is called twice for the same name then update with a new phone
-    Then added/updated messages are returned and the last phone is stored
+    """Перевіряє add і update через диспетчер команд.
+
+    Дано:
+        Порожня адресна книга.
+    Коли:
+        ``add`` двічі для одного імені, потім ``update`` з новим номером.
+    Тоді:
+        Повідомлення added/updated, останній номер зберігається.
+
+    Args:
+        empty_address_book: Порожня книга.
+        valid_phone_generator: Генератор валідних номерів.
     """
     assert (
         handle_command(empty_address_book, "add", ["x", valid_phone_generator()])
@@ -48,10 +65,18 @@ def test_handle_command_add_and_update_via_dispatch(
 def test_handle_command_add_birthday_via_dispatch(
     book_with_contact, valid_birthday_str
 ):
-    """
-    Given a contact in the book
-    When add-birthday is dispatched via handle_command
-    Then the birthday-added message is returned and the date is stored
+    """Перевіряє add-birthday через handle_command.
+
+    Дано:
+        Контакт у книзі.
+    Коли:
+        Диспетчеризується ``add-birthday``.
+    Тоді:
+        Повідомлення про додавання ДН, дата зберігається.
+
+    Args:
+        book_with_contact: Книга з контактом.
+        valid_birthday_str: Валідна дата.
     """
     assert handle_command(
         book_with_contact, "add-birthday", ["JohnDoe", valid_birthday_str]
@@ -64,10 +89,18 @@ def test_handle_command_add_birthday_via_dispatch(
 def test_handle_command_show_birthday_via_dispatch(
     book_with_contact, valid_birthday_str
 ):
-    """
-    Given a contact with a birthday set via handle_command
-    When show-birthday is dispatched
-    Then the formatted birthday message is returned
+    """Перевіряє show-birthday через handle_command.
+
+    Дано:
+        Контакт із ДН, встановленим через ``handle_command``.
+    Коли:
+        Диспетчеризується ``show-birthday``.
+    Тоді:
+        Повертається відформатоване повідомлення з датою.
+
+    Args:
+        book_with_contact: Книга з контактом.
+        valid_birthday_str: Валідна дата.
     """
     handle_command(book_with_contact, "add-birthday", ["JohnDoe", valid_birthday_str])
 
@@ -79,10 +112,17 @@ def test_handle_command_show_birthday_via_dispatch(
 
 
 def test_handle_command_birthdays_via_dispatch(empty_address_book):
-    """
-    Given a contact with an upcoming birthday on a frozen date (2026-05-19)
-    When birthdays is dispatched via handle_command
-    Then the output contains the formatted upcoming birthday line
+    """Перевіряє birthdays через handle_command.
+
+    Дано:
+        Контакт із найближчим ДН на зафіксованій даті (2026-05-19).
+    Коли:
+        Диспетчеризується ``birthdays``.
+    Тоді:
+        У виводі є відформатований рядок найближчого ДН.
+
+    Args:
+        empty_address_book: Книга, наповнена під час тесту.
     """
     with time_machine.travel("2026-05-19"):
         handle_command(empty_address_book, "add", ["Alice", "1234567890"])
@@ -106,10 +146,20 @@ def test_handle_command_birthdays_via_dispatch(empty_address_book):
     ],
 )
 def test_handle_command_wrong_arity(empty_address_book, command, arguments, expected):
-    """
-    Given an address book and parametrized commands with wrong argument counts
-    When handle_command is dispatched
-    Then the invalid-command message is returned
+    """Перевіряє невалідну кількість аргументів для команд.
+
+    Дано:
+        Адресна книга та параметризовані команди з некоректною арністю.
+    Коли:
+        Викликається ``handle_command``.
+    Тоді:
+        Повертається ``Invalid command.``.
+
+    Args:
+        empty_address_book: Адресна книга.
+        command: Назва команди.
+        arguments: Аргументи команди.
+        expected: Очікувана відповідь.
     """
     assert handle_command(empty_address_book, command, arguments) == expected
 
@@ -124,19 +174,36 @@ def test_handle_command_wrong_arity(empty_address_book, command, arguments, expe
 def test_handle_command_empty_line_invalid(
     empty_address_book, command, arguments, expected
 ):
-    """
-    Given an empty or whitespace command string
-    When handle_command is dispatched
-    Then the invalid-command message is returned
+    """Перевіряє порожню або пробільну команду.
+
+    Дано:
+        Порожній або пробільний рядок команди.
+    Коли:
+        Викликається ``handle_command``.
+    Тоді:
+        Повертається ``Invalid command.``.
+
+    Args:
+        empty_address_book: Адресна книга.
+        command: Рядок команди.
+        arguments: Аргументи.
+        expected: Очікувана відповідь.
     """
     assert handle_command(empty_address_book, command, arguments) == expected
 
 
 def test_handle_command_phone_no_user(empty_address_book):
-    """
-    Given an empty address book
-    When phone is dispatched for a missing user
-    Then the no-such-user message is returned
+    """Перевіряє phone для відсутнього користувача.
+
+    Дано:
+        Порожня адресна книга.
+    Коли:
+        Диспетчеризується ``phone`` для неіснуючого імені.
+    Тоді:
+        Повертається ``No such user``.
+
+    Args:
+        empty_address_book: Порожня книга.
     """
     assert (
         handle_command(empty_address_book, "phone", ["Ghost"])
@@ -145,10 +212,18 @@ def test_handle_command_phone_no_user(empty_address_book):
 
 
 def test_handle_command_update_no_user(empty_address_book, valid_phone):
-    """
-    Given an empty address book
-    When update is dispatched for a missing user
-    Then the no-such-user message is returned
+    """Перевіряє update для відсутнього користувача.
+
+    Дано:
+        Порожня адресна книга.
+    Коли:
+        Диспетчеризується ``update`` для неіснуючого імені.
+    Тоді:
+        Повертається ``No such user``.
+
+    Args:
+        empty_address_book: Порожня книга.
+        valid_phone: Валідний номер.
     """
     assert (
         handle_command(empty_address_book, "update", ["Ghost", valid_phone])
@@ -157,10 +232,17 @@ def test_handle_command_update_no_user(empty_address_book, valid_phone):
 
 
 def test_handle_command_exit_close_returns_none(empty_address_book):
-    """
-    Given an address book
-    When exit or close is dispatched
-    Then the goodbye message is returned and the book is unchanged
+    """Перевіряє команди exit і close.
+
+    Дано:
+        Адресна книга.
+    Коли:
+        Диспетчеризуються ``exit`` або ``close``.
+    Тоді:
+        Повертається прощальне повідомлення, книга не змінюється.
+
+    Args:
+        empty_address_book: Адресна книга.
     """
     assert (
         handle_command(empty_address_book, "exit", []) == COMMAND_MESSAGES["GOOD_BYE"]

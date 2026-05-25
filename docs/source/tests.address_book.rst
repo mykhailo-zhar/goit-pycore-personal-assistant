@@ -1,10 +1,10 @@
-tests.address\_book package
+tests.address\_book пакет
 ===========================
 
-Submodules
+Підмодулі
 ----------
 
-tests.address\_book.test\_address\_book module
+tests.address\_book.test\_address\_book модуль
 ----------------------------------------------
 
 .. automodule:: tests.address_book.test_address_book
@@ -12,7 +12,7 @@ tests.address\_book.test\_address\_book module
    :show-inheritance:
    :undoc-members:
 
-tests.address\_book.test\_upcoming\_birthdays module
+tests.address\_book.test\_upcoming\_birthdays модуль
 ----------------------------------------------------
 
 .. automodule:: tests.address_book.test_upcoming_birthdays
@@ -20,7 +20,7 @@ tests.address\_book.test\_upcoming\_birthdays module
    :show-inheritance:
    :undoc-members:
 
-Module contents
+Вміст модуля
 ---------------
 
 .. automodule:: tests.address_book

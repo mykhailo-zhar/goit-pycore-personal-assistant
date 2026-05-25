@@ -6,41 +6,39 @@ from src.utils.processed_record import ProcessedRecord
 
 class AddressBook:
     def __init__(self):
-        """
-        Initialize the address book.
-        """
+        """Ініціалізує адресну книгу."""
         self.data = {}
 
     def add_record(self, record: Record):
         """
-        Add a record to the address book.
+        Додає запис до адресної книги.
 
-        Args:
-            record (Record): The record to add.
+        Аргументи:
+            record (Record): Запис для додавання.
         """
         self.data[record.name.value] = record
 
     def find_record(self, name: str) -> Record | None:
         """
-        Find a record in the address book.
+        Шукає запис у адресній книзі.
 
-        Args:
-            name (str): The name of the record to find.
+        Аргументи:
+            name (str): Ім'я контакту.
 
-        Returns:
-            Record | None: The record if found, None otherwise.
+        Повертає:
+            Record | None: Запис, якщо знайдено, інакше None.
         """
         return self.data.get(name)
 
     def remove_record(self, name: str) -> bool:
         """
-        Remove a record from the address book.
+        Видаляє запис з адресної книги.
 
-        Args:
-            name (str): The name of the record to remove.
+        Аргументи:
+            name (str): Ім'я контакту.
 
-        Returns:
-            bool: True if the record was removed, False otherwise.
+        Повертає:
+            bool: True, якщо запис видалено, інакше False.
         """
 
         return self.data.pop(name, None) is not None
@@ -48,19 +46,19 @@ class AddressBook:
     @property
     def today(self) -> datetime:
         """
-        Get the today's date.
+        Повертає поточну дату.
 
-        Returns:
-            datetime: The today's date.
+        Повертає:
+            datetime: Поточна дата.
         """
         return self.__today
 
     def get_upcoming_birthdays(self) -> list[Record]:
         """
-        Get the upcoming birthdays from the address book.
+        Повертає найближчі дні народження з адресної книги.
 
-        Returns:
-            list[Record]: List of upcoming birthdays sorted by congratulation date.
+        Повертає:
+            list[Record]: Список записів, відсортований за датою привітання.
         """
 
         if not self.data:
@@ -68,7 +66,7 @@ class AddressBook:
 
         self.__today = datetime.now()
 
-        # Records without birthday may cause a crash
+        # Записи без дня народження не потрапляють у список
         processed_records = [
             ProcessedRecord(record, self.__today)
             for record in self.data.values()

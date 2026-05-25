@@ -30,9 +30,7 @@ SERIALIZER_PATH = "addressbook.pkl"
 
 
 def input_error(func):
-    """
-    Decorator to handle input errors.
-    """
+    """Декоратор для обробки помилок введення."""
 
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -46,15 +44,15 @@ def input_error(func):
 
 def serializes(func, object, serializer=None):
     """
-    Decorator to serialize the address book.
+    Декоратор для збереження адресної книги після команди.
 
-    Args:
-        func (Callable): The function to decorate.
-        object (Any): The object to serialize.
-        serializer (AddressBookSerializer | None): The serializer to use.
+    Аргументи:
+        func (Callable): Функція-обробник.
+        object (Any): Об'єкт для серіалізації.
+        serializer (AddressBookSerializer | None): Серіалізатор.
 
-    Returns:
-        Callable: The decorated function.
+    Повертає:
+        Callable: Обгорнута функція.
     """
 
     @wraps(func)
@@ -69,13 +67,13 @@ def serializes(func, object, serializer=None):
 
 def parse_input(line: str) -> tuple[str, list[str]]:
     """
-    Parse the input.
+    Розбирає рядок введення на команду та аргументи.
 
-    Args:
-        line (str): The line to parse.
+    Аргументи:
+        line (str): Рядок від користувача.
 
-    Returns:
-        tuple[str, list[str]]: A tuple containing the command and the arguments.
+    Повертає:
+        tuple[str, list[str]]: Команда та список аргументів.
     """
     if line.strip() == "":
         return "", []
@@ -86,14 +84,14 @@ def parse_input(line: str) -> tuple[str, list[str]]:
 @input_error
 def hello(_: AddressBook, arguments: list[str] = []) -> str:
     """
-    Print the hello message.
+    Команда привітання.
 
-    Args:
-        _ (AddressBook): The book of contacts.
-        arguments (list[str]): The arguments to the hello command.
+    Аргументи:
+        _ (AddressBook): Адресна книга.
+        arguments (list[str]): Аргументи команди.
 
-    Returns:
-        str: The hello message.
+    Повертає:
+        str: Привітальне повідомлення.
     """
     if arguments:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -104,14 +102,14 @@ def hello(_: AddressBook, arguments: list[str] = []) -> str:
 @input_error
 def add_contact(book: AddressBook, arguments: list[str]) -> str:
     """
-    Add a new contact.
+    Додає контакт або телефон до існуючого.
 
-    Args:
-        book (AddressBook): The book of contacts.
-        arguments (list[str]): The arguments to add the contact.
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я та телефон.
 
-    Returns:
-        str: The response to the command.
+    Повертає:
+        str: Відповідь на команду.
     """
     if len(arguments) != 2:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -129,17 +127,17 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
 @input_error
 def update_contact(book: AddressBook, arguments: list[str]) -> str:
     """
-    Update a contact.
+    Оновлює телефони контакту.
 
-    Args:
-        book (AddressBook): The book of contacts.
-        arguments (list[str]): The arguments to update the contact.
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я та новий телефон.
 
-    Returns:
-        str: The response to the command.
+    Повертає:
+        str: Відповідь на команду.
 
-    Notes:
-        Replaces all the phones the user has with the current phone.
+    Примітки:
+        Замінює всі телефони контакту одним вказаним номером.
     """
     if len(arguments) != 2:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -158,14 +156,14 @@ def update_contact(book: AddressBook, arguments: list[str]) -> str:
 @input_error
 def add_birthday(book: AddressBook, arguments: list[str]) -> str:
     """
-    Add a birthday to a contact.
+    Додає день народження контакту.
 
-    Args:
-        book (AddressBook): The book of contacts.
-        arguments (list[str]): The arguments to add the birthday to the contact.
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я та дата DD.MM.YYYY.
 
-    Returns:
-        str: The response to the command.
+    Повертає:
+        str: Відповідь на команду.
     """
     if len(arguments) != 2:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -185,14 +183,14 @@ def add_birthday(book: AddressBook, arguments: list[str]) -> str:
 @input_error
 def show_birthday(book: AddressBook, arguments: list[str]) -> str:
     """
-    Show the birthday of a contact.
+    Показує день народження контакту.
 
-    Args:
-        book (AddressBook): The book of contacts.
-        arguments (list[str]): The arguments to show the birthday of the contact.
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я контакту.
 
-    Returns:
-        str: The response to the command.
+    Повертає:
+        str: Відповідь на команду.
     """
     if len(arguments) != 1:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -210,14 +208,14 @@ def show_birthday(book: AddressBook, arguments: list[str]) -> str:
 @input_error
 def show_phone(book: AddressBook, arguments: list[str]) -> str:
     """
-    Show the phone number of a contact.
+    Показує телефон(и) контакту.
 
-    Args:
-        book (AddressBook): The book of contacts.
-        arguments (list[str]): The arguments to show the phone number of the contact.
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я контакту.
 
-    Returns:
-        str: The response to the command.
+    Повертає:
+        str: Номер(и) телефону.
     """
     if len(arguments) != 1:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -231,14 +229,14 @@ def show_phone(book: AddressBook, arguments: list[str]) -> str:
 @input_error
 def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
     """
-    Show the birthdays of the contacts.
+    Показує найближчі дні народження.
 
-    Args:
-        book (AddressBook): The book of contacts.
-        arguments (list[str]): The arguments to show the birthdays.
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Аргументи команди.
 
-    Returns:
-        str: The response to the command.
+    Повертає:
+        str: Відповідь на команду.
     """
     if arguments:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -259,14 +257,14 @@ def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
 @input_error
 def show_all(book: AddressBook, arguments: list[str] = []) -> str:
     """
-    Show all contacts.
+    Показує всіх контактів.
 
-    Args:
-        book (AddressBook): The book of contacts.
-        arguments (list[str]): The arguments to show all contacts.
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Аргументи команди.
 
-    Returns:
-        str: The response to the command.
+    Повертає:
+        str: Відповідь на команду.
     """
     if arguments:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -284,14 +282,14 @@ def show_all(book: AddressBook, arguments: list[str] = []) -> str:
 @input_error
 def exit(_: AddressBook, arguments: list[str] = []) -> str:
     """
-    Exit the program.
+    Завершує роботу програми.
 
-    Args:
-        _ (AddressBook): The book of contacts.
-        arguments (list[str], optional): The arguments to the exit command. Defaults to [].
+    Аргументи:
+        _ (AddressBook): Адресна книга.
+        arguments (list[str], optional): Аргументи команди.
 
-    Returns:
-        str: The goodbye message.
+    Повертає:
+        str: Прощальне повідомлення.
     """
     if arguments:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
@@ -305,15 +303,16 @@ def handle_command(
     serializer: AddressBookSerializer = None,
 ) -> str:
     """
-    Handle the command.
+    Виконує команду користувача.
 
-    Args:
-        command (str): The command to handle.
-        arguments (list[str]): The arguments to the command.
-        book (AddressBook): The book of contacts.
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        command (str): Назва команди.
+        arguments (list[str]): Аргументи команди.
+        serializer (AddressBookSerializer | None): Серіалізатор для збереження.
 
-    Returns:
-        str: The response to the command.
+    Повертає:
+        str: Відповідь на команду.
     """
     commands = {
         "hello": hello,
@@ -335,9 +334,7 @@ def handle_command(
 
 
 def main() -> None:
-    """
-    Main function.
-    """
+    """Головна функція CLI-бота."""
     serializer: AddressBookSerializer = AddressBookSerializer(
         SERIALIZER_PATH, lambda message: print(message)
     )

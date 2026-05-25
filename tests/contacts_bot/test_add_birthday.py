@@ -6,10 +6,18 @@ from .shared import RECORD_ERRORS
 
 
 def test_add_birthday_adds_to_existing_record(book_with_contact, valid_birthday_str):
-    """
-    Given a contact without a birthday
-    When add_birthday is called with a valid date
-    Then the birthday-added message is returned and the date is stored
+    """Перевіряє додавання дня народження до контакту.
+
+    Дано:
+        Контакт без дня народження.
+    Коли:
+        Викликається ``add_birthday`` з валідною датою.
+    Тоді:
+        Повертається повідомлення про додавання, дата зберігається.
+
+    Args:
+        book_with_contact: Книга з контактом JohnDoe.
+        valid_birthday_str: Валідна дата DD.MM.YYYY.
     """
     assert add_birthday(
         book_with_contact, ["JohnDoe", valid_birthday_str]
@@ -22,10 +30,18 @@ def test_add_birthday_adds_to_existing_record(book_with_contact, valid_birthday_
 def test_add_birthday_edits_record_stored_in_address_book(
     book_with_contact, valid_birthday_str
 ):
-    """
-    Given a reference to the contact record in the book
-    When add_birthday is called
-    Then the same record object in the book is updated with the birthday
+    """Перевіряє оновлення того самого об'єкта запису в книзі.
+
+    Дано:
+        Посилання на запис контакту в книзі.
+    Коли:
+        Викликається ``add_birthday``.
+    Тоді:
+        Той самий об'єкт запису в книзі отримує день народження.
+
+    Args:
+        book_with_contact: Книга з контактом.
+        valid_birthday_str: Валідна дата.
     """
     record = book_with_contact.data["JohnDoe"]
 
@@ -40,10 +56,18 @@ def test_add_birthday_edits_record_stored_in_address_book(
 
 
 def test_add_birthday_no_such_user(empty_address_book, valid_birthday_str):
-    """
-    Given an empty address book
-    When add_birthday is called for a missing user
-    Then the no-such-user message is returned and the book stays empty
+    """Перевіряє додавання ДН для відсутнього користувача.
+
+    Дано:
+        Порожня адресна книга.
+    Коли:
+        ``add_birthday`` викликається для неіснуючого імені.
+    Тоді:
+        Повертається ``No such user``, книга лишається порожньою.
+
+    Args:
+        empty_address_book: Порожня книга.
+        valid_birthday_str: Валідна дата.
     """
     assert (
         add_birthday(empty_address_book, ["Nobody", valid_birthday_str])
@@ -53,10 +77,18 @@ def test_add_birthday_no_such_user(empty_address_book, valid_birthday_str):
 
 
 def test_add_birthday_invalid_birthday(book_with_contact, invalid_birthday_str):
-    """
-    Given a contact without a birthday
-    When add_birthday is called with an invalid date
-    Then a validation error is returned and birthday remains unset
+    """Перевіряє відхилення невалідної дати.
+
+    Дано:
+        Контакт без дня народження.
+    Коли:
+        ``add_birthday`` викликається з невалідною датою.
+    Тоді:
+        Повертається помилка валідації, ``birthday`` лишається ``None``.
+
+    Args:
+        book_with_contact: Книга з контактом.
+        invalid_birthday_str: Невалідна дата.
     """
     assert add_birthday(
         book_with_contact, ["JohnDoe", invalid_birthday_str]
@@ -67,10 +99,19 @@ def test_add_birthday_invalid_birthday(book_with_contact, invalid_birthday_str):
 def test_add_birthday_replaces_existing_birthday(
     book_with_contact, valid_birthday_str, new_valid_birthday_str
 ):
-    """
-    Given a contact that already has a birthday
-    When add_birthday is called with a new valid date
-    Then the message shows old and new dates and the birthday is replaced
+    """Перевіряє заміну існуючого дня народження.
+
+    Дано:
+        Контакт, у якого вже є день народження.
+    Коли:
+        ``add_birthday`` викликається з новою валідною датою.
+    Тоді:
+        Повідомлення містить стару й нову дати, дата замінюється.
+
+    Args:
+        book_with_contact: Книга з контактом.
+        valid_birthday_str: Початкова дата.
+        new_valid_birthday_str: Нова дата.
     """
     add_birthday(book_with_contact, ["JohnDoe", valid_birthday_str])
 
@@ -93,10 +134,18 @@ def test_add_birthday_replaces_existing_birthday(
     ],
 )
 def test_add_birthday_wrong_arity(book_with_contact, arguments):
-    """
-    Given a contact in the book and parametrized wrong argument counts
-    When add_birthday is called
-    Then the invalid-command message is returned
+    """Перевіряє невалідну кількість аргументів.
+
+    Дано:
+        Контакт у книзі та параметризовані некоректні аргументи.
+    Коли:
+        Викликається ``add_birthday``.
+    Тоді:
+        Повертається ``Invalid command.``.
+
+    Args:
+        book_with_contact: Книга з контактом.
+        arguments: Аргументи команди.
     """
     assert (
         add_birthday(book_with_contact, arguments)

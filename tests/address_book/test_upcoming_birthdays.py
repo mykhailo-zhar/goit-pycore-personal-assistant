@@ -41,14 +41,21 @@ def address_book_with_records(users):
 
 dates = [datetime(2026, 4, 26), datetime(2026, 5, 1), datetime(2026, 4, 23)]
 
-# Validation of input parameters
+# Валідація параметрів виводу
 
 
 def test_output_parameters(address_book_with_records):
-    """
-    Given an AddressBook with records
-    When get_upcoming_birthdays is accessed
-    Then its type is Callable[[], list[Record]]
+    """Перевіряє тип методу найближчих днів народження.
+
+    Дано:
+        ``AddressBook`` із записами.
+    Коли:
+        Звертаються до ``get_upcoming_birthdays``.
+    Тоді:
+        Тип — ``Callable[[], list[Record]]``.
+
+    Args:
+        address_book_with_records: Книга з контактами та днями народження.
     """
     assert assert_type(
         address_book_with_records.get_upcoming_birthdays, Callable[[], list[Record]]
@@ -56,15 +63,22 @@ def test_output_parameters(address_book_with_records):
 
 
 def test_empty_address_book_returns_empty_list(empty_address_book):
-    """
-    Given an empty AddressBook
-    When get_upcoming_birthdays is called
-    Then an empty list is returned
+    """Перевіряє порожній результат для порожньої книги.
+
+    Дано:
+        Порожня ``AddressBook``.
+    Коли:
+        Викликається ``get_upcoming_birthdays``.
+    Тоді:
+        Повертається порожній список.
+
+    Args:
+        empty_address_book: Книга без записів.
     """
     assert empty_address_book.get_upcoming_birthdays() == []
 
 
-# Logic
+# Логіка
 
 
 @pytest.fixture
@@ -79,10 +93,18 @@ def _is_congratulation_date_in_7_days(record: Record, today: datetime) -> bool:
 
 @pytest.mark.parametrize("date", dates)
 def test_congratulation_date_is_in_7_days(address_book_with_records, date):
-    """
-    Given an address book with contacts whose birthdays fall within the next 7 days
-    When get_upcoming_birthdays is called on a parametrized "today" date
-    Then every returned record has a birthday in that 7-day window
+    """Перевіряє, що ДН потрапляють у 7-денне вікно.
+
+    Дано:
+        Книга з контактами, чиї ДН у наступні 7 днів від параметризованої дати.
+    Коли:
+        Викликається ``get_upcoming_birthdays`` на зафіксованій даті ``date``.
+    Тоді:
+        У кожного поверненого запису ДН у цьому вікні.
+
+    Args:
+        address_book_with_records: Книга з контактами.
+        date: Поточна дата для ``time_machine``.
     """
     with time_machine.travel(date):
         result = address_book_with_records.get_upcoming_birthdays()
@@ -99,14 +121,22 @@ def _is_congratulation_date_not_on_weekend(record: Record, today: datetime) -> b
     ]
 
 
-# BUG: Assertion uses raw birthday weekday on Record, not ProcessedRecord's
-# adjusted congratulation_date. Resulting records are not moved to Monday;
+# BUG: перевірка використовує день тижня сирого birthday на Record,
+# а не скориговану congratulation_date з ProcessedRecord; записи не переносяться на понеділок
 @pytest.mark.parametrize("date", dates)
 def test_congratulation_date_is_not_on_weekend(address_book_with_records, date):
-    """
-    Given an address book with birthdays in the upcoming window, including weekends
-    When get_upcoming_birthdays is called on a parametrized "today" date
-    Then weekend birthdays should be congratulated on the next Monday, not Sat/Sun
+    """Перевіряє перенесення вихідних ДН на понеділок (очікувана поведінка).
+
+    Дано:
+        Книга з ДН у найближчому вікні, включно з вихідними.
+    Коли:
+        Викликається ``get_upcoming_birthdays`` на параметризованій даті.
+    Тоді:
+        Вихідні ДН мають привітатися в понеділок, а не в суботу/неділю.
+
+    Args:
+        address_book_with_records: Книга з контактами.
+        date: Поточна дата для ``time_machine``.
     """
     with time_machine.travel(date):
         result = address_book_with_records.get_upcoming_birthdays()
