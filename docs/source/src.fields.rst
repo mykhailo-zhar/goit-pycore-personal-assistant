@@ -1,10 +1,10 @@
-src.fields package
+src.fields пакет
 ==================
 
-Submodules
+Підмодулі
 ----------
 
-src.fields.birthday module
+src.fields.birthday модуль
 --------------------------
 
 .. automodule:: src.fields.birthday
@@ -12,7 +12,7 @@ src.fields.birthday module
    :show-inheritance:
    :undoc-members:
 
-src.fields.field module
+src.fields.field модуль
 -----------------------
 
 .. automodule:: src.fields.field
@@ -20,7 +20,7 @@ src.fields.field module
    :show-inheritance:
    :undoc-members:
 
-src.fields.name module
+src.fields.name модуль
 ----------------------
 
 .. automodule:: src.fields.name
@@ -28,7 +28,7 @@ src.fields.name module
    :show-inheritance:
    :undoc-members:
 
-src.fields.phone module
+src.fields.phone модуль
 -----------------------
 
 .. automodule:: src.fields.phone
@@ -36,7 +36,7 @@ src.fields.phone module
    :show-inheritance:
    :undoc-members:
 
-Module contents
+Вміст модуля
 ---------------
 
 .. automodule:: src.fields

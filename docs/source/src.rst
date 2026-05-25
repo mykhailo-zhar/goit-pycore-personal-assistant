@@ -1,7 +1,7 @@
-src package
+src пакет
 ===========
 
-Subpackages
+Підпакети
 -----------
 
 .. toctree::
@@ -11,10 +11,10 @@ Subpackages
    src.utils
    src.scripts
 
-Submodules
+Підмодулі
 ----------
 
-src.address\_book module
+src.address\_book модуль
 ------------------------
 
 .. automodule:: src.address_book
@@ -22,7 +22,7 @@ src.address\_book module
    :show-inheritance:
    :undoc-members:
 
-src.record module
+src.record модуль
 -----------------
 
 .. automodule:: src.record
@@ -30,7 +30,7 @@ src.record module
    :show-inheritance:
    :undoc-members:
 
-Module contents
+Вміст модуля
 ---------------
 
 .. automodule:: src

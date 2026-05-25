@@ -1,10 +1,10 @@
-src.scripts package
+src.scripts пакет
 ===================
 
-Submodules
+Підмодулі
 ----------
 
-src.scripts.contacts\_bot module
+src.scripts.contacts\_bot модуль
 --------------------------------
 
 .. automodule:: src.scripts.contacts_bot
@@ -12,7 +12,7 @@ src.scripts.contacts\_bot module
    :show-inheritance:
    :undoc-members:
 
-Module contents
+Вміст модуля
 ---------------
 
 .. automodule:: src.scripts
