@@ -151,17 +151,11 @@ class Record:
         Винятки:
             ValueError: Якщо старий номер не знайдено або новий невалідний.
         """
-        phone_index = next(
-            (i for i, x in enumerate(self.phones) if x.value == old_phone), None
-        )
-        if phone_index is None:
-            raise ValueError(PHONE_NOT_FOUND_ERROR)
-
-        new_phone_obj = Phone(new_phone)
-        if not new_phone_obj.validate():
-            raise ValueError(PHONE_NOT_VALID_ERROR)
-
-        self.phones[phone_index] = new_phone_obj
+        phone_obj = self.find_phone(old_phone)
+        if phone_obj:
+            phone_obj.value = Phone(new_phone)
+        else:
+            raise ValueError(f"Phone number {old_phone} not found")
 
     # endregion
 
