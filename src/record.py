@@ -140,7 +140,7 @@ class Record:
         """
         return next((x for x in self.phones if x.value == phone), None)
 
-    def edit_phone(self, old_phone, new_phone):
+    def edit_phone(self, old_phone, new_phone) -> None:
         """
         Замінює телефон у записі.
 
@@ -152,7 +152,7 @@ class Record:
             ValueError: Якщо старий номер не знайдено або новий невалідний.
         """
         phone_obj = self.find_phone(old_phone)
-        if phone_obj:
+        if phone_obj is not None:
             phone_obj.value = Phone(new_phone)
         else:
             raise ValueError(f"Phone number {old_phone} not found")
