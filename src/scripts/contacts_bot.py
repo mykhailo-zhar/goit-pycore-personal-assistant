@@ -249,7 +249,14 @@ def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
     if not upcoming_birthdays:
         return COMMAND_MESSAGES["NO_UPCOMING_BIRTHDAYS"]
 
-    lines = [f"{b['name']}: {b['congratulation_date']}" for b in upcoming_birthdays]
+    lines = ["Upcoming birthdays:"]
+
+    for item in upcoming_birthdays:
+        congratulation_date = item["congratulation_date"]
+        weekday = item["congratulation_weekday"]
+        name = item["name"]
+        lines.append(f"{congratulation_date} ({weekday}) {name}")
+
     return "\n".join(lines)
 
 

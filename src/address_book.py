@@ -1,7 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from src.record import Record
-from src.utils.processed_record import ProcessedRecord
 
 
 class AddressBook:
@@ -53,33 +52,51 @@ class AddressBook:
         """
         return self.__today
 
-    def get_upcoming_birthdays(self) -> list[Record]:
-        """
-        Повертає найближчі дні народження з адресної книги.
+    def get_upcoming_birthdays(self) -> list[dict]:
+        """Function to get upcoming birthdays from records"""
 
-        Повертає:
-            list[Record]: Список записів, відсортований за датою привітання.
-        """
+        today_date = datetime.today()
+        upcoming_birthdays = []
 
-        if not self.data:
-            return []
+        for record in self.data.values():
+            if not record.birthday:
+                continue
 
-        self.__today = datetime.now()
+            # Отримуємо дату народження з запису
+            birthday_date_str = record.birthday.value
+            # Припускаємо, що формат дати день.місяць.рік
+            birthday_date = datetime.strptime(birthday_date_str, "%d.%m.%Y")
 
-        # Записи без дня народження не потрапляють у список
-        processed_records = [
-            ProcessedRecord(record, self.__today)
-            for record in self.data.values()
-            if record.birthday
-        ]
+            # Встановлюємо поточний рік для дня народження
+            birthday_this_year = birthday_date.replace(year=today_date.year)
 
-        upcoming_birthdays = filter(
-            ProcessedRecord.is_congratulation_date_in_next_7_days(self.__today),
-            processed_records,
-        )
+            # Якщо день народження вже минув у цьому році, беремо наступний рік
+            if birthday_this_year.date() < today_date.date():
+                birthday_this_year = birthday_this_year.replace(
+                    year=today_date.year + 1
+                )
 
-        sorted_upcoming_birthdays = sorted(
-            upcoming_birthdays, key=lambda record: record.congratulation_date
-        )
+            days_to_birthday = (birthday_this_year.date() - today_date.date()).days
 
-        return list(map(lambda record: record.record, sorted_upcoming_birthdays))
+            # Перевіряємо, чи день народження у наступні 7 днів
+            if 0 <= days_to_birthday <= 7:
+                congratulation_date = birthday_this_year
+                weekday = birthday_this_year.weekday()
+
+                # Якщо день народження припадає на суботу (5) або неділю (6),
+                # переносимо привітання на понеділок
+                if weekday == 5:  # Субота
+                    congratulation_date += timedelta(days=2)
+                elif weekday == 6:  # Неділя
+                    congratulation_date += timedelta(days=1)
+
+                upcoming_birthdays.append(
+                    {
+                        "name": record.name.value,
+                        "birthday": birthday_date.strftime("%d.%m.%Y"),
+                        "congratulation_date": congratulation_date.strftime("%d.%m.%Y"),
+                        "congratulation_weekday": congratulation_date.strftime("%A"),
+                    }
+                )
+
+        return upcoming_birthdays
