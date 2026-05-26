@@ -61,11 +61,10 @@ class AddressBook:
             list[Record]: Список записів, відсортований за датою привітання.
         """
 
-        def __init__(self):
-            self.__today = datetime.now()
-
         if not self.data:
             return []
+
+        self.__today = datetime.now()
 
         # Записи без дня народження не потрапляють у список
         processed_records = [
