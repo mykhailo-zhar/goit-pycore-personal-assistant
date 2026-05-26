@@ -33,33 +33,29 @@ def test_handle_command_hello_and_unknown(command, arguments, expected):
 def test_handle_command_add_and_update_via_dispatch(
     empty_address_book, valid_phone_generator
 ):
-    """Перевіряє add і update через диспетчер команд.
+    """Перевіряє add і update через диспетчер команд."""
+    gen = valid_phone_generator
 
-    Дано:
-        Порожня адресна книга.
-    Коли:
-        ``add`` двічі для одного імені, потім ``update`` з новим номером.
-    Тоді:
-        Повідомлення added/updated, останній номер зберігається.
-
-    Args:
-        empty_address_book: Порожня книга.
-        valid_phone_generator: Генератор валідних номерів.
-    """
+    phone1 = gen()
     assert (
-        handle_command(empty_address_book, "add", ["x", valid_phone_generator()])
+        handle_command(empty_address_book, "add", ["x", phone1])
         == COMMAND_MESSAGES["CONTACT_ADDED"]
     )
+
+    phone2 = gen()
     assert (
-        handle_command(empty_address_book, "add", ["x", valid_phone_generator()])
+        handle_command(empty_address_book, "add", ["x", phone2])
         == COMMAND_MESSAGES["CONTACT_ADDED"]
     )
-    last_valid_phone = valid_phone_generator()
+
+    last_phone = gen()
+    print(f"DEBUG: {phone1=} {phone2=} {last_phone=}")
+
     assert (
-        handle_command(empty_address_book, "update", ["x", last_valid_phone])
+        handle_command(empty_address_book, "update", ["x", last_phone])
         == COMMAND_MESSAGES["CONTACT_UPDATED"]
     )
-    assert empty_address_book.data["x"].phones[-1].value == last_valid_phone
+    assert empty_address_book.data["x"].phones[-1].value == last_phone
 
 
 def test_handle_command_add_birthday_via_dispatch(
