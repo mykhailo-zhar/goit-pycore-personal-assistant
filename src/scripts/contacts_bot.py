@@ -1,6 +1,10 @@
 import sys
 from functools import wraps
 from pathlib import Path
+from src.utils.visualizer import display_address_book
+from colorama import Fore, Style
+
+
 
 from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
@@ -37,8 +41,7 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except (ValueError, TypeError, IndexError, KeyError) as e:
-            return str(e)
-
+            return f"{Fore.RED}{e}{Style.RESET_ALL}" # зафарбовуємо помилки в червоний колір 
     return wrapper
 
 
@@ -257,26 +260,23 @@ def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
 @input_error
 def show_all(book: AddressBook, arguments: list[str] = []) -> str:
     """
-    Показує всіх контактів.
-
-    Аргументи:
-        book (AddressBook): Адресна книга.
-        arguments (list[str]): Аргументи команди.
-
-    Повертає:
-        str: Відповідь на команду.
+    Показує всіх контактів у вигляді красивої таблиці.
     """
     if arguments:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
     if not book.data:
         raise ValueError(COMMAND_MESSAGES["NO_USERS"])
 
+    # Імпортуємо наш візуалізатор прямо всередині або на початку файлу
+    from src.utils.visualizer import display_address_book
+    
+    # Викликаємо функцію, але оскільки вона друкує через print(), 
+    # ми просто викликаємо її, а декоратору повертаємо порожній рядок або статус успіху
+    display_address_book(book.data.values())
+    
     count_users = len(book.data)
-    users_list = [
-        f"{record.name}: {'; '.join(phone.value for phone in record.phones)}"
-        for _, record in sorted(book.data.items())
-    ]
-    return f"Stored users ({count_users}):\n{'\n'.join(users_list)}"
+    return f"Всього знайдено користувачів: {count_users}"
+
 
 
 @input_error
@@ -294,6 +294,15 @@ def exit(_: AddressBook, arguments: list[str] = []) -> str:
     if arguments:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
     return COMMAND_MESSAGES["GOOD_BYE"]
+
+from colorama import Fore, Style
+
+# Робимо червоними ТІЛЬКИ сповіщення про помилки (де в ключі є 'ERROR' або 'INVALID')
+for key, message in COMMAND_MESSAGES.items():
+    if isinstance(message, str) and not message.startswith("\033"):
+        if "ERROR" in key or "INVALID" in key or "NO_USERS" in key:
+            COMMAND_MESSAGES[key] = f"{Fore.RED}{message}{Style.RESET_ALL}"
+
 
 
 def handle_command(
