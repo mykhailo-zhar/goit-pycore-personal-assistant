@@ -24,6 +24,7 @@ COMMAND_MESSAGES = {
     "GOOD_BYE": "Good bye!",
     "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
+    "NO_UPCOMING_BIRTHDAYS": "No upcoming birthdays in the next 7 days.",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -242,16 +243,14 @@ def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
     if not book.data:
         raise ValueError(COMMAND_MESSAGES["NO_USERS"])
+
     upcoming_birthdays = book.get_upcoming_birthdays()
-    return COMMAND_MESSAGES["UPCOMING_BIRTHDAYS"].format(
-        birthdays="\n".join(
-            "{birthday} {name}".format(
-                birthday=record.birthday.format(book.today),
-                name=record.name,
-            )
-            for record in upcoming_birthdays
-        )
-    )
+
+    if not upcoming_birthdays:
+        return COMMAND_MESSAGES["NO_UPCOMING_BIRTHDAYS"]
+
+    lines = [f"{b['name']}: {b['congratulation_date']}" for b in upcoming_birthdays]
+    return "\n".join(lines)
 
 
 @input_error
