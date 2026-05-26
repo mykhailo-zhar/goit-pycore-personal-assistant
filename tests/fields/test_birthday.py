@@ -77,21 +77,57 @@ def test_birthday_validate(valid_birthday):
     assert valid_birthday.validate()
 
 
+def test_birthday_29_february_2000_validate_returns_true():
+    """Перевіряє, що 29 лютого 2000 року є валідною датою народження.
+
+    Дано:
+        ``Birthday`` зі значенням ``"29.02.2000"``.
+    Коли:
+        Викликається ``validate()``.
+    Тоді:
+        Метод повертає ``True``.
+    """
+    birthday = Birthday("29.02.2000")
+
+    assert birthday.validate()
+
+
 @pytest.mark.parametrize(
     "birthday",
     [
-        ("1990-01-01"),
-        ("10/01/1990"),
-        ("10.13.1990"),
-        ("test"),
-        (None),
-        (10),
-        (10.0),
-        (True),
-        (False),
-        (["10.01.1990"]),
-        ({"10.01.1990": "10.01.1990"}),
-        ({"10.01.1990"}),
+        "29.02.2001",
+        "29.02.1999",
+        "29.02.1900",
+    ],
+)
+def test_birthday_29_february_non_leap_year_validate_returns_false(birthday):
+    """Перевіряє, що 29 лютого у невисокосний рік є невалідною датою.
+
+    Дано:
+        ``Birthday`` зі значенням 29 лютого у невисокосний рік.
+    Коли:
+        Викликається ``validate()``.
+    Тоді:
+        Метод повертає ``False``.
+    """
+    assert not Birthday(birthday).validate()
+
+
+@pytest.mark.parametrize(
+    "birthday",
+    [
+        "1990-01-01",
+        "10/01/1990",
+        "10.13.1990",
+        "test",
+        None,
+        10,
+        10.0,
+        True,
+        False,
+        ["10.01.1990"],
+        {"10.01.1990": "10.01.1990"},
+        {"10.01.1990"},
     ],
 )
 def test_birthday_validate_invalid(birthday):
