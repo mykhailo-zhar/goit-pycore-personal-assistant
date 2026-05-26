@@ -141,21 +141,21 @@ def update_contact(book: AddressBook, arguments: list[str]) -> str:
     Примітки:
         Замінює всі телефони контакту одним вказаним номером.
     """
-    if len(arguments) != 2:
+    if len(arguments) != 3:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
-    name, phone = arguments
+    name, old_phone, new_phone = arguments
 
     record = book.find_record(name)
 
     if record is None:
         raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
-    new_phone_obj = Phone(phone)
+
+    new_phone_obj = Phone(new_phone)
 
     if not new_phone_obj.validate():
         raise ValueError(COMMAND_MESSAGES["PHONE_NOT_VALID_ERROR"])
 
-    record.phones.clear()
-    record.add_phone(phone)
+    record.edit_phone(old_phone, new_phone)
 
     return COMMAND_MESSAGES["CONTACT_UPDATED"]
 
