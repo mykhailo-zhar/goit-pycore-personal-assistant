@@ -153,6 +153,7 @@ def update_contact(book: AddressBook, arguments: list[str]) -> str:
         _, new_phone = arguments
         if not record.phones:
             raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
+
         old_phone = record.phones[-1].value
     else:
         _, old_phone, new_phone = arguments
