@@ -2,7 +2,6 @@ import sys
 from functools import wraps
 from pathlib import Path
 
-from src.fields.phone import Phone
 from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
 
@@ -141,19 +140,22 @@ def update_contact(book: AddressBook, arguments: list[str]) -> str:
     Примітки:
         Замінює всі телефони контакту одним вказаним номером.
     """
-    if len(arguments) != 3:
+    if len(arguments) not in (2, 3):
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
-    name, old_phone, new_phone = arguments
 
+    name = arguments[0]
     record = book.find_record(name)
 
     if record is None:
         raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
 
-    new_phone_obj = Phone(new_phone)
-
-    if not new_phone_obj.validate():
-        raise ValueError(COMMAND_MESSAGES["PHONE_NOT_VALID_ERROR"])
+    if len(arguments) == 2:
+        _, new_phone = arguments
+        if not record.phones:
+            raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
+        old_phone = record.phones[0].value
+    else:
+        _, old_phone, new_phone = arguments
 
     record.edit_phone(old_phone, new_phone)
 
