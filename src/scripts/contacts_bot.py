@@ -2,6 +2,7 @@ import sys
 from functools import wraps
 from pathlib import Path
 
+from src.fields.phone import Phone
 from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
 
@@ -24,6 +25,7 @@ COMMAND_MESSAGES = {
     "GOOD_BYE": "Good bye!",
     "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
+    "PHONE_NOT_VALID_ERROR": "Phone is not valid",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -142,13 +144,18 @@ def update_contact(book: AddressBook, arguments: list[str]) -> str:
     if len(arguments) != 2:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
     name, phone = arguments
-    record = Record(name)
-    record.add_phone(phone)
 
-    if not book.remove_record(name):
+    record = book.find_record(name)
+
+    if record is None:
         raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
+    new_phone_obj = Phone(phone)
 
-    book.add_record(record)
+    if not new_phone_obj.validate():
+        raise ValueError(COMMAND_MESSAGES["PHONE_NOT_VALID_ERROR"])
+
+    record.phones.clear()
+    record.add_phone(phone)
 
     return COMMAND_MESSAGES["CONTACT_UPDATED"]
 
