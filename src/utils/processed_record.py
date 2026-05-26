@@ -80,8 +80,7 @@ class ProcessedRecord:
             Callable[[ProcessedRecord], bool]: Функція-фільтр.
         """
         return lambda record: (
-            record.congratulation_date >= today
-            and record.congratulation_date < (today + timedelta(days=7))
+            today <= record.congratulation_date < (today + timedelta(days=7))
         )
 
     def __calculate_congratulation_date(self) -> datetime:
