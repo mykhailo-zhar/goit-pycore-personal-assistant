@@ -3,6 +3,7 @@ from functools import wraps
 from pathlib import Path
 
 from src.record import Record
+from src.fields.phone import Phone
 from src.utils.address_book_serializer import AddressBookSerializer
 
 if __name__ == "__main__":
@@ -127,19 +128,6 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
 
 @input_error
 def update_contact(book: AddressBook, arguments: list[str]) -> str:
-    """
-    Оновлює телефони контакту.
-
-    Аргументи:
-        book (AddressBook): Адресна книга.
-        arguments (list[str]): Ім'я та новий телефон.
-
-    Повертає:
-        str: Відповідь на команду.
-
-    Примітки:
-        Замінює всі телефони контакту одним вказаним номером.
-    """
     if len(arguments) not in (2, 3):
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
 
@@ -154,11 +142,17 @@ def update_contact(book: AddressBook, arguments: list[str]) -> str:
         if not record.phones:
             raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
 
-        old_phone = record.phones[-1].value
+        # Валідуємо новий номер
+        new_phone_obj = Phone(new_phone)
+        if not new_phone_obj.validate():
+            raise ValueError(COMMAND_MESSAGES["PHONE_NOT_VALID_ERROR"])
+
+        # Замінюємо ВСІ телефони на один новий
+        record.phones.clear()
+        record.phones.append(new_phone_obj)
     else:
         _, old_phone, new_phone = arguments
-
-    record.edit_phone(old_phone, new_phone)
+        record.edit_phone(old_phone, new_phone)
 
     return COMMAND_MESSAGES["CONTACT_UPDATED"]
 
