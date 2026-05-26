@@ -98,5 +98,7 @@ class AddressBook:
                         "congratulation_weekday": congratulation_date.strftime("%A"),
                     }
                 )
+                # Сортуємо по даті привітання
+        upcoming_birthdays.sort(key=lambda item: item["congratulation_date"])
 
         return upcoming_birthdays
