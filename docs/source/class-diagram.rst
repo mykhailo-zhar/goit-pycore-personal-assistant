@@ -5,7 +5,7 @@
 поля, запис контакту, контейнер адресної книги, обробник днів народження та серіалізатор.
 
 .. mermaid::
-
+  
   classDiagram
     direction TB
 
@@ -27,17 +27,30 @@
       +validate(self) bool
       +format(today) str
     }
+    class Address
+    class Email {
+      +validate(self) bool
+    }
+    class Tag {
+      +validate(self) bool
+    }
+    class Title{
+      +validate(self) bool
+    }
+    class Text
     class Record {
       + Name name
       + list~Phone~ phones
       + Birthday|None birthday
 
       +\__init__(self, name str)
-      +add_birthday(birthday str)
       +add_phone(phone str)
       +remove_phone(phone str) bool
-      +edit_phone(old_phone, new_phone)
       +find_phone(phone str) Phone|None
+      +edit_phone(old_phone, new_phone)
+      +add_birthday(birthday str)
+      +add_address(address str)
+      +add_email(email str)
       +\__str__(self) str
     }
     class AddressBook {
@@ -48,47 +61,85 @@
       +add_record(record Record)
       +find_record(name str) Record|None
       +remove_record(name str) bool
-      +get_upcoming_birthdays(self) list~Record~
+      +get_upcoming_birthdays(self) list
     }
-    class ProcessedRecord {
-      + Record record
-      + datetime congratulation_date
 
-      +\__init__(record, today)
-      +is_congratulation_date_in_next_7_days(today)$ Callable
+    
+    class Note {
+      + title Title
+      + text Text
+      + tags list~Tag~
+
+      +\__init__(title str)
+      + edit_title(title str)
+      + add_tag(tag str)
+      + remove_tag(tag str) bool
+      + show_tags() str
+      +\__str__(self) str
     }
-    class AddressBookSerializer {
+
+    class NotesBook {
+      + dict data
+
+      +\__init__(self)
+      +add_note(note Note)
+      +find_note(title str) Note|None
+      +change_note(title str, note Note) bool
+      +remove_note(title str) bool
+      +show_notes() str
+      +search_notes(tag str, order str) list
+      +\__str__(self) str
+    }
+
+    class PickleSerializer~T~ {
       + Path file_path
       + Callable send_error_message
 
       +\__init__(file_path, send_error_message)
-      +serialize(address_book) None
-      +deserialize() AddressBook
+      +serialize(data T) None
+      +deserialize() T
     }
+    class NotesBookSerializer
+    class AddressBookSerializer
 
     Field <|-- Name
     Field <|-- Phone
     Field <|-- Birthday
+    Field <|-- Address
+    Field <|-- Email
+    Field <|-- Tag
+    Field <|-- Title
+    Field <|-- Text
+    PickleSerializer <|-- NotesBookSerializer : implements PickleSerializer~NotesBook~
+    PickleSerializer <|-- AddressBookSerializer : implements PickleSerializer~AddressBook~
 
     Record *-- "1" Name : name
     Record *-- "*" Phone : phones
     Record *-- "0..1" Birthday : birthday
 
+    Note *-- "1" Title : title
+    Note *-- "0..1" Text : text
+    Note *-- "*" Tag : tags
+
     AddressBook *-- "*" Record : records
     AddressBook ..> ProcessedRecord : uses
-    ProcessedRecord --> Record : wraps
+
+    NotesBook *-- "*" Note : notes
 
     AddressBookSerializer ..> AddressBook : serialize / deserialize
+    NotesBookSerializer ..> NotesBook : serialize / deserialize
 
     note for Field "Базовий клас полів запису."
     note for Birthday "День народження контакту. <br/> Формат DD.MM.YYYY. <br/> format() повертає DD.MM.YYYY (День тижня)."
     note for Name "Ім'я контакту. <br/> Непорожній алфавітно-цифровий рядок."
     note for Phone "Номер телефону. <br/> Рівно 10 цифр."
+    note for Email "Email. <br/> Валідна email адреса."
+    note for Title "Заголовок нотатки. <br/> Непорожній алфавітно-цифровий рядок до 100 символів."
+    note for Tag "Тег нотатки. <br/> Непорожній алфавітно-цифровий рядок до 30 символів."
     note for Record "Контакт: ім'я, телефони, опційний день народження. <br/> Невалідні дані — ValueError. <br/> Додавання, видалення, редагування телефонів."
     note for AddressBook "Записи за іменем контакту. <br/> get_upcoming_birthdays() — ДН у наступні 7 днів."
     note for ProcessedRecord "Запис із датою привітання з урахуванням вихідних. <br/> Фільтрація та сортування найближчих ДН."
-    note for AddressBookSerializer "Збереження AddressBook через pickle. <br/> При помилці I/O — попередження через send_error_message."
-
+    note for PickleSerializer "Збереження T через pickle. <br/> При помилці I/O — попередження через send_error_message."
 Зв'язки
 -------
 
