@@ -4,6 +4,8 @@ from pathlib import Path
 
 from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
+from src.utils.decorators.input_error import input_error
+from src.utils.decorators.serializes import serializes
 
 if __name__ == "__main__":
     sys.path.append(str(Path(__file__).parent[3].absolute()))
@@ -27,42 +29,6 @@ COMMAND_MESSAGES = {
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
-
-
-def input_error(func):
-    """Декоратор для обробки помилок введення."""
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except (ValueError, TypeError, IndexError, KeyError) as e:
-            return str(e)
-
-    return wrapper
-
-
-def serializes(func, object, serializer=None):
-    """
-    Декоратор для збереження адресної книги після команди.
-
-    Аргументи:
-        func (Callable): Функція-обробник.
-        object (Any): Об'єкт для серіалізації.
-        serializer (AddressBookSerializer | None): Серіалізатор.
-
-    Повертає:
-        Callable: Обгорнута функція.
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
-        if serializer:
-            serializer.serialize(object)
-        return result
-
-    return wrapper
 
 
 def parse_input(line: str) -> tuple[str, list[str]]:
