@@ -6,7 +6,7 @@ REMOVE_CONTACT_MESSAGES = {
     "CONTACT_REMOVED": "Contact {name} removed",
     "INVALID_SYNTAX": "Remove contact command should have the following syntax: remove <name> [phone]",
     "PHONE_NOT_FOUND": "Phone {phone} not found for contact {name}",
-    "PHONE_REMOVED": "Phone removed",
+    "PHONE_REMOVED": "Phone {phone} removed from contact {name}",
 }
 
 
@@ -54,4 +54,4 @@ def remove_contact(book: AddressBook, arguments: list[str]) -> str:
         raise KeyError(
             REMOVE_CONTACT_MESSAGES["PHONE_NOT_FOUND"].format(phone=phone, name=name)
         )
-    return REMOVE_CONTACT_MESSAGES["PHONE_REMOVED"]
+    return REMOVE_CONTACT_MESSAGES["PHONE_REMOVED"].format(phone=phone, name=name)
