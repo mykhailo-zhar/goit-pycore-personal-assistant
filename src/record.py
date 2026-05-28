@@ -1,4 +1,5 @@
 from src.fields.birthday import Birthday
+from src.fields.email import Email
 from src.fields.name import Name
 from src.fields.phone import Phone
 
@@ -9,6 +10,7 @@ NAME_NOT_VALID_ERROR = "Name is not valid, must be a non-empty alphanumeric stri
 BIRTHDAY_NOT_VALID_ERROR = (
     "Birthday {birthday} is not valid, must be in the format DD.MM.YYYY"
 )
+EMAIL_NOT_VALID_ERROR = "Email is not valid"
 
 
 class Record:
@@ -25,6 +27,7 @@ class Record:
         self.name = name
         self._phones = []
         self._birthday = None
+        self._email = None
 
     # region Properties
 
@@ -76,6 +79,32 @@ class Record:
     def phones(self) -> list[Phone]:
         """Повертає список телефонів запису."""
         return self._phones
+
+    @property
+    def email(self) -> Email | None:
+        """
+        Повертає email запису.
+
+        Повертає:
+            Email | None: Email контакту.
+        """
+        return self._email
+
+    @email.setter
+    def email(self, email):
+        """
+        Встановлює email запису.
+
+        Аргументи:
+            email (str): Email.
+
+        Винятки:
+            ValueError: Якщо email невалідний.
+        """
+        email_obj = Email(email)
+        if not email_obj.validate():
+            raise ValueError(EMAIL_NOT_VALID_ERROR)
+        self._email = email_obj
 
     # endregion
 
