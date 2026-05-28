@@ -102,25 +102,38 @@ def hello(_: AddressBook, arguments: list[str] = []) -> str:
 @input_error
 def add_contact(book: AddressBook, arguments: list[str]) -> str:
     """
-    Додає контакт або телефон до існуючого.
+    Додає новий контакт або новий телефон до існуючого контакту.
+
+    Синтаксис:
+        add <name> <phone>
 
     Аргументи:
         book (AddressBook): Адресна книга.
         arguments (list[str]): Ім'я та телефон.
 
     Повертає:
-        str: Відповідь на команду.
+        str: Повідомлення про результат виконання команди.
     """
     if len(arguments) != 2:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+
     name, phone = arguments
-    record = Record(name)
-    if record := book.find_record(name):
-        record.add_phone(phone)
+
+    new_record = Record(name)
+    new_record.add_phone(phone)
+
+    for record in book.data.values():
+        for existing_phone in record.phones:
+            if existing_phone.value == phone:
+                raise ValueError("There is already a contact with such phone.")
+
+    existing_record = book.find_record(name)
+
+    if existing_record:
+        existing_record.add_phone(phone)
     else:
-        record = Record(name)
-        record.add_phone(phone)
-        book.add_record(record)
+        book.add_record(new_record)
+
     return COMMAND_MESSAGES["CONTACT_ADDED"]
 
 
