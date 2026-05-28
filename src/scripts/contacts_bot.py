@@ -1,7 +1,7 @@
 import sys
-from functools import wraps
 from pathlib import Path
 
+from src.commands import remove_contact
 from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
 from src.utils.decorators.input_error import input_error
@@ -284,6 +284,7 @@ def handle_command(
         "hello": hello,
         "add": serializes(add_contact, book, serializer),
         "update": serializes(update_contact, book, serializer),
+        "remove": serializes(remove_contact, book, serializer),
         "phone": show_phone,
         "all": show_all,
         "add-birthday": serializes(add_birthday, book, serializer),
