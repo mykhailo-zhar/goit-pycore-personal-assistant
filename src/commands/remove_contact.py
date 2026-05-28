@@ -1,5 +1,5 @@
 from src.address_book import AddressBook
-from src.scripts.contacts_bot import input_error
+from src.utils.decorators.input_error import input_error
 
 REMOVE_CONTACT_MESSAGES = {
     "CONTACT_NOT_FOUND": "Contact {name} not found",
@@ -38,7 +38,7 @@ def remove_contact(book: AddressBook, arguments: list[str]) -> str:
         book (AddressBook): Адресна книга.
         arguments (list[str]): Ім'я контакту.
     """
-    if 1 < len(arguments) > 2:
+    if not 1 <= len(arguments) <= 2:
         raise ValueError(REMOVE_CONTACT_MESSAGES["INVALID_SYNTAX"])
     name = arguments[0]
     record = book.find_record(name)
@@ -50,8 +50,7 @@ def remove_contact(book: AddressBook, arguments: list[str]) -> str:
     else:
         return try_remove_contact(book, name)
 
-    record.remove_phone(phone)
-    if not record.find_phone(phone):
+    if not record.remove_phone(phone):
         raise KeyError(
             REMOVE_CONTACT_MESSAGES["PHONE_NOT_FOUND"].format(phone=phone, name=name)
         )
