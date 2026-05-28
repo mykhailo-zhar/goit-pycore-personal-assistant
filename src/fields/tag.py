@@ -1,6 +1,6 @@
 import re
 
-from src.fields.field import Field
+from ..fields.field import Field
 
 
 class Tag(Field):

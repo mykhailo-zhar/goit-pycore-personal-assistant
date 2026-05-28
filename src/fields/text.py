@@ -1,4 +1,4 @@
-from src.fields.field import Field
+from ..fields.field import Field
 
 
 class Text(Field):
