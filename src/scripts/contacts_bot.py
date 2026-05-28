@@ -24,6 +24,7 @@ COMMAND_MESSAGES = {
     "GOOD_BYE": "Good bye!",
     "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
+    "PHONE_ALREADY_EXISTS": "Phone already exists",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -114,13 +115,20 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
     if len(arguments) != 2:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
     name, phone = arguments
-    record = Record(name)
-    if record := book.find_record(name):
-        record.add_phone(phone)
+    existing_record = book.find_record(name)
+
+    if existing_record:
+        for existing_phone in existing_record.phones:
+            if existing_phone.value == phone:
+                raise ValueError(COMMAND_MESSAGES["PHONE_ALREADY_EXISTS"])
+
+
+        existing_record.add_phone(phone)
     else:
         record = Record(name)
         record.add_phone(phone)
         book.add_record(record)
+
     return COMMAND_MESSAGES["CONTACT_ADDED"]
 
 
