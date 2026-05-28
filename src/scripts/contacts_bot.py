@@ -24,6 +24,8 @@ COMMAND_MESSAGES = {
     "GOOD_BYE": "Good bye!",
     "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
+    "PHONE_CHANGED": "Phone was changed",
+    "PHONE_CHANGE_SYNTAX": "Syntax: change-phone <name> <old phone> <new phone>",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -122,6 +124,32 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
         record.add_phone(phone)
         book.add_record(record)
     return COMMAND_MESSAGES["CONTACT_ADDED"]
+
+
+@input_error
+def change_phone(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Змінює телефон контакту.
+
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я, старий телефон та новий телефон.
+
+    Повертає:
+        str: Відповідь на команду.
+    """
+    if len(arguments) != 3:
+        raise ValueError(COMMAND_MESSAGES["PHONE_CHANGE_SYNTAX"])
+
+    name, old_phone, new_phone = arguments
+
+    record = book.find_record(name)
+    if record is None:
+        raise KeyError(COMMAND_MESSAGES["NO_SUCH_USER"])
+
+    record.edit_phone(old_phone, new_phone)
+
+    return COMMAND_MESSAGES["PHONE_CHANGED"]
 
 
 @input_error
@@ -317,7 +345,9 @@ def handle_command(
     commands = {
         "hello": hello,
         "add": serializes(add_contact, book, serializer),
+        # FIX: Do we need update command?
         "update": serializes(update_contact, book, serializer),
+        "change-phone": serializes(change_phone, book, serializer),
         "phone": show_phone,
         "all": show_all,
         "add-birthday": serializes(add_birthday, book, serializer),
