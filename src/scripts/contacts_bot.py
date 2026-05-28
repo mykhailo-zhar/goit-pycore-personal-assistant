@@ -24,6 +24,7 @@ COMMAND_MESSAGES = {
     "GOOD_BYE": "Good bye!",
     "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
+    "PHONE_ALREADY_EXISTS": "Phone already exists",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -102,37 +103,31 @@ def hello(_: AddressBook, arguments: list[str] = []) -> str:
 @input_error
 def add_contact(book: AddressBook, arguments: list[str]) -> str:
     """
-    Додає новий контакт або новий телефон до існуючого контакту.
-
-    Синтаксис:
-        add <name> <phone>
+    Додає новий контакт або телефон до існуючого контакту.
 
     Аргументи:
         book (AddressBook): Адресна книга.
-        arguments (list[str]): Ім'я та телефон.
+        arguments (list[str]): Ім'я контакту та номер телефону.
 
     Повертає:
-        str: Повідомлення про результат виконання команди.
+        str: Відповідь на команду.
     """
     if len(arguments) != 2:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
 
     name, phone = arguments
-
-    new_record = Record(name)
-    new_record.add_phone(phone)
-
-    for record in book.data.values():
-        for existing_phone in record.phones:
-            if existing_phone.value == phone:
-                raise ValueError("There is already a contact with such phone.")
-
     existing_record = book.find_record(name)
 
     if existing_record:
+        for existing_phone in existing_record.phones:
+            if existing_phone.value == phone:
+                raise ValueError(COMMAND_MESSAGES["PHONE_ALREADY_EXISTS"])
+
         existing_record.add_phone(phone)
     else:
-        book.add_record(new_record)
+        record = Record(name)
+        record.add_phone(phone)
+        book.add_record(record)
 
     return COMMAND_MESSAGES["CONTACT_ADDED"]
 
