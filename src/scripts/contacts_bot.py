@@ -6,7 +6,7 @@ from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
 
 if __name__ == "__main__":
-    sys.path.append(str(Path(__file__).parent[3].absolute()))
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 
 from src.address_book import AddressBook
@@ -15,6 +15,7 @@ COMMAND_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
     "CONTACT_ADDED": "Contact added.",
     "CONTACT_UPDATED": "Contact updated.",
+    "ADDRESS_ADDED": "Address added.",
     "BIRTHDAY_ADDED": "Birthday added. Replacing {old_birthday} with {new_birthday} for {name}",
     "NO_BIRTHDAY_SET": "No birthday set for {name}",
     "BIRTHDAY_SHOWED": "Birthday for {name} is {birthday}",
@@ -25,6 +26,8 @@ COMMAND_MESSAGES = {
     "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
     "PHONE_ALREADY_EXISTS": "Phone already exists",
+    "NO_CONTACTS_BY_ADDRESS": "No contacts found by address",
+    "CONTACTS_BY_ADDRESS": "Contacts by address:\n{contacts}",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -189,6 +192,57 @@ def add_birthday(book: AddressBook, arguments: list[str]) -> str:
 
 
 @input_error
+def add_address(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Додає адресу до існуючого контакту.
+
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я контакту та адреса.
+
+    Повертає:
+        str: Відповідь на команду.
+    """
+    if len(arguments) < 2:
+        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+    name = arguments[0]
+    address = " ".join(arguments[1:])
+    record = book.find_record(name)
+    if not record:
+        raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
+    record.add_address(address)
+    return COMMAND_MESSAGES["ADDRESS_ADDED"]
+
+
+@input_error
+def find_contacts_by_address(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Шукає контакти за адресою.
+
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Адреса або частина адреси для пошуку.
+
+    Повертає:
+        str: Знайдені контакти або повідомлення, що контактів немає.
+    """
+    if len(arguments) < 1:
+        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+    search_address = " ".join(arguments).lower()
+    found_contacts = []
+
+    for record in book.data.values():
+        if record.address:
+            if search_address in record.address.value.lower():
+                found_contacts.append(str(record))
+    if not found_contacts:
+        return COMMAND_MESSAGES["NO_CONTACTS_BY_ADDRESS"]
+    return COMMAND_MESSAGES["CONTACTS_BY_ADDRESS"].format(
+        contacts="\n".join(found_contacts)
+    )
+
+
+@input_error
 def show_birthday(book: AddressBook, arguments: list[str]) -> str:
     """
     Показує день народження контакту.
@@ -280,11 +334,10 @@ def show_all(book: AddressBook, arguments: list[str] = []) -> str:
         raise ValueError(COMMAND_MESSAGES["NO_USERS"])
 
     count_users = len(book.data)
-    users_list = [
-        f"{record.name}: {'; '.join(phone.value for phone in record.phones)}"
-        for _, record in sorted(book.data.items())
-    ]
-    return f"Stored users ({count_users}):\n{'\n'.join(users_list)}"
+    users_list = [str(record) for _, record in sorted(book.data.items())]
+    users_text = "\n".join(users_list)
+
+    return f"Stored users ({count_users}):\n{users_text}"
 
 
 @input_error
@@ -329,6 +382,8 @@ def handle_command(
         "phone": show_phone,
         "all": show_all,
         "add-birthday": serializes(add_birthday, book, serializer),
+        "add-address": serializes(add_address, book, serializer),
+        "find-address": find_contacts_by_address,
         "show-birthday": show_birthday,
         "birthdays": birthdays,
         "exit": exit,

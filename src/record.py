@@ -1,3 +1,4 @@
+from src.fields.address import Address
 from src.fields.birthday import Birthday
 from src.fields.name import Name
 from src.fields.phone import Phone
@@ -5,6 +6,7 @@ from src.fields.phone import Phone
 PHONE_NOT_FOUND_ERROR = "Phone not found"
 PHONE_NOT_VALID_ERROR = "Phone is not valid"
 PHONE_ALREADY_EXISTS_ERROR = "Phone already exists"
+ADDRESS_NOT_VALID_ERROR = "Address is not valid"
 NAME_NOT_VALID_ERROR = "Name is not valid, must be a non-empty alphanumeric string"
 BIRTHDAY_NOT_VALID_ERROR = (
     "Birthday {birthday} is not valid, must be in the format DD.MM.YYYY"
@@ -25,6 +27,7 @@ class Record:
         self.name = name
         self._phones = []
         self._birthday = None
+        self._address = None
 
     # region Properties
 
@@ -73,6 +76,32 @@ class Record:
         self._birthday = birthday_obj
 
     @property
+    def address(self) -> Address | None:
+        """
+        Повертає адресу запису.
+
+        Повертає:
+            Address | None: Адреса контакту.
+        """
+        return self._address
+
+    @address.setter
+    def address(self, address: str):
+        """
+        Встановлює адресу запису.
+
+        Аргументи:
+            address (str): Адреса контакту.
+
+        Винятки:
+            ValueError: Якщо адреса невалідна.
+        """
+        address_obj = Address(address)
+        if not address_obj.validate():
+            raise ValueError(ADDRESS_NOT_VALID_ERROR)
+        self._address = address_obj
+
+    @property
     def phones(self) -> list[Phone]:
         """Повертає список телефонів запису."""
         return self._phones
@@ -92,6 +121,18 @@ class Record:
             ValueError: Якщо дата невалідна.
         """
         self.birthday = birthday
+
+    def add_address(self, address: str):
+        """
+        Додає адресу до запису.
+
+        Аргументи:
+            address (str): Адреса контакту.
+
+        Винятки:
+            ValueError: Якщо адреса невалідна.
+        """
+        self.address = address
 
     def add_phone(self, phone: str):
         """
@@ -166,4 +207,9 @@ class Record:
     # endregion
 
     def __str__(self):
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
+        address = self.address.value if self.address else "No address"
+        return (
+            f"Contact name: {self.name.value}, "
+            f"phones: {'; '.join(p.value for p in self.phones)}, "
+            f"address: {address}"
+        )
