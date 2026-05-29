@@ -27,6 +27,7 @@ COMMAND_MESSAGES = {
     "BIRTHDAYS_SYNTAX": "Syntax: birthdays <days>",
     "BIRTHDAYS_DAYS": "Days must be a non-negative integer.",
     "BIRTHDAYS_NO_UPCOMMING": "No upcoming birthdays.",
+    "BIRTHDAYS_FORMAT": "%d.%m.%Y",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -254,7 +255,7 @@ def birthdays(book: AddressBook, arguments: list[str]) -> str:
         return COMMAND_MESSAGES["BIRTHDAYS_NO_UPCOMMING"]
 
     lines = [
-        f"{pr.record.name.value}: {pr.congratulation_date.strftime('%d.%m.%Y')}"
+        f"{pr.record.name.value}: {pr.congratulation_date.strftime(COMMAND_MESSAGES['BIRTHDAYS_FORMAT'])}"
         for pr in processed_records
     ]
     return "\n".join(lines)
