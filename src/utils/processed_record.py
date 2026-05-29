@@ -67,21 +67,13 @@ class ProcessedRecord:
         return self.__congratulation_date
 
     @staticmethod
-    def is_congratulation_date_in_next_7_days(
-        today: datetime,
+    def is_congratulation_date_in_next_n_days(
+        today: datetime, days: int
     ) -> Callable[[Self], bool]:
-        """
-        Перевіряє, чи дата привітання потрапляє в наступні 7 днів.
+        """Перевіряє, чи дата привітання потрапляє в наступні n днів."""
 
-        Аргументи:
-            today: Поточна дата.
-
-        Повертає:
-            Callable[[ProcessedRecord], bool]: Функція-фільтр.
-        """
         return lambda record: (
-            record.congratulation_date >= today
-            and record.congratulation_date < (today + timedelta(days=7))
+            today <= record.congratulation_date < (today + timedelta(days=days))
         )
 
     def __calculate_congratulation_date(self) -> datetime:
