@@ -1,6 +1,3 @@
-from src.record import ADDRESS_NOT_VALID_ERROR
-
-
 class MessageManager:
 
     def __init__(self):
@@ -60,7 +57,7 @@ class MessageManager:
             "ADDRESS_ADDED": "Address added.",
             "ADDRESS_REPLACED": "Replacing {old_address} with {new_address} for {name}",
             "NO_SUCH_CONTACT": "No such contact.",
-            "ADDRESS_NOT_VALID": ADDRESS_NOT_VALID_ERROR,
+            "ADDRESS_NOT_VALID": self.record_messages.ADDRESS_NOT_VALID_ERROR,
             }
         # src.command.insert_email.py messages
         self.insert_email_messages = {
@@ -105,18 +102,32 @@ class MessageManager:
             "TEXT_LABEL": "text: ",
             "TAGS_LABEL": "tags: ",
             }
+        # src.record.py messages
+        self.record_messages = {
+            "PHONE_NOT_FOUND_ERROR": "Phone not found",
+            "PHONE_NOT_VALID_ERROR": "Phone is not valid",
+            "PHONE_ALREADY_EXISTS_ERROR": "Phone already exists",
+            "NAME_NOT_VALID_ERROR": "Name is not valid, must be a non-empty alphanumeric string",
+            "BIRTHDAY_NOT_VALID_ERROR": (
+                "Birthday {birthday} is not valid, must be in the format DD.MM.YYYY"
+            ),
+            "EMAIL_NOT_VALID_ERROR": "Email is not valid",
+            "ADDRESS_NOT_VALID_ERROR": "Address is not valid",
+            }
 
 
-messages = MessageManager()
-COMMAND_MESSAGES = messages.command_messages
-ADD_NOTE_MESSAGES = messages.add_note_messages
-ADD_TAG_MESSAGES = messages.add_tag_messages
-CHANGE_TITLE_MESSAGES = messages.change_title_messages
-FIND_BY_TAG_MESSAGES = messages.find_by_tag_messages
-INSERT_ADDRESS_MESSAGES = messages.insert_address_messages
-INSERT_EMAIL_MESSAGES = messages.insert_email_messages
-INSERT_TEXT_MESSAGES = messages.insert_text_messages
-REMOVE_CONTACT_MESSAGES = messages.remove_contact_messages
-REMOVE_TAG_MESSAGES = messages.remove_tag_messages
-SHOW_ALL_MESSAGES = messages.show_all_messages
-SHOW_NOTE_MESSAGES = messages.show_note_messages
+mess = MessageManager()
+
+COMMAND_MESSAGES = mess.command_messages
+ADD_NOTE_MESSAGES = mess.add_note_messages
+ADD_TAG_MESSAGES = mess.add_tag_messages
+CHANGE_TITLE_MESSAGES = mess.change_title_messages
+FIND_BY_TAG_MESSAGES = mess.find_by_tag_messages
+INSERT_ADDRESS_MESSAGES = mess.insert_address_messages
+INSERT_EMAIL_MESSAGES = mess.insert_email_messages
+INSERT_TEXT_MESSAGES = mess.insert_text_messages
+REMOVE_CONTACT_MESSAGES = mess.remove_contact_messages
+REMOVE_TAG_MESSAGES = mess.remove_tag_messages
+SHOW_ALL_MESSAGES = mess.show_all_messages
+SHOW_NOTE_MESSAGES = mess.show_note_messages
+RECORD_MESSAGES = mess.record_messages

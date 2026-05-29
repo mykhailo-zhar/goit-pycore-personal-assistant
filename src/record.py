@@ -3,16 +3,7 @@ from src.fields.birthday import Birthday
 from src.fields.email import Email
 from src.fields.name import Name
 from src.fields.phone import Phone
-
-PHONE_NOT_FOUND_ERROR = "Phone not found"
-PHONE_NOT_VALID_ERROR = "Phone is not valid"
-PHONE_ALREADY_EXISTS_ERROR = "Phone already exists"
-NAME_NOT_VALID_ERROR = "Name is not valid, must be a non-empty alphanumeric string"
-BIRTHDAY_NOT_VALID_ERROR = (
-    "Birthday {birthday} is not valid, must be in the format DD.MM.YYYY"
-)
-EMAIL_NOT_VALID_ERROR = "Email is not valid"
-ADDRESS_NOT_VALID_ERROR = "Address is not valid"
+from src.messages import RECORD_MESSAGES
 
 
 class Record:
@@ -57,7 +48,8 @@ class Record:
         """
         name_obj = Name(name)
         if not name_obj.validate():
-            raise ValueError(NAME_NOT_VALID_ERROR)
+            raise ValueError(RECORD_MESSAGES[
+                                 "NAME_NOT_VALID_ERROR"])
         self._name = name_obj
 
     @property
@@ -83,7 +75,9 @@ class Record:
         """
         birthday_obj = Birthday(birthday)
         if not birthday_obj.validate():
-            raise ValueError(BIRTHDAY_NOT_VALID_ERROR.format(birthday=birthday))
+            raise ValueError(
+                RECORD_MESSAGES["BIRTHDAY_NOT_VALID_ERROR"].format(
+                    birthday=birthday))
         self._birthday = birthday_obj
 
     @property
@@ -119,7 +113,7 @@ class Record:
         """
         address_obj = Address(address)
         if not address_obj.validate():
-            raise ValueError(ADDRESS_NOT_VALID_ERROR)
+            raise ValueError(RECORD_MESSAGES["ADDRESS_NOT_VALID_ERROR"])
         self._address = address_obj
 
     @property
@@ -145,7 +139,7 @@ class Record:
         """
         email_obj = Email(email)
         if not email_obj.validate():
-            raise ValueError(EMAIL_NOT_VALID_ERROR)
+            raise ValueError(RECORD_MESSAGES["EMAIL_NOT_VALID_ERROR"])
         self._email = email_obj
 
     # endregion
@@ -176,10 +170,10 @@ class Record:
         """
         phone_obj = Phone(phone)
         if not phone_obj.validate():
-            raise ValueError(PHONE_NOT_VALID_ERROR)
+            raise ValueError(RECORD_MESSAGES["PHONE_NOT_VALID_ERROR"])
 
         if self.find_phone(phone) is not None:
-            raise ValueError(PHONE_ALREADY_EXISTS_ERROR)
+            raise ValueError(RECORD_MESSAGES["PHONE_ALREADY_EXISTS_ERROR"])
 
         self.phones.append(phone_obj)
 
@@ -223,14 +217,15 @@ class Record:
             ValueError: Якщо старий номер не знайдено або новий невалідний.
         """
         phone_index = next(
-            (i for i, x in enumerate(self.phones) if x.value == old_phone), None
-        )
+            (i for i, x in enumerate(self.phones) if x.value == old_phone),
+            None
+            )
         if phone_index is None:
-            raise ValueError(PHONE_NOT_FOUND_ERROR)
+            raise ValueError(RECORD_MESSAGES["PHONE_NOT_FOUND_ERROR"])
 
         new_phone_obj = Phone(new_phone)
         if not new_phone_obj.validate():
-            raise ValueError(PHONE_NOT_VALID_ERROR)
+            raise ValueError(RECORD_MESSAGES["PHONE_NOT_VALID_ERROR"])
 
         self.phones[phone_index] = new_phone_obj
 

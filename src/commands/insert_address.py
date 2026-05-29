@@ -1,7 +1,6 @@
 from src.address_book import AddressBook
-from src.record import ADDRESS_NOT_VALID_ERROR
 from src.utils.decorators.input_error import input_error
-from src.messages import INSERT_ADDRESS_MESSAGES
+from src.messages import INSERT_ADDRESS_MESSAGES, RECORD_MESSAGES
 
 
 @input_error
@@ -26,7 +25,7 @@ def insert_address(book: AddressBook, arguments: list[str]) -> str:
     try:
         record.address = address
     except ValueError as err:
-        if str(err) == ADDRESS_NOT_VALID_ERROR:
+        if str(err) == RECORD_MESSAGES["ADDRESS_NOT_VALID_ERROR"]:
             raise ValueError(INSERT_ADDRESS_MESSAGES["ADDRESS_NOT_VALID"])
         raise
 
