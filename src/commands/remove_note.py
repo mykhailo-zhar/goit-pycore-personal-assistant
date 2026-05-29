@@ -10,7 +10,7 @@ REMOVE_NOTE_MESSAGES = {
 
 
 @input_error
-def remove_note(note_book: NoteBook, arguments: list[str]) -> bool:
+def remove_note(note_book: NoteBook, arguments: list[str]) -> str:
     """
         Видаляє нотатку за заголовком.
 
@@ -24,10 +24,10 @@ def remove_note(note_book: NoteBook, arguments: list[str]) -> bool:
         raise ValueError(REMOVE_NOTE_MESSAGES["INVALID_SYNTAX"])
     title = arguments[0]
 
-    if note_book.find_note(title):
-        del note_book.data[title]
-        print(REMOVE_NOTE_MESSAGES["NOTE_ALREADY_DELETED"])
-        return True
+    is_removed = note_book.remove_note(title)
 
-    print(REMOVE_NOTE_MESSAGES["NOTE_NOT_FOUND"])
-    return False
+    if is_removed:
+        return REMOVE_NOTE_MESSAGES["NOTE_ALREADY_DELETED"]
+
+    return REMOVE_NOTE_MESSAGES["NOTE_NOT_FOUND"]
+
