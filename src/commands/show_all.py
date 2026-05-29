@@ -4,11 +4,11 @@ from src.utils.decorators.input_error import input_error
 SHOW_ALL_MESSAGES = {
     "INVALID_SYNTAX": "Invalid command.",
     "NO_USERS": "There are no users.",
-}
+    }
 
 
 @input_error
-def show_all(book: AddressBook, arguments: list[str] = []) -> str:
+def show_all(book: AddressBook, arguments: list[str]) -> str:
     """
     Показує всі контакти.
 
@@ -19,8 +19,6 @@ def show_all(book: AddressBook, arguments: list[str] = []) -> str:
     Повертає:
         str: Відповідь на команду.
     """
-    if arguments:
-        raise ValueError(SHOW_ALL_MESSAGES["INVALID_SYNTAX"])
     if not book.data:
         raise ValueError(SHOW_ALL_MESSAGES["NO_USERS"])
 
