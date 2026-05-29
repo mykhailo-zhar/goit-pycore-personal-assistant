@@ -149,7 +149,7 @@ class Note:
         Повертає:
             Tag | None: Об'єкт тегу, якщо знайдено, інакше None.
         """
-        return next((tag for tag in self._tags if tag.value == tag), None)
+        return next((tag_obj for tag_obj in self._tags if tag_obj.value == tag), None)
 
     def __str__(self) -> str:
         parts = [f"{SHOW_NOTE_MESSAGES['TITLE_LABEL']}{self.title.value}"]
