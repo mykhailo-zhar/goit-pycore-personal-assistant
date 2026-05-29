@@ -94,7 +94,7 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
         raise ValueError(COMMAND_MESSAGES["PHONE_ALREADY_EXISTS"])
 
     if existing_record:
-         existing_record.add_phone(phone)
+        existing_record.add_phone(phone)
     else:
         record = Record(name)
         record.add_phone(phone)
@@ -197,14 +197,15 @@ def find_contacts_by_address(book: AddressBook, arguments: list[str]) -> str:
     if len(arguments) < 1:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
     search_address = " ".join(arguments).lower()
-    found_contacts = []
+    found_contacts = [
+        str(record)
+        for record in book.data.values()
+        if record.address and search_address in record.address.value.lower()
+    ]
 
-    for record in book.data.values():
-        if record.address:
-            if search_address in record.address.value.lower():
-                found_contacts.append(str(record))
     if not found_contacts:
         return COMMAND_MESSAGES["NO_CONTACTS_BY_ADDRESS"]
+
     return COMMAND_MESSAGES["CONTACTS_BY_ADDRESS"].format(
         contacts="\n".join(found_contacts)
     )
