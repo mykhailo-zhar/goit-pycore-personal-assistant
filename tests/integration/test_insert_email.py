@@ -4,7 +4,7 @@ import pytest
 
 from src.commands.insert_email import INSERT_EMAIL_MESSAGES
 from src.scripts.contacts_bot import COMMAND_MESSAGES, main
-from src.utils.address_book_serializer import AddressBookSerializer
+from src.utils.serializers.address_book import AddressBookSerializer
 
 
 def test_main_insert_email_adds_to_existing_contact(monkeypatch, capsys, tmp_path):
@@ -85,7 +85,9 @@ def test_main_insert_email_replaces_existing_email(monkeypatch, capsys, tmp_path
     assert deserialized_address_book.data["Pat"].email.value == "new@example.com"
 
 
-def test_main_insert_email_for_missing_contact_shows_error(monkeypatch, capsys, tmp_path):
+def test_main_insert_email_for_missing_contact_shows_error(
+    monkeypatch, capsys, tmp_path
+):
     """Перевіряє помилку для неіснуючого контакту через REPL.
 
     Дано:
@@ -149,4 +151,3 @@ def test_main_insert_email_wrong_arity_shows_syntax(
     out = capsys.readouterr().out
     assert INSERT_EMAIL_MESSAGES["INVALID_SYNTAX"] in out
     assert COMMAND_MESSAGES["GOOD_BYE"] in out
-

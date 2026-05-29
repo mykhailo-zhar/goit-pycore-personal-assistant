@@ -1,11 +1,11 @@
 import sys
 from pathlib import Path
 
-from src.commands import remove_contact, show_all, insert_email
+from src.commands import insert_email, remove_contact, show_all
 from src.record import Record
-from src.utils.address_book_serializer import AddressBookSerializer
 from src.utils.decorators.input_error import input_error
 from src.utils.decorators.serializes import serializes
+from src.utils.serializers.address_book import AddressBookSerializer
 
 if __name__ == "__main__":
     sys.path.append(str(Path(__file__).parent[3].absolute()))
