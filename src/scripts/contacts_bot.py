@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from src.commands import insert_address, remove_contact, show_all
+from src.commands import insert_address, insert_email, remove_contact, show_all
 from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
 from src.utils.decorators.input_error import input_error
@@ -270,6 +270,7 @@ def handle_command(
         "phone": show_phone,
         "all": show_all,
         "add-birthday": serializes(add_birthday, book, serializer),
+        "insert-email": serializes(insert_email, book, serializer),
         "show-birthday": show_birthday,
         "birthdays": birthdays,
         "exit": exit,
