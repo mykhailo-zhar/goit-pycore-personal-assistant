@@ -325,6 +325,10 @@ def handle_command(
             lambda _book, args: add_note(note_book, args), note_book,
             note_serializer
             ),
+        "remove-note": serializes(
+            lambda _book, args: remove_note(note_book, args), note_book,
+            note_serializer
+            ),
         "insert-text": serializes(
             lambda _book, args: insert_text(note_book, args),
             note_book,
@@ -348,7 +352,7 @@ def handle_command(
         "tag": lambda _book, args: find_by_tag(note_book, args),
         "exit": exit,
         "close": exit,
-        "remove-note": remove_note,
+
         }
 
     if command not in commands:
