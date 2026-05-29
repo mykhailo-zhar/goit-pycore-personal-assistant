@@ -3,15 +3,15 @@ from src.utils.serializers.pickle import PickleSerializer
 
 
 class AddressBookSerializer(PickleSerializer[AddressBook]):
-    def serialize(self, address_book: AddressBook) -> None:
+    def serialize(self, object: AddressBook) -> None:
         """
         Зберігає адресну книгу у файл.
 
         Аргументи:
-            address_book (AddressBook): Книга для збереження.
+            object (AddressBook): Книга для збереження.
         """
         try:
-            super().serialize(address_book)
+            super().serialize(object)
         except OSError:
             self.send_error_message(
                 f"Warning: Failed to serialize address book to {self.file_path}"
