@@ -1,17 +1,31 @@
 import sys
 from pathlib import Path
 
-from src.commands import insert_address, insert_email, remove_contact, show_all
+from src.commands import (
+    add_note,
+    add_tag,
+    change_title,
+    find_by_tag,
+    insert_address,
+    insert_email,
+    insert_text,
+    remove_contact,
+    remove_tag,
+    show_all,
+    show_note,
+)
 from src.record import Record
 from src.utils.decorators.input_error import input_error
 from src.utils.decorators.serializes import serializes
 from src.utils.serializers.address_book import AddressBookSerializer
+from src.utils.serializers.note_book import NoteBookSerializer
 
 if __name__ == "__main__":
     sys.path.append(str(Path(__file__).parent[3].absolute()))
 
 
 from src.address_book import AddressBook
+from src.note_book import NoteBook
 
 COMMAND_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
@@ -32,6 +46,7 @@ COMMAND_MESSAGES = {
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
+NOTE_SERIALIZER_PATH = "notebook.pkl"
 
 
 def parse_input(line: str) -> tuple[str, list[str]]:
@@ -245,18 +260,22 @@ def exit(_: AddressBook, arguments: list[str] = []) -> str:
 
 def handle_command(
     book: AddressBook,
+    note_book: NoteBook,
     command: str,
     arguments: list[str],
     serializer: AddressBookSerializer = None,
+    note_serializer: NoteBookSerializer = None,
 ) -> str:
     """
     Виконує команду користувача.
 
     Аргументи:
         book (AddressBook): Адресна книга.
+        note_book (NoteBook): Книга нотаток.
         command (str): Назва команди.
         arguments (list[str]): Аргументи команди.
-        serializer (AddressBookSerializer | None): Серіалізатор для збереження.
+        serializer (AddressBookSerializer | None): Серіалізатор адресної книги.
+        note_serializer (NoteBookSerializer | None): Серіалізатор книги нотаток.
 
     Повертає:
         str: Відповідь на команду.
@@ -273,6 +292,29 @@ def handle_command(
         "insert-email": serializes(insert_email, book, serializer),
         "show-birthday": show_birthday,
         "birthdays": birthdays,
+        "add-note": serializes(
+            lambda _book, args: add_note(note_book, args), note_book, note_serializer
+        ),
+        "insert-text": serializes(
+            lambda _book, args: insert_text(note_book, args),
+            note_book,
+            note_serializer,
+        ),
+        "change-title": serializes(
+            lambda _book, args: change_title(note_book, args),
+            note_book,
+            note_serializer,
+        ),
+        "note": lambda _book, args: show_note(note_book, args),
+        "add-tag": serializes(
+            lambda _book, args: add_tag(note_book, args), note_book, note_serializer
+        ),
+        "remove-tag": serializes(
+            lambda _book, args: remove_tag(note_book, args),
+            note_book,
+            note_serializer,
+        ),
+        "tag": lambda _book, args: find_by_tag(note_book, args),
         "exit": exit,
         "close": exit,
     }
@@ -283,16 +325,26 @@ def handle_command(
     return commands[command](book, arguments)
 
 
+def _print_warning(message: str) -> None:
+    print(message)
+
+
 def main() -> None:
     """Головна функція CLI-бота."""
     serializer: AddressBookSerializer = AddressBookSerializer(
-        SERIALIZER_PATH, lambda message: print(message)
+        SERIALIZER_PATH, _print_warning
+    )
+    note_serializer: NoteBookSerializer = NoteBookSerializer(
+        NOTE_SERIALIZER_PATH, _print_warning
     )
     book: AddressBook = serializer.deserialize()
+    note_book: NoteBook = note_serializer.deserialize()
     while True:
         line = input()
         command, arguments = parse_input(line)
-        response = handle_command(book, command, arguments, serializer)
+        response = handle_command(
+            book, note_book, command, arguments, serializer, note_serializer
+        )
         print(response)
         if command in ["exit", "close"]:
             break
