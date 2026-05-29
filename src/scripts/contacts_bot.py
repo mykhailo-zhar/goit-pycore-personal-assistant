@@ -352,7 +352,6 @@ def handle_command(
     commands = {
         "hello": hello,
         "add": serializes(add_contact, book, serializer),
-        # FIX: Do we need update command?
         "truncate": serializes(truncate_contact, book, serializer),
         "change-phone": serializes(change_phone, book, serializer),
         "phone": show_phone,
