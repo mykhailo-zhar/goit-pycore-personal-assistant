@@ -90,13 +90,11 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
     name, phone = arguments
     existing_record = book.find_record(name)
 
+    if existing_record and existing_record.find(phone):
+        raise ValueError(COMMAND_MESSAGES["PHONE_ALREADY_EXISTS"])
+
     if existing_record:
-        for existing_phone in existing_record.phones:
-            if existing_phone.value == phone:
-                raise ValueError(COMMAND_MESSAGES["PHONE_ALREADY_EXISTS"])
-
-
-        existing_record.add_phone(phone)
+         existing_record.add_phone(phone)
     else:
         record = Record(name)
         record.add_phone(phone)
