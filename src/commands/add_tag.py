@@ -1,12 +1,6 @@
 from src.note_book import NoteBook
 from src.utils.decorators.input_error import input_error
-
-ADD_TAG_MESSAGES = {
-    "INVALID_SYNTAX": "Add tag command should have the following syntax: add-tag <title> <tag>",
-    "NO_SUCH_NOTE": "There is no such note",
-    "TAG_ALREADY_EXISTS": "There is already such tag",
-    "TAG_ADDED": "Tag added",
-}
+from src.messages import ADD_TAG_MESSAGES
 
 
 @input_error

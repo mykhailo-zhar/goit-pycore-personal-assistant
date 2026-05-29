@@ -1,3 +1,4 @@
+# src.scripts.contacts_bot.py messages
 COMMAND_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
     "CONTACT_ADDED": "Contact added.",
@@ -19,9 +20,17 @@ COMMAND_MESSAGES = {
     "PHONES_TRUNCATED": "Phones updated for {name}: {phone}",
     "TRUNCATE_SYNTAX": "Syntax: truncate <name> <new_phone>",
     }
-
+# src.commands.add_note.py messages
 ADD_NOTE_MESSAGES = {
     "INVALID_SYNTAX": "Add note command should have the following syntax: add-note <title>",
     "NOTE_ALREADY_PRESENT": "Note is already present.",
     "NOTE_ADDED": "Note added: {title}",
+    }
+
+# src.commands.add_tag.py messages
+ADD_TAG_MESSAGES = {
+    "INVALID_SYNTAX": "Add tag command should have the following syntax: add-tag <title> <tag>",
+    "NO_SUCH_NOTE": "There is no such note",
+    "TAG_ALREADY_EXISTS": "There is already such tag",
+    "TAG_ADDED": "Tag added",
     }
