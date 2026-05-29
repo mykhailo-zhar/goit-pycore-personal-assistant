@@ -1,10 +1,6 @@
 from src.address_book import AddressBook
 from src.utils.decorators.input_error import input_error
-
-SHOW_ALL_MESSAGES = {
-    "INVALID_SYNTAX": "Invalid command.",
-    "NO_USERS": "There are no users.",
-}
+from src.messages import SHOW_ALL_MESSAGES
 
 
 @input_error

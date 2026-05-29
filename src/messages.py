@@ -88,3 +88,8 @@ REMOVE_TAG_MESSAGES = {
     "NO_TAG_ON_NOTE": "There is no tag on the note",
     "TAG_REMOVED": "Tag removed",
     }
+# src.command.show_all.py messages
+SHOW_ALL_MESSAGES = {
+    "INVALID_SYNTAX": "Invalid command.",
+    "NO_USERS": "There are no users.",
+    }
