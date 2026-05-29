@@ -245,7 +245,7 @@ class Record:
         """
         return (
             f"Contact name: {self.name.value}, "
-            f"phones: {'; '.join(p.value for p in self.phones)}, "
+            f"phones: {';'.join(p.value for p in self.phones) or 'None'}, "
             f"email: {self.email.value if self.email else 'None'}, "
             f"address: {self.address.value if self.address else 'None'}"
         )
