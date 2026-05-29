@@ -1,9 +1,11 @@
 import sys
-from functools import wraps
 from pathlib import Path
 
+from src.commands import remove_contact
 from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
+from src.utils.decorators.input_error import input_error
+from src.utils.decorators.serializes import serializes
 
 if __name__ == "__main__":
     sys.path.append(str(Path(__file__).resolve().parents[2]))
@@ -28,45 +30,13 @@ COMMAND_MESSAGES = {
     "PHONE_ALREADY_EXISTS": "Phone already exists",
     "NO_CONTACTS_BY_ADDRESS": "No contacts found by address",
     "CONTACTS_BY_ADDRESS": "Contacts by address:\n{contacts}",
+    "BIRTHDAYS_SYNTAX": "Syntax: birthdays <days>",
+    "BIRTHDAYS_DAYS": "Days must be a non-negative integer.",
+    "BIRTHDAYS_NO_UPCOMMING": "No upcoming birthdays.",
+    "BIRTHDAYS_FORMAT": "%d.%m.%Y",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
-
-
-def input_error(func):
-    """Декоратор для обробки помилок введення."""
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except (ValueError, TypeError, IndexError, KeyError) as e:
-            return str(e)
-
-    return wrapper
-
-
-def serializes(func, object, serializer=None):
-    """
-    Декоратор для збереження адресної книги після команди.
-
-    Аргументи:
-        func (Callable): Функція-обробник.
-        object (Any): Об'єкт для серіалізації.
-        serializer (AddressBookSerializer | None): Серіалізатор.
-
-    Повертає:
-        Callable: Обгорнута функція.
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
-        if serializer:
-            serializer.serialize(object)
-        return result
-
-    return wrapper
 
 
 def parse_input(line: str) -> tuple[str, list[str]]:
@@ -289,7 +259,7 @@ def show_phone(book: AddressBook, arguments: list[str]) -> str:
 
 
 @input_error
-def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
+def birthdays(book: AddressBook, arguments: list[str]) -> str:
     """
     Показує найближчі дні народження.
 
@@ -300,20 +270,23 @@ def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
     Повертає:
         str: Відповідь на команду.
     """
-    if arguments:
-        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
-    if not book.data:
-        raise ValueError(COMMAND_MESSAGES["NO_USERS"])
-    upcoming_birthdays = book.get_upcoming_birthdays()
-    return COMMAND_MESSAGES["UPCOMING_BIRTHDAYS"].format(
-        birthdays="\n".join(
-            "{birthday} {name}".format(
-                birthday=record.birthday.format(book.today),
-                name=record.name,
-            )
-            for record in upcoming_birthdays
-        )
-    )
+    if len(arguments) != 1:
+        raise ValueError(COMMAND_MESSAGES["BIRTHDAYS_SYNTAX"])
+    if not arguments[0].isdigit():
+        raise ValueError(COMMAND_MESSAGES["BIRTHDAYS_DAYS"])
+
+    days = int(arguments[0])
+
+    processed_records = book.get_upcoming_birthdays(days)
+
+    if not processed_records:
+        return COMMAND_MESSAGES["BIRTHDAYS_NO_UPCOMMING"]
+
+    lines = [
+        f"{pr.record.name.value}: {pr.congratulation_date.strftime(COMMAND_MESSAGES['BIRTHDAYS_FORMAT'])}"
+        for pr in processed_records
+    ]
+    return "\n".join(lines)
 
 
 @input_error
@@ -379,6 +352,7 @@ def handle_command(
         "hello": hello,
         "add": serializes(add_contact, book, serializer),
         "update": serializes(update_contact, book, serializer),
+        "remove": serializes(remove_contact, book, serializer),
         "phone": show_phone,
         "all": show_all,
         "add-birthday": serializes(add_birthday, book, serializer),

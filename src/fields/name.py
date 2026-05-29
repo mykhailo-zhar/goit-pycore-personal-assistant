@@ -11,6 +11,8 @@ class Name(Field):
         Field: Базовий клас для всіх полів.
     """
 
+    NAME_PATTERN = re.compile(r"^\w+$")
+
     def validate(self):
         """
         Перевіряє ім'я.
@@ -21,5 +23,5 @@ class Name(Field):
         return (
             isinstance(self.value, str)
             and self.value != ""
-            and re.match(r"^\w+$", self.value) is not None
+            and re.match(self.NAME_PATTERN, self.value) is not None
         )
