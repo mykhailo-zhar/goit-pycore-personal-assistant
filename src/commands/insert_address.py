@@ -1,14 +1,7 @@
 from src.address_book import AddressBook
 from src.record import ADDRESS_NOT_VALID_ERROR
 from src.utils.decorators.input_error import input_error
-
-INSERT_ADDRESS_MESSAGES = {
-    "INVALID_SYNTAX": "Insert address command should have the following syntax: insert-address <name> <address>",
-    "ADDRESS_ADDED": "Address added.",
-    "ADDRESS_REPLACED": "Replacing {old_address} with {new_address} for {name}",
-    "NO_SUCH_CONTACT": "No such contact.",
-    "ADDRESS_NOT_VALID": ADDRESS_NOT_VALID_ERROR,
-}
+from src.messages import INSERT_ADDRESS_MESSAGES
 
 
 @input_error
@@ -42,5 +35,5 @@ def insert_address(book: AddressBook, arguments: list[str]) -> str:
             old_address=old_address,
             new_address=address,
             name=name,
-        )
+            )
     return INSERT_ADDRESS_MESSAGES["ADDRESS_ADDED"]

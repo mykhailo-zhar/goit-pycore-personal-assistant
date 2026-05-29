@@ -1,3 +1,5 @@
+from src.record import ADDRESS_NOT_VALID_ERROR
+
 # src.scripts.contacts_bot.py messages
 COMMAND_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
@@ -47,4 +49,12 @@ FIND_BY_TAG_MESSAGES = {
     "INVALID_SYNTAX": "Tag command should have the following syntax: tag <tag> <order>",
     "INVALID_ORDER": "There are only ascending and descending order.",
     "NO_NOTES": "There are no notes,",
+    }
+# src.command.find_by_tag.py messages
+INSERT_ADDRESS_MESSAGES = {
+    "INVALID_SYNTAX": "Insert address command should have the following syntax: insert-address <name> <address>",
+    "ADDRESS_ADDED": "Address added.",
+    "ADDRESS_REPLACED": "Replacing {old_address} with {new_address} for {name}",
+    "NO_SUCH_CONTACT": "No such contact.",
+    "ADDRESS_NOT_VALID": ADDRESS_NOT_VALID_ERROR,
     }
