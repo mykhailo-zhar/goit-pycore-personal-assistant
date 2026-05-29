@@ -1,13 +1,6 @@
 from src.address_book import AddressBook
 from src.utils.decorators.input_error import input_error
-
-INSERT_EMAIL_MESSAGES = {
-    "INVALID_SYNTAX": "Invalid syntax. Usage: insert-email <name> <email>",
-    "NO_SUCH_USER": "No such user",
-    "EMAIL_ADDED": "Email added: {email} for {name}",
-    "EMAIL_REPLACED": "Email replaced: {old_email} with {new_email} for {name}",
-    "EMAIL_NOT_VALID": "Email is not valid",
-}
+from src.messages import INSERT_EMAIL_MESSAGES
 
 
 @input_error
@@ -39,9 +32,9 @@ def insert_email(book: AddressBook, arguments: list[str]) -> str:
             old_email=old_value,
             new_email=email,
             name=name,
-        )
+            )
 
     return INSERT_EMAIL_MESSAGES["EMAIL_ADDED"].format(
         email=email,
         name=name,
-    )
+        )

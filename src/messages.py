@@ -58,3 +58,11 @@ INSERT_ADDRESS_MESSAGES = {
     "NO_SUCH_CONTACT": "No such contact.",
     "ADDRESS_NOT_VALID": ADDRESS_NOT_VALID_ERROR,
     }
+# src.command.insert_email.py messages
+INSERT_EMAIL_MESSAGES = {
+    "INVALID_SYNTAX": "Invalid syntax. Usage: insert-email <name> <email>",
+    "NO_SUCH_USER": "No such user",
+    "EMAIL_ADDED": "Email added: {email} for {name}",
+    "EMAIL_REPLACED": "Email replaced: {old_email} with {new_email} for {name}",
+    "EMAIL_NOT_VALID": "Email is not valid",
+    }
