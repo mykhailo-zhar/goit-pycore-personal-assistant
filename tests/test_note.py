@@ -35,7 +35,7 @@ def test_note_init(valid_title):
     assert note.title.value == valid_title
 
 
-@pytest.mark.parametrize("invalid_title", ["", random_text(101)])
+@pytest.mark.parametrize("invalid_title", ["", "1" * 101])
 def test_note_init_invalid_title_raises_value_error(invalid_title):
     """Перевіряє відхилення невалідного заголовка при створенні.
 
