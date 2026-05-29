@@ -344,7 +344,7 @@ def main() -> None:
         f"Bot is started. Type 'hello' to greet, 'help' for commands list, 'exit' or 'close' to quit.")
     try:
         while True:
-            line = input('>>> ').strip()
+            line = input().strip()
 
             if not line:
                 continue
