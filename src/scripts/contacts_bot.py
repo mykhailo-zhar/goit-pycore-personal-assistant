@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from src.commands import insert_email, remove_contact
+from src.commands import remove_contact, show_all, insert_email
 from src.record import Record
 from src.utils.address_book_serializer import AddressBookSerializer
 from src.utils.decorators.input_error import input_error
@@ -24,7 +24,6 @@ COMMAND_MESSAGES = {
     "NO_SUCH_USER": "No such user",
     "PLEASE_CHANGE_USER": "Please change the user",
     "GOOD_BYE": "Good bye!",
-    "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
     "BIRTHDAYS_SYNTAX": "Syntax: birthdays <days>",
     "BIRTHDAYS_DAYS": "Days must be a non-negative integer.",
@@ -225,31 +224,6 @@ def birthdays(book: AddressBook, arguments: list[str]) -> str:
         for pr in processed_records
     ]
     return "\n".join(lines)
-
-
-@input_error
-def show_all(book: AddressBook, arguments: list[str] = []) -> str:
-    """
-    Показує всіх контактів.
-
-    Аргументи:
-        book (AddressBook): Адресна книга.
-        arguments (list[str]): Аргументи команди.
-
-    Повертає:
-        str: Відповідь на команду.
-    """
-    if arguments:
-        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
-    if not book.data:
-        raise ValueError(COMMAND_MESSAGES["NO_USERS"])
-
-    count_users = len(book.data)
-    users_list = [
-        f"{record.name}: {'; '.join(phone.value for phone in record.phones)}"
-        for _, record in sorted(book.data.items())
-    ]
-    return f"Stored users ({count_users}):\n{'\n'.join(users_list)}"
 
 
 @input_error

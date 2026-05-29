@@ -1,3 +1,4 @@
+from src.fields.address import Address
 from src.fields.birthday import Birthday
 from src.fields.email import Email
 from src.fields.name import Name
@@ -11,6 +12,7 @@ BIRTHDAY_NOT_VALID_ERROR = (
     "Birthday {birthday} is not valid, must be in the format DD.MM.YYYY"
 )
 EMAIL_NOT_VALID_ERROR = "Email is not valid"
+ADDRESS_NOT_VALID_ERROR = "Address is not valid"
 
 
 class Record:
@@ -28,6 +30,7 @@ class Record:
         self._phones = []
         self._birthday = None
         self._email = None
+        self._address = None
 
     # region Properties
 
@@ -69,7 +72,15 @@ class Record:
 
     @birthday.setter
     def birthday(self, birthday):
-        """Встановлює день народження запису."""
+        """
+        Встановлює день народження запису.
+
+        Аргументи:
+            birthday: День народження для встановлення.
+
+        Винятки:
+            ValueError: Якщо день народження невалідний.
+        """
         birthday_obj = Birthday(birthday)
         if not birthday_obj.validate():
             raise ValueError(BIRTHDAY_NOT_VALID_ERROR.format(birthday=birthday))
@@ -77,8 +88,39 @@ class Record:
 
     @property
     def phones(self) -> list[Phone]:
-        """Повертає список телефонів запису."""
+        """
+        Повертає список телефонів запису.
+
+        Повертає:
+            list[Phone]: Список телефонів запису.
+        """
         return self._phones
+
+    @property
+    def address(self) -> Address | None:
+        """
+        Повертає адресу запису.
+
+        Повертає:
+            Address | None: Адреса запису.
+        """
+        return self._address
+
+    @address.setter
+    def address(self, address):
+        """
+        Встановлює адресу запису.
+
+        Аргументи:
+            address: Адреса для встановлення.
+
+        Винятки:
+            ValueError: Якщо адреса невалідна.
+        """
+        address_obj = Address(address)
+        if not address_obj.validate():
+            raise ValueError(ADDRESS_NOT_VALID_ERROR)
+        self._address = address_obj
 
     @property
     def email(self) -> Email | None:
@@ -195,4 +237,15 @@ class Record:
     # endregion
 
     def __str__(self):
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
+        """
+        Повертає рядкове подання запису.
+
+        Повертає:
+            str: Рядкове подання запису для виведення.
+        """
+        return (
+            f"Contact name: {self.name.value}, "
+            f"phones: {';'.join(p.value for p in self.phones) or 'None'}, "
+            f"email: {self.email.value if self.email else 'None'}, "
+            f"address: {self.address.value if self.address else 'None'}"
+        )
