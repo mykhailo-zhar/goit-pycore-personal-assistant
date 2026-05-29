@@ -345,6 +345,7 @@ def main() -> None:
     try:
         while True:
             line = input('>>> ').strip()
+
             if not line:
                 continue
 
@@ -354,7 +355,7 @@ def main() -> None:
                 note_serializer
                 )
             print(response)
-            if command in ["exit", "close", "quit"]:
+            if command in ["exit", "close"]:
                 break
     except (KeyboardInterrupt, EOFError):
         print(f"\n{COMMAND_MESSAGES['GOOD_BYE']}")
