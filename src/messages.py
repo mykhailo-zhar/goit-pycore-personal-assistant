@@ -66,3 +66,10 @@ INSERT_EMAIL_MESSAGES = {
     "EMAIL_REPLACED": "Email replaced: {old_email} with {new_email} for {name}",
     "EMAIL_NOT_VALID": "Email is not valid",
     }
+# src.command.insert_text.py messages
+INSERT_TEXT_MESSAGES = {
+    "INVALID_SYNTAX": "Insert text command should have the following syntax: insert-text <title> <text*>",
+    "NO_TEXT": "No text",
+    "NO_SUCH_NOTE": "No such note",
+    "TEXT_INSERTED": "Text inserted",
+    }
