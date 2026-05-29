@@ -340,18 +340,23 @@ def main() -> None:
         )
     book: AddressBook = serializer.deserialize()
     note_book: NoteBook = note_serializer.deserialize()
+    print(
+        f"Bot is started. Type 'hello' to greet, 'help' for commands list, 'exit' or 'close' to quit.")
     try:
         while True:
-            line = input()
+            line = input('>>> ').strip()
+            if line:
+                continue
+
             command, arguments = parse_input(line)
             response = handle_command(
                 book, note_book, command, arguments, serializer,
                 note_serializer
                 )
             print(response)
-            if command in ["exit", "close"]:
+            if command in ["exit", "close", "quit"]:
                 break
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, EOFError):
         print(f"\n{COMMAND_MESSAGES['GOOD_BYE']}")
 
 
