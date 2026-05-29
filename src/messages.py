@@ -81,3 +81,10 @@ REMOVE_CONTACT_MESSAGES = {
     "PHONE_NOT_FOUND": "Phone {phone} not found for contact {name}",
     "PHONE_REMOVED": "Phone {phone} removed from contact {name}",
     }
+# src.command.remove_tag.py messages
+REMOVE_TAG_MESSAGES = {
+    "INVALID_SYNTAX": "Remove tag command should have the following syntax: remove-tag <title> <tag>",
+    "NO_SUCH_NOTE": "There is no such note",
+    "NO_TAG_ON_NOTE": "There is no tag on the note",
+    "TAG_REMOVED": "Tag removed",
+    }

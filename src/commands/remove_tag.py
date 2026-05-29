@@ -1,12 +1,6 @@
 from src.note_book import NoteBook
 from src.utils.decorators.input_error import input_error
-
-REMOVE_TAG_MESSAGES = {
-    "INVALID_SYNTAX": "Remove tag command should have the following syntax: remove-tag <title> <tag>",
-    "NO_SUCH_NOTE": "There is no such note",
-    "NO_TAG_ON_NOTE": "There is no tag on the note",
-    "TAG_REMOVED": "Tag removed",
-}
+from src.messages import REMOVE_TAG_MESSAGES
 
 
 @input_error
