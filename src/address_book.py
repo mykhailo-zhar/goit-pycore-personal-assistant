@@ -53,7 +53,7 @@ class AddressBook:
         """
         return self.__today
 
-    def get_upcoming_birthdays(self) -> list[Record]:
+    def get_upcoming_birthdays(self, days: int = 7) -> list[ProcessedRecord]:
         """
         Повертає найближчі дні народження з адресної книги.
 
@@ -74,12 +74,8 @@ class AddressBook:
         ]
 
         upcoming_birthdays = filter(
-            ProcessedRecord.is_congratulation_date_in_next_7_days(self.__today),
+            ProcessedRecord.is_congratulation_date_in_next_n_days(self.__today, days),
             processed_records,
         )
 
-        sorted_upcoming_birthdays = sorted(
-            upcoming_birthdays, key=lambda record: record.congratulation_date
-        )
-
-        return list(map(lambda record: record.record, sorted_upcoming_birthdays))
+        return sorted(upcoming_birthdays, key=lambda record: record.congratulation_date)
