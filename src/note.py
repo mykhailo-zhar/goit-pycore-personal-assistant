@@ -11,20 +11,18 @@ NOTE_ERRORS = {
 
 
 class Note:
-    def __init__(self, title: str, text: str):
+    def __init__(self, title: str):
         """
-        Ініціалізує нотатку заголовком та текстом.
+        Ініціалізує нотатку заголовком.
 
         Аргументи:
             title (str): Заголовок нотатки.
-            text (str): Текст нотатки.
 
         Винятки:
-            ValueError: Якщо заголовок або текст невалідні.
+            ValueError: Якщо заголовок невалідний.
         """
         self._tags: list[Tag] = []
         self.title = title
-        self.text = text
 
     @property
     def title(self) -> Title:
