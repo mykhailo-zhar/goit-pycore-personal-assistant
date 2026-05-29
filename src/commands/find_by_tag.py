@@ -2,12 +2,7 @@ from enum import Enum
 
 from src.note_book import NoteBook
 from src.utils.decorators.input_error import input_error
-
-FIND_BY_TAG_MESSAGES = {
-    "INVALID_SYNTAX": "Tag command should have the following syntax: tag <tag> <order>",
-    "INVALID_ORDER": "There are only ascending and descending order.",
-    "NO_NOTES": "There are no notes,",
-}
+from src.messages import FIND_BY_TAG_MESSAGES
 
 
 class ValidOrders(Enum):
@@ -32,12 +27,14 @@ def find_by_tag(note_book: NoteBook, arguments: list[str]) -> str:
         raise ValueError(FIND_BY_TAG_MESSAGES["INVALID_ORDER"])
 
     matched = [
-        note for note in note_book.data.values() if note.find_tag(tag) is not None
-    ]
+        note for note in note_book.data.values() if
+        note.find_tag(tag) is not None
+        ]
     if not matched:
         raise ValueError(FIND_BY_TAG_MESSAGES["NO_NOTES"])
 
     matched.sort(
-        key=lambda note: note.title.value, reverse=order == ValidOrders.DESCENDING.value
-    )
+        key=lambda note: note.title.value,
+        reverse=order == ValidOrders.DESCENDING.value
+        )
     return "\n".join(str(note) for note in matched)

@@ -42,3 +42,9 @@ CHANGE_TITLE_MESSAGES = {
     "NOTE_ALREADY_EXISTS": "Note already exists",
     "TITLE_CHANGED": "Title was changed",
     }
+# src.command.find_by_tag.py messages
+FIND_BY_TAG_MESSAGES = {
+    "INVALID_SYNTAX": "Tag command should have the following syntax: tag <tag> <order>",
+    "INVALID_ORDER": "There are only ascending and descending order.",
+    "NO_NOTES": "There are no notes,",
+    }
