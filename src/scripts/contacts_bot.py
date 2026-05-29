@@ -39,11 +39,15 @@ COMMAND_MESSAGES = {
     "PLEASE_CHANGE_USER": "Please change the user",
     "GOOD_BYE": "Good bye!",
     "HELLO": "How can I help you?",
+    "PHONE_CHANGED": "Phone was changed",
+    "PHONE_CHANGE_SYNTAX": "Syntax: change-phone <name> <old phone> <new phone>",
     "BIRTHDAYS_SYNTAX": "Syntax: birthdays <days>",
     "BIRTHDAYS_DAYS": "Days must be a non-negative integer.",
     "BIRTHDAYS_NO_UPCOMMING": "No upcoming birthdays.",
     "BIRTHDAYS_FORMAT": "%d.%m.%Y",
-    }
+    "PHONES_TRUNCATED": "Phones updated for {name}: {phone}",
+    "TRUNCATE_SYNTAX": "Syntax: truncate <name> <new_phone>",
+}
 
 SERIALIZER_PATH = "addressbook.pkl"
 NOTE_SERIALIZER_PATH = "notebook.pkl"
@@ -109,30 +113,54 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
 
 
 @input_error
-def update_contact(book: AddressBook, arguments: list[str]) -> str:
+def change_phone(book: AddressBook, arguments: list[str]) -> str:
     """
-    Оновлює телефони контакту.
+    Змінює телефон контакту.
 
     Аргументи:
         book (AddressBook): Адресна книга.
-        arguments (list[str]): Ім'я та новий телефон.
+        arguments (list[str]): Ім'я, старий телефон та новий телефон.
 
     Повертає:
         str: Відповідь на команду.
-
-    Примітки:
-        Замінює всі телефони контакту одним вказаним номером.
     """
+    if len(arguments) != 3:
+        raise ValueError(COMMAND_MESSAGES["PHONE_CHANGE_SYNTAX"])
+
+    name, old_phone, new_phone = arguments
+
+    record = book.find_record(name)
+    if record is None:
+        raise KeyError(COMMAND_MESSAGES["NO_SUCH_USER"])
+
+    record.edit_phone(old_phone, new_phone)
+
+    return COMMAND_MESSAGES["PHONE_CHANGED"]
+
+
+@input_error
+def truncate_contact(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Очищає всі телефони контакту і додає один новий.
+    """
+
     if len(arguments) != 2:
-        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+        raise ValueError(COMMAND_MESSAGES["TRUNCATE_SYNTAX"])
+
     name, phone = arguments
-    record = Record(name)
-    record.add_phone(phone)
 
-    if not book.remove_record(name):
-        raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
+    record = book.find_record(name)
 
-    book.add_record(record)
+    if record is None:
+        raise KeyError(COMMAND_MESSAGES["NO_SUCH_USER"])
+    old_phones = record.phones.copy()
+
+    try:
+        record.phones.clear()
+        record.add_phone(phone)
+    except ValueError:
+        record.phones.extend(old_phones)
+        raise
 
     return COMMAND_MESSAGES["CONTACT_UPDATED"]
 
@@ -283,7 +311,8 @@ def handle_command(
     commands = {
         "hello": hello,
         "add": serializes(add_contact, book, serializer),
-        "update": serializes(update_contact, book, serializer),
+        "truncate": serializes(truncate_contact, book, serializer),
+        "change-phone": serializes(change_phone, book, serializer),
         "remove": serializes(remove_contact, book, serializer),
         "insert-address": serializes(insert_address, book, serializer),
         "phone": show_phone,
