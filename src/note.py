@@ -10,6 +10,13 @@ NOTE_ERRORS = {
 }
 
 
+SHOW_NOTE_MESSAGES = {
+    "TITLE_LABEL": "Note title: ",
+    "TEXT_LABEL": "text: ",
+    "TAGS_LABEL": "tags: ",
+}
+
+
 class Note:
     def __init__(self, title: str):
         """
@@ -134,3 +141,12 @@ class Note:
 
     def _find_tag(self, tag: str) -> Tag | None:
         return next((item for item in self._tags if item.value == tag), None)
+
+    def __str__(self) -> str:
+        parts = [f"{SHOW_NOTE_MESSAGES['TITLE_LABEL']}{self.title.value}"]
+        if hasattr(self, "_text"):
+            parts.append(f"{SHOW_NOTE_MESSAGES['TEXT_LABEL']}{self.text.value}")
+        tags = self.show_tags()
+        if tags:
+            parts.append(f"{SHOW_NOTE_MESSAGES['TAGS_LABEL']}{tags}")
+        return ", ".join(parts)
