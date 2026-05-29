@@ -24,6 +24,9 @@ COMMAND_MESSAGES = {
     "GOOD_BYE": "Good bye!",
     "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
+    "BIRTHDAYS_SYNTAX": "Syntax: birthdays <days>",
+    "BIRTHDAYS_DAYS": "Days must be a non-negative integer.",
+    "BIRTHDAYS_NO_UPCOMMING": "No upcoming birthdays.",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -227,7 +230,7 @@ def show_phone(book: AddressBook, arguments: list[str]) -> str:
 
 
 @input_error
-def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
+def birthdays(book: AddressBook, arguments: list[str]) -> str:
     """
     Показує найближчі дні народження.
 
@@ -238,20 +241,23 @@ def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
     Повертає:
         str: Відповідь на команду.
     """
-    if arguments:
-        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
-    if not book.data:
-        raise ValueError(COMMAND_MESSAGES["NO_USERS"])
-    upcoming_birthdays = book.get_upcoming_birthdays()
-    return COMMAND_MESSAGES["UPCOMING_BIRTHDAYS"].format(
-        birthdays="\n".join(
-            "{birthday} {name}".format(
-                birthday=record.birthday.format(book.today),
-                name=record.name,
-            )
-            for record in upcoming_birthdays
-        )
-    )
+    if len(arguments) != 1:
+        raise ValueError(COMMAND_MESSAGES["BIRTHDAYS_SYNTAX"])
+    if not arguments[0].isdigit():
+        raise ValueError(COMMAND_MESSAGES["BIRTHDAYS_DAYS"])
+
+    days = int(arguments[0])
+
+    processed_records = book.get_upcoming_birthdays(days)
+
+    if not processed_records:
+        return COMMAND_MESSAGES["BIRTHDAYS_NO_UPCOMMING"]
+
+    lines = [
+        f"{pr.record.name.value}: {pr.congratulation_date.strftime('%d.%m.%Y')}"
+        for pr in processed_records
+    ]
+    return "\n".join(lines)
 
 
 @input_error
