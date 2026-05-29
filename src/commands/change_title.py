@@ -1,12 +1,6 @@
 from src.note_book import NoteBook
 from src.utils.decorators.input_error import input_error
-
-CHANGE_TITLE_MESSAGES = {
-    "INVALID_SYNTAX": "Change title command should have the following syntax: change-title <old_title> <new_title>",
-    "NO_SUCH_NOTE": "No such note",
-    "NOTE_ALREADY_EXISTS": "Note already exists",
-    "TITLE_CHANGED": "Title was changed",
-}
+from src.messages import CHANGE_TITLE_MESSAGES
 
 
 @input_error

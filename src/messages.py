@@ -34,3 +34,11 @@ ADD_TAG_MESSAGES = {
     "TAG_ALREADY_EXISTS": "There is already such tag",
     "TAG_ADDED": "Tag added",
     }
+
+# src.command.change_title.py messages
+CHANGE_TITLE_MESSAGES = {
+    "INVALID_SYNTAX": "Change title command should have the following syntax: change-title <old_title> <new_title>",
+    "NO_SUCH_NOTE": "No such note",
+    "NOTE_ALREADY_EXISTS": "Note already exists",
+    "TITLE_CHANGED": "Title was changed",
+    }
