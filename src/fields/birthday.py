@@ -4,13 +4,14 @@ from src.fields.field import Field
 
 
 class Birthday(Field):
-    DATE_FORMAT = "%d.%m.%Y"
     """
     Зберігає день народження контакту.
 
     Аргументи:
         Field: Базовий клас для всіх полів.
     """
+
+    DATE_FORMAT = "%d.%m.%Y"
 
     def validate(self):
         """Перевіряє день народження."""

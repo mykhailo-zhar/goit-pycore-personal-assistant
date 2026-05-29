@@ -1,10 +1,26 @@
-tests.fields пакет
+tests.fields package
 ====================
 
-Підмодулі
+Submodules
 ----------
 
-tests.fields.test\_birthday модуль
+tests.fields.conftest module
+----------------------------
+
+.. automodule:: tests.fields.conftest
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+tests.fields.test\_address module
+---------------------------------
+
+.. automodule:: tests.fields.test_address
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+tests.fields.test\_birthday module
 ----------------------------------
 
 .. automodule:: tests.fields.test_birthday
@@ -12,7 +28,15 @@ tests.fields.test\_birthday модуль
    :show-inheritance:
    :undoc-members:
 
-tests.fields.test\_field модуль
+tests.fields.test\_email module
+-------------------------------
+
+.. automodule:: tests.fields.test_email
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+tests.fields.test\_field module
 -------------------------------
 
 .. automodule:: tests.fields.test_field
@@ -20,7 +44,7 @@ tests.fields.test\_field модуль
    :show-inheritance:
    :undoc-members:
 
-tests.fields.test\_name модуль
+tests.fields.test\_name module
 ------------------------------
 
 .. automodule:: tests.fields.test_name
@@ -28,7 +52,7 @@ tests.fields.test\_name модуль
    :show-inheritance:
    :undoc-members:
 
-tests.fields.test\_phone модуль
+tests.fields.test\_phone module
 -------------------------------
 
 .. automodule:: tests.fields.test_phone
@@ -36,7 +60,31 @@ tests.fields.test\_phone модуль
    :show-inheritance:
    :undoc-members:
 
-Вміст модуля
+tests.fields.test\_tag module
+-----------------------------
+
+.. automodule:: tests.fields.test_tag
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+tests.fields.test\_text module
+------------------------------
+
+.. automodule:: tests.fields.test_text
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+tests.fields.test\_title module
+-------------------------------
+
+.. automodule:: tests.fields.test_title
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
 ---------------
 
 .. automodule:: tests.fields
