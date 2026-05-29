@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
 from src.address_book import AddressBook
 from src.note_book import NoteBook
-from src.commands.messages import COMMAND_MESSAGES
+from messages import COMMAND_MESSAGES
 
 SERIALIZER_PATH = "addressbook.pkl"
 NOTE_SERIALIZER_PATH = "notebook.pkl"

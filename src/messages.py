@@ -19,3 +19,9 @@ COMMAND_MESSAGES = {
     "PHONES_TRUNCATED": "Phones updated for {name}: {phone}",
     "TRUNCATE_SYNTAX": "Syntax: truncate <name> <new_phone>",
     }
+
+ADD_NOTE_MESSAGES = {
+    "INVALID_SYNTAX": "Add note command should have the following syntax: add-note <title>",
+    "NOTE_ALREADY_PRESENT": "Note is already present.",
+    "NOTE_ADDED": "Note added: {title}",
+    }
