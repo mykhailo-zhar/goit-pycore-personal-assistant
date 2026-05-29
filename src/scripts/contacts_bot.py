@@ -13,6 +13,7 @@ from src.commands import (
     remove_tag,
     show_all,
     show_note,
+    remove_note,
     )
 from src.record import Record
 from src.utils.decorators.input_error import input_error
@@ -46,7 +47,7 @@ COMMAND_MESSAGES = {
     "BIRTHDAYS_FORMAT": "%d.%m.%Y",
     "PHONES_TRUNCATED": "Phones updated for {name}: {phone}",
     "TRUNCATE_SYNTAX": "Syntax: truncate <name> <new_phone>",
-}
+    }
 
 SERIALIZER_PATH = "addressbook.pkl"
 NOTE_SERIALIZER_PATH = "notebook.pkl"
@@ -347,6 +348,7 @@ def handle_command(
         "tag": lambda _book, args: find_by_tag(note_book, args),
         "exit": exit,
         "close": exit,
+        "remove-note": remove_note,
         }
 
     if command not in commands:
