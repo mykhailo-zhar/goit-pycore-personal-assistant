@@ -93,3 +93,11 @@ SHOW_ALL_MESSAGES = {
     "INVALID_SYNTAX": "Invalid command.",
     "NO_USERS": "There are no users.",
     }
+# src.command.show_note.py messages
+SHOW_NOTE_MESSAGES = {
+    "INVALID_SYNTAX": "Note command should have the following syntax: note <title>",
+    "NO_SUCH_NOTE": "No such note",
+    "TITLE_LABEL": "Note title: ",
+    "TEXT_LABEL": "text: ",
+    "TAGS_LABEL": "tags: ",
+    }
