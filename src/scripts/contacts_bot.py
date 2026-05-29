@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from src.commands import insert_email, remove_contact, show_all
+from src.commands import insert_address, insert_email, remove_contact, show_all
 from src.record import Record
 from src.utils.decorators.input_error import input_error
 from src.utils.decorators.serializes import serializes
@@ -266,6 +266,7 @@ def handle_command(
         "add": serializes(add_contact, book, serializer),
         "update": serializes(update_contact, book, serializer),
         "remove": serializes(remove_contact, book, serializer),
+        "insert-address": serializes(insert_address, book, serializer),
         "phone": show_phone,
         "all": show_all,
         "add-birthday": serializes(add_birthday, book, serializer),
