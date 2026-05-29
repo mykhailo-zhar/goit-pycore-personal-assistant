@@ -13,7 +13,15 @@ def note_serializer(tmp_path):
 
 
 def test_change_title_success(monkeypatch, capsys, note_serializer):
-    """Перевіряє успішну зміну заголовка нотатки."""
+    """Перевіряє успішну зміну заголовка нотатки.
+
+    Дано:
+        Книга нотаток із нотаткою ``work``.
+    Коли:
+        Виконується команда ``change-title work personal``.
+    Тоді:
+        Виводиться підтвердження зміни, нотатка доступна за новим заголовком.
+    """
     lines = iter(["add-note work", "change-title work personal", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -28,7 +36,15 @@ def test_change_title_success(monkeypatch, capsys, note_serializer):
 
 
 def test_change_title_no_such_note(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку для неіснуючої нотатки."""
+    """Перевіряє помилку для неіснуючої нотатки.
+
+    Дано:
+        Порожня книга нотаток.
+    Коли:
+        Виконується команда ``change-title missing new-title``.
+    Тоді:
+        Виводиться повідомлення про відсутність нотатки.
+    """
     lines = iter(["change-title missing new-title", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -42,7 +58,15 @@ def test_change_title_no_such_note(monkeypatch, capsys, note_serializer):
 
 
 def test_change_title_collision(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку при зайнятому новому заголовку."""
+    """Перевіряє помилку при зайнятому новому заголовку.
+
+    Дано:
+        Книга нотаток із нотатками ``first`` та ``second``.
+    Коли:
+        Виконується команда ``change-title first second``.
+    Тоді:
+        Виводиться повідомлення про наявність нотатки з новим заголовком.
+    """
     lines = iter(
         [
             "add-note first",
@@ -69,7 +93,15 @@ def test_change_title_collision(monkeypatch, capsys, note_serializer):
 def test_change_title_invalid_syntax(
     monkeypatch, capsys, note_serializer, command_line
 ):
-    """Перевіряє синтаксичну помилку для невалідної кількості аргументів."""
+    """Перевіряє синтаксичну помилку для невалідної кількості аргументів.
+
+    Дано:
+        Команда ``change-title`` з неправильною кількістю аргументів.
+    Коли:
+        Запускається сценарій REPL із цією командою.
+    Тоді:
+        Виводиться повідомлення про синтаксис команди.
+    """
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(

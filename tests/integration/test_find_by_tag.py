@@ -13,7 +13,15 @@ def note_serializer(tmp_path):
 
 
 def test_find_by_tag_ascending(monkeypatch, capsys, note_serializer):
-    """Перевіряє сортування нотаток за зростанням заголовка."""
+    """Перевіряє сортування нотаток за зростанням заголовка.
+
+    Дано:
+        Дві нотатки ``alpha`` та ``zebra`` з тегом ``urgent``.
+    Коли:
+        Виконується команда ``tag urgent ascending``.
+    Тоді:
+        У виводі ``alpha`` з'являється раніше за ``zebra``.
+    """
     lines = iter(
         [
             "add-note zebra",
@@ -39,7 +47,15 @@ def test_find_by_tag_ascending(monkeypatch, capsys, note_serializer):
 
 
 def test_find_by_tag_descending(monkeypatch, capsys, note_serializer):
-    """Перевіряє сортування нотаток за спаданням заголовка."""
+    """Перевіряє сортування нотаток за спаданням заголовка.
+
+    Дано:
+        Дві нотатки ``alpha`` та ``zebra`` з тегом ``urgent``.
+    Коли:
+        Виконується команда ``tag urgent descending``.
+    Тоді:
+        У виводі ``zebra`` з'являється раніше за ``alpha``.
+    """
     lines = iter(
         [
             "add-note alpha",
@@ -65,7 +81,15 @@ def test_find_by_tag_descending(monkeypatch, capsys, note_serializer):
 
 
 def test_find_by_tag_invalid_order(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку для невалідного порядку сортування."""
+    """Перевіряє помилку для невалідного порядку сортування.
+
+    Дано:
+        Книга нотаток із нотаткою ``ideas`` і тегом ``urgent``.
+    Коли:
+        Виконується команда ``tag urgent random``.
+    Тоді:
+        Виводиться повідомлення про допустимі значення порядку.
+    """
     lines = iter(
         ["add-note ideas", "add-tag ideas urgent", "tag urgent random", "exit"]
     )
@@ -81,7 +105,15 @@ def test_find_by_tag_invalid_order(monkeypatch, capsys, note_serializer):
 
 
 def test_find_by_tag_no_notes(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку, коли нотаток з тегом немає."""
+    """Перевіряє помилку, коли нотаток з тегом немає.
+
+    Дано:
+        Порожня книга нотаток.
+    Коли:
+        Виконується команда ``tag missing ascending``.
+    Тоді:
+        Виводиться повідомлення про відсутність нотаток.
+    """
     lines = iter(["tag missing ascending", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -99,7 +131,15 @@ def test_find_by_tag_no_notes(monkeypatch, capsys, note_serializer):
     ["tag", "tag urgent"],
 )
 def test_find_by_tag_invalid_syntax(monkeypatch, capsys, note_serializer, command_line):
-    """Перевіряє синтаксичну помилку для невалідної кількості аргументів."""
+    """Перевіряє синтаксичну помилку для невалідної кількості аргументів.
+
+    Дано:
+        Команда ``tag`` з неправильною кількістю аргументів.
+    Коли:
+        Запускається сценарій REPL із цією командою.
+    Тоді:
+        Виводиться повідомлення про синтаксис команди.
+    """
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(

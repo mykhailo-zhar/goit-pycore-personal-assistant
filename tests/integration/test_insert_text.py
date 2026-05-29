@@ -13,7 +13,15 @@ def note_serializer(tmp_path):
 
 
 def test_insert_text_success(monkeypatch, capsys, note_serializer):
-    """Перевіряє додавання багатослівного тексту до нотатки."""
+    """Перевіряє додавання багатослівного тексту до нотатки.
+
+    Дано:
+        Книга нотаток із нотаткою ``work`` без тексту.
+    Коли:
+        Виконується команда ``insert-text work First line of notes``.
+    Тоді:
+        У нотатці зберігається повний текст із пробілами.
+    """
     lines = iter(
         [
             "add-note work",
@@ -33,7 +41,15 @@ def test_insert_text_success(monkeypatch, capsys, note_serializer):
 
 
 def test_insert_text_no_text(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку, коли текст не передано."""
+    """Перевіряє помилку, коли текст не передано.
+
+    Дано:
+        Книга нотаток із нотаткою ``work``.
+    Коли:
+        Виконується команда ``insert-text work`` без тексту.
+    Тоді:
+        Виводиться повідомлення ``No text``.
+    """
     lines = iter(["add-note work", "insert-text work", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -47,7 +63,15 @@ def test_insert_text_no_text(monkeypatch, capsys, note_serializer):
 
 
 def test_insert_text_no_such_note(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку для неіснуючої нотатки."""
+    """Перевіряє помилку для неіснуючої нотатки.
+
+    Дано:
+        Порожня книга нотаток.
+    Коли:
+        Виконується команда ``insert-text missing some text``.
+    Тоді:
+        Виводиться повідомлення про відсутність нотатки.
+    """
     lines = iter(["insert-text missing some text", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -61,7 +85,15 @@ def test_insert_text_no_such_note(monkeypatch, capsys, note_serializer):
 
 
 def test_insert_text_invalid_syntax(monkeypatch, capsys, note_serializer):
-    """Перевіряє синтаксичну помилку без аргументів."""
+    """Перевіряє синтаксичну помилку без аргументів.
+
+    Дано:
+        Команда ``insert-text`` без аргументів.
+    Коли:
+        Запускається сценарій REPL.
+    Тоді:
+        Виводиться повідомлення про синтаксис команди.
+    """
     lines = iter(["insert-text", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(

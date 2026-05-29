@@ -5,7 +5,17 @@ from src.utils.serializers.note_book import NoteBookSerializer
 
 
 def test_tag_workflow(monkeypatch, capsys, tmp_path):
-    """Перевіряє повний цикл роботи з тегами."""
+    """Перевіряє повний цикл роботи з тегами.
+
+    Дано:
+        Порожня книга нотаток.
+    Коли:
+        Послідовно виконуються команди ``add-note``, ``add-tag``,
+        ``tag``, ``remove-tag`` та повторний ``tag``.
+    Тоді:
+        У нотатці залишається лише тег ``urgent``,
+        у виводі з'являється рядкове подання нотатки.
+    """
     note_serializer = NoteBookSerializer(str(tmp_path / "notebook.pkl"))
     lines = iter(
         [

@@ -13,7 +13,15 @@ def note_serializer(tmp_path):
 
 
 def test_add_note_success(monkeypatch, capsys, note_serializer):
-    """Перевіряє успішне додавання порожньої нотатки."""
+    """Перевіряє успішне додавання порожньої нотатки.
+
+    Дано:
+        Порожня книга нотаток.
+    Коли:
+        Виконується команда ``add-note my-note``.
+    Тоді:
+        Нотатка з заголовком ``my-note`` зберігається у файлі.
+    """
     lines = iter(["add-note my-note", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -27,7 +35,15 @@ def test_add_note_success(monkeypatch, capsys, note_serializer):
 
 
 def test_add_note_duplicate(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку при дублікаті заголовка."""
+    """Перевіряє помилку при дублікаті заголовка.
+
+    Дано:
+        Книга нотаток із нотаткою ``my-note``.
+    Коли:
+        Повторно виконується команда ``add-note my-note``.
+    Тоді:
+        Виводиться повідомлення про наявність нотатки.
+    """
     lines = iter(["add-note my-note", "add-note my-note", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -45,7 +61,15 @@ def test_add_note_duplicate(monkeypatch, capsys, note_serializer):
     ["add-note", "add-note a b"],
 )
 def test_add_note_invalid_syntax(monkeypatch, capsys, note_serializer, command_line):
-    """Перевіряє синтаксичну помилку для невалідної кількості аргументів."""
+    """Перевіряє синтаксичну помилку для невалідної кількості аргументів.
+
+    Дано:
+        Команда ``add-note`` з неправильною кількістю аргументів.
+    Коли:
+        Запускається сценарій REPL із цією командою.
+    Тоді:
+        Виводиться повідомлення про синтаксис команди.
+    """
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(

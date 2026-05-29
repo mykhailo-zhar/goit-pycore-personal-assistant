@@ -13,7 +13,15 @@ def note_serializer(tmp_path):
 
 
 def test_remove_tag_success(monkeypatch, capsys, note_serializer):
-    """Перевіряє успішне видалення тегу."""
+    """Перевіряє успішне видалення тегу.
+
+    Дано:
+        Книга нотаток із нотаткою ``ideas`` і тегом ``work``.
+    Коли:
+        Виконується команда ``remove-tag ideas work``.
+    Тоді:
+        Виводиться підтвердження, теги нотатки стають порожніми.
+    """
     lines = iter(
         [
             "add-note ideas",
@@ -35,7 +43,15 @@ def test_remove_tag_success(monkeypatch, capsys, note_serializer):
 
 
 def test_remove_tag_no_tag_on_note(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку, коли тег відсутній на нотатці."""
+    """Перевіряє помилку, коли тег відсутній на нотатці.
+
+    Дано:
+        Книга нотаток із нотаткою ``ideas`` без тегів.
+    Коли:
+        Виконується команда ``remove-tag ideas work``.
+    Тоді:
+        Виводиться повідомлення про відсутність тегу на нотатці.
+    """
     lines = iter(["add-note ideas", "remove-tag ideas work", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -49,7 +65,15 @@ def test_remove_tag_no_tag_on_note(monkeypatch, capsys, note_serializer):
 
 
 def test_remove_tag_no_such_note(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку для неіснуючої нотатки."""
+    """Перевіряє помилку для неіснуючої нотатки.
+
+    Дано:
+        Порожня книга нотаток.
+    Коли:
+        Виконується команда ``remove-tag missing work``.
+    Тоді:
+        Виводиться повідомлення про відсутність нотатки.
+    """
     lines = iter(["remove-tag missing work", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -69,7 +93,15 @@ def test_remove_tag_no_such_note(monkeypatch, capsys, note_serializer):
 def test_remove_tag_invalid_syntax(
     monkeypatch, capsys, note_serializer, command_line
 ):
-    """Перевіряє синтаксичну помилку для невалідної кількості аргументів."""
+    """Перевіряє синтаксичну помилку для невалідної кількості аргументів.
+
+    Дано:
+        Команда ``remove-tag`` з неправильною кількістю аргументів.
+    Коли:
+        Запускається сценарій REPL із цією командою.
+    Тоді:
+        Виводиться повідомлення про синтаксис команди.
+    """
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(

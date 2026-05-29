@@ -13,7 +13,15 @@ def note_serializer(tmp_path):
 
 
 def test_add_tag_success(monkeypatch, capsys, note_serializer):
-    """Перевіряє успішне додавання тегу."""
+    """Перевіряє успішне додавання тегу.
+
+    Дано:
+        Книга нотаток із нотаткою ``ideas`` без тегів.
+    Коли:
+        Виконується команда ``add-tag ideas urgent``.
+    Тоді:
+        Виводиться підтвердження, тег ``urgent`` зберігається у нотатці.
+    """
     lines = iter(["add-note ideas", "add-tag ideas urgent", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -30,7 +38,15 @@ def test_add_tag_success(monkeypatch, capsys, note_serializer):
 
 
 def test_add_tag_duplicate(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку при дублікаті тегу."""
+    """Перевіряє помилку при дублікаті тегу.
+
+    Дано:
+        Книга нотаток із нотаткою ``ideas`` і тегом ``urgent``.
+    Коли:
+        Повторно виконується команда ``add-tag ideas urgent``.
+    Тоді:
+        Виводиться повідомлення про наявність такого тегу.
+    """
     lines = iter(
         [
             "add-note ideas",
@@ -51,7 +67,15 @@ def test_add_tag_duplicate(monkeypatch, capsys, note_serializer):
 
 
 def test_add_tag_no_such_note(monkeypatch, capsys, note_serializer):
-    """Перевіряє помилку для неіснуючої нотатки."""
+    """Перевіряє помилку для неіснуючої нотатки.
+
+    Дано:
+        Порожня книга нотаток.
+    Коли:
+        Виконується команда ``add-tag missing urgent``.
+    Тоді:
+        Виводиться повідомлення про відсутність нотатки.
+    """
     lines = iter(["add-tag missing urgent", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
@@ -69,7 +93,15 @@ def test_add_tag_no_such_note(monkeypatch, capsys, note_serializer):
     ["add-tag", "add-tag ideas"],
 )
 def test_add_tag_invalid_syntax(monkeypatch, capsys, note_serializer, command_line):
-    """Перевіряє синтаксичну помилку для невалідної кількості аргументів."""
+    """Перевіряє синтаксичну помилку для невалідної кількості аргументів.
+
+    Дано:
+        Команда ``add-tag`` з неправильною кількістю аргументів.
+    Коли:
+        Запускається сценарій REPL із цією командою.
+    Тоді:
+        Виводиться повідомлення про синтаксис команди.
+    """
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(

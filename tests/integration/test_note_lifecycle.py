@@ -5,7 +5,17 @@ from src.utils.serializers.note_book import NoteBookSerializer
 
 
 def test_note_lifecycle(monkeypatch, capsys, tmp_path):
-    """Перевіряє повний цикл створення, редагування та показу нотатки."""
+    """Перевіряє повний цикл створення, редагування та показу нотатки.
+
+    Дано:
+        Порожня книга нотаток.
+    Коли:
+        Послідовно виконуються команди ``add-note``, ``insert-text``,
+        ``change-title`` та ``note``.
+    Тоді:
+        Нотатка зберігається під новим заголовком із текстом,
+        у виводі з'являється її рядкове подання.
+    """
     note_serializer = NoteBookSerializer(str(tmp_path / "notebook.pkl"))
     lines = iter(
         [
