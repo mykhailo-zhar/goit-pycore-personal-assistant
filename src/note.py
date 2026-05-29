@@ -109,7 +109,7 @@ class Note:
         if not tag_obj.validate():
             raise ValueError(NOTE_ERRORS["TAG_NOT_VALID"])
 
-        if self._find_tag(tag) is not None:
+        if self.find_tag(tag) is not None:
             raise ValueError(NOTE_ERRORS["TAG_ALREADY_EXISTS"])
 
         self._tags.append(tag_obj)
@@ -124,7 +124,7 @@ class Note:
         Повертає:
             bool: True, якщо тег видалено, інакше False.
         """
-        tag_to_remove = self._find_tag(tag)
+        tag_to_remove = self.find_tag(tag)
         if tag_to_remove is None:
             return False
         self._tags.remove(tag_to_remove)
@@ -139,8 +139,17 @@ class Note:
         """
         return ",".join(tag.value for tag in self._tags)
 
-    def _find_tag(self, tag: str) -> Tag | None:
-        return next((item for item in self._tags if item.value == tag), None)
+    def find_tag(self, tag: str) -> Tag | None:
+        """
+        Шукає тег в нотатці.
+
+        Аргументи:
+            tag (str): Тег для пошуку.
+
+        Повертає:
+            Tag | None: Об'єкт тегу, якщо знайдено, інакше None.
+        """
+        return next((tag for tag in self._tags if tag.value == tag), None)
 
     def __str__(self) -> str:
         parts = [f"{SHOW_NOTE_MESSAGES['TITLE_LABEL']}{self.title.value}"]
