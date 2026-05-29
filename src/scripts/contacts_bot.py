@@ -345,7 +345,7 @@ def main() -> None:
     try:
         while True:
             line = input('>>> ').strip()
-            if line:
+            if not line:
                 continue
 
             command, arguments = parse_input(line)
