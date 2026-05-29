@@ -1,13 +1,6 @@
 from src.address_book import AddressBook
 from src.utils.decorators.input_error import input_error
-
-REMOVE_CONTACT_MESSAGES = {
-    "CONTACT_NOT_FOUND": "Contact {name} not found",
-    "CONTACT_REMOVED": "Contact {name} removed",
-    "INVALID_SYNTAX": "Remove contact command should have the following syntax: remove <name> [phone]",
-    "PHONE_NOT_FOUND": "Phone {phone} not found for contact {name}",
-    "PHONE_REMOVED": "Phone {phone} removed from contact {name}",
-}
+from src.messages import REMOVE_CONTACT_MESSAGES
 
 
 def try_remove_contact(book: AddressBook, name: str) -> str:
@@ -25,7 +18,8 @@ def try_remove_contact(book: AddressBook, name: str) -> str:
         str: Відповідь на команду.
     """
     if not book.remove_record(name):
-        raise KeyError(REMOVE_CONTACT_MESSAGES["CONTACT_NOT_FOUND"].format(name=name))
+        raise KeyError(
+            REMOVE_CONTACT_MESSAGES["CONTACT_NOT_FOUND"].format(name=name))
     return REMOVE_CONTACT_MESSAGES["CONTACT_REMOVED"].format(name=name)
 
 
@@ -43,7 +37,8 @@ def remove_contact(book: AddressBook, arguments: list[str]) -> str:
     name = arguments[0]
     record = book.find_record(name)
     if not record:
-        raise KeyError(REMOVE_CONTACT_MESSAGES["CONTACT_NOT_FOUND"].format(name=name))
+        raise KeyError(
+            REMOVE_CONTACT_MESSAGES["CONTACT_NOT_FOUND"].format(name=name))
 
     if len(arguments) == 2:
         phone = arguments[1]
@@ -52,6 +47,8 @@ def remove_contact(book: AddressBook, arguments: list[str]) -> str:
 
     if not record.remove_phone(phone):
         raise KeyError(
-            REMOVE_CONTACT_MESSAGES["PHONE_NOT_FOUND"].format(phone=phone, name=name)
-        )
-    return REMOVE_CONTACT_MESSAGES["PHONE_REMOVED"].format(phone=phone, name=name)
+            REMOVE_CONTACT_MESSAGES["PHONE_NOT_FOUND"].format(phone=phone,
+                                                              name=name)
+            )
+    return REMOVE_CONTACT_MESSAGES["PHONE_REMOVED"].format(phone=phone,
+                                                           name=name)

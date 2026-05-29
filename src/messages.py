@@ -73,3 +73,11 @@ INSERT_TEXT_MESSAGES = {
     "NO_SUCH_NOTE": "No such note",
     "TEXT_INSERTED": "Text inserted",
     }
+# src.command.remove_contact.py messages
+REMOVE_CONTACT_MESSAGES = {
+    "CONTACT_NOT_FOUND": "Contact {name} not found",
+    "CONTACT_REMOVED": "Contact {name} removed",
+    "INVALID_SYNTAX": "Remove contact command should have the following syntax: remove <name> [phone]",
+    "PHONE_NOT_FOUND": "Phone {phone} not found for contact {name}",
+    "PHONE_REMOVED": "Phone {phone} removed from contact {name}",
+    }
