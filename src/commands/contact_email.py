@@ -1,5 +1,6 @@
 from src.address_book import AddressBook
 from src.decorators.input_error import input_error
+from src.presenters.record import RecordPresenter
 
 CONTACT_EMAIL_MESSAGES = {
     "INVALID_SYNTAX": (
@@ -24,6 +25,6 @@ def contact_email(book: AddressBook, arguments: list[str]) -> str:
     email = arguments[0]
     for record in book.data.values():
         if record.email and record.email.value == email:
-            return str(record)
+            return str(RecordPresenter(record))
 
     raise ValueError(CONTACT_EMAIL_MESSAGES["NO_SUCH_CONTACT"])
