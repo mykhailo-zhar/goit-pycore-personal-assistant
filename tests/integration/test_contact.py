@@ -7,7 +7,15 @@ from src.scripts.contacts_bot import COMMAND_MESSAGES, main
 
 
 def test_main_contact_shows_existing_fields_only(monkeypatch, capsys, tmp_path):
-    """Перевіряє, що contact показує лише наявні поля контакту."""
+    """Перевіряє, що contact показує лише наявні поля контакту.
+
+    Дано:
+        Контакт з іменем, телефоном та email без адреси й дня народження.
+    Коли:
+        Виконується команда ``contact Pat``.
+    Тоді:
+        У виводі є ім'я, телефон і email; відсутні поля не згадуються.
+    """
     file_path = str(tmp_path / "address_book.pkl")
     lines = iter(
         [
@@ -32,7 +40,15 @@ def test_main_contact_shows_existing_fields_only(monkeypatch, capsys, tmp_path):
 
 
 def test_main_contact_shows_all_fields(monkeypatch, capsys, tmp_path):
-    """Перевіряє повний вивід contact для контакту з усіма полями."""
+    """Перевіряє повний вивід contact для контакту з усіма полями.
+
+    Дано:
+        Контакт з телефоном, email, адресою та днем народження.
+    Коли:
+        Виконується команда ``contact Pat``.
+    Тоді:
+        У виводі відображаються всі заповнені поля контакту.
+    """
     file_path = str(tmp_path / "address_book.pkl")
     lines = iter(
         [
@@ -59,7 +75,15 @@ def test_main_contact_shows_all_fields(monkeypatch, capsys, tmp_path):
 
 
 def test_main_contact_for_missing_contact_shows_error(monkeypatch, capsys, tmp_path):
-    """Перевіряє помилку contact для неіснуючого контакту."""
+    """Перевіряє помилку contact для неіснуючого контакту.
+
+    Дано:
+        Порожня адресна книга.
+    Коли:
+        Виконується команда ``contact Ghost``.
+    Тоді:
+        Показується повідомлення ``No such contact.`` і бот завершує роботу.
+    """
     file_path = str(tmp_path / "address_book.pkl")
     lines = iter(
         [
@@ -88,7 +112,15 @@ def test_main_contact_for_missing_contact_shows_error(monkeypatch, capsys, tmp_p
 def test_main_contact_wrong_arity_shows_syntax(
     monkeypatch, capsys, tmp_path, command_line
 ):
-    """Перевіряє синтаксичну помилку для невалідної кількості аргументів contact."""
+    """Перевіряє синтаксичну помилку для невалідної кількості аргументів contact.
+
+    Дано:
+        Команда ``contact`` без імені або з більш ніж одним аргументом.
+    Коли:
+        Запускається сценарій REPL із цією командою.
+    Тоді:
+        Показується повідомлення про синтаксис команди ``contact``.
+    """
     file_path = str(tmp_path / "address_book.pkl")
     lines = iter(
         [
