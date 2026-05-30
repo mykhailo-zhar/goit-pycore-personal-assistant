@@ -1,18 +1,18 @@
-from ..fields.field import Field
+from src.fields.field import Field
 
 
 class Address(Field):
-    """Клас для зберігання фізичної адреси контакту.
+    """
+    Представляє адресу контакту.
 
-    Аргументи:
-          Field: Базовий клас для всіх полів.
+    Адреса є текстовим полем і повинна бути непорожнім рядком.
     """
 
-    def validate(self):
+    def validate(self) -> bool:
         """
-        Перевіряє адресу.
+        Перевіряє валідність адреси.
 
         Повертає:
-            bool: True, якщо адреса не пуста, інакше False.
+            bool: True, якщо адреса є непорожнім рядком.
         """
-        return bool(self.value and self.value.strip())
+        return isinstance(self.value, str) and bool(self.value.strip())

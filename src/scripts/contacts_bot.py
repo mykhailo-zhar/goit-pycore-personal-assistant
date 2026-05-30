@@ -23,7 +23,7 @@ from src.utils.serializers.address_book import AddressBookSerializer
 from src.utils.serializers.note_book import NoteBookSerializer
 
 if __name__ == "__main__":
-    sys.path.append(str(Path(__file__).parent[3].absolute()))
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from src.address_book import AddressBook
 from src.note_book import NoteBook
@@ -32,6 +32,7 @@ COMMAND_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
     "CONTACT_ADDED": "Contact added.",
     "CONTACT_UPDATED": "Contact updated.",
+    "ADDRESS_ADDED": "Address added.",
     "BIRTHDAY_ADDED": "Birthday added. Replacing {old_birthday} with {new_birthday} for {name}",
     "NO_BIRTHDAY_SET": "No birthday set for {name}",
     "BIRTHDAY_SHOWED": "Birthday for {name} is {birthday}",
@@ -40,6 +41,9 @@ COMMAND_MESSAGES = {
     "PLEASE_CHANGE_USER": "Please change the user",
     "GOOD_BYE": "Good bye!",
     "HELLO": "How can I help you?",
+    "PHONE_ALREADY_EXISTS": "Phone already exists",
+    "NO_CONTACTS_BY_ADDRESS": "No contacts found by address",
+    "CONTACTS_BY_ADDRESS": "Contacts by address:\n{contacts}",
     "PHONE_CHANGED": "Phone was changed",
     "PHONE_CHANGE_SYNTAX": "Syntax: change-phone <name> <old phone> <new phone>",
     "BIRTHDAYS_SYNTAX": "Syntax: birthdays <days>",
@@ -103,13 +107,18 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
     if len(arguments) != 2:
         raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
     name, phone = arguments
-    record = Record(name)
-    if record := book.find_record(name):
-        record.add_phone(phone)
+    existing_record = book.find_record(name)
+
+    if existing_record and existing_record.find(phone):
+        raise ValueError(COMMAND_MESSAGES["PHONE_ALREADY_EXISTS"])
+
+    if existing_record:
+        existing_record.add_phone(phone)
     else:
         record = Record(name)
         record.add_phone(phone)
         book.add_record(record)
+
     return COMMAND_MESSAGES["CONTACT_ADDED"]
 
 
@@ -191,6 +200,58 @@ def add_birthday(book: AddressBook, arguments: list[str]) -> str:
         new_birthday=birthday,
         name=name,
         )
+
+
+@input_error
+def add_address(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Додає адресу до існуючого контакту.
+
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я контакту та адреса.
+
+    Повертає:
+        str: Відповідь на команду.
+    """
+    if len(arguments) < 2:
+        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+    name = arguments[0]
+    address = " ".join(arguments[1:])
+    record = book.find_record(name)
+    if not record:
+        raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
+    record.add_address(address)
+    return COMMAND_MESSAGES["ADDRESS_ADDED"]
+
+
+@input_error
+def find_contacts_by_address(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Шукає контакти за адресою.
+
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Адреса або частина адреси для пошуку.
+
+    Повертає:
+        str: Знайдені контакти або повідомлення, що контактів немає.
+    """
+    if len(arguments) < 1:
+        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+    search_address = " ".join(arguments).lower()
+    found_contacts = [
+        str(record)
+        for record in book.data.values()
+        if record.address and search_address in record.address.value.lower()
+    ]
+
+    if not found_contacts:
+        return COMMAND_MESSAGES["NO_CONTACTS_BY_ADDRESS"]
+
+    return COMMAND_MESSAGES["CONTACTS_BY_ADDRESS"].format(
+        contacts="\n".join(found_contacts)
+    )
 
 
 @input_error
@@ -319,6 +380,8 @@ def handle_command(
         "phone": show_phone,
         "all": show_all,
         "add-birthday": serializes(add_birthday, book, serializer),
+        "add-address": serializes(add_address, book, serializer),
+        "find-address": find_contacts_by_address,
         "insert-email": serializes(insert_email, book, serializer),
         "show-birthday": show_birthday,
         "birthdays": birthdays,
