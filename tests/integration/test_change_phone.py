@@ -5,7 +5,7 @@ import pytest
 from main import main
 from src.commands.change_phone import CHANGE_PHONE_MESSAGES
 from src.record import PHONE_NOT_FOUND_ERROR
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture
@@ -107,9 +107,7 @@ def test_change_phone_no_such_phone(monkeypatch, capsys, phone, serializer):
         "change-phone Pat 1234567890 0987654321 extra",
     ],
 )
-def test_change_phone_invalid_syntax(
-    monkeypatch, capsys, serializer, command_line
-):
+def test_change_phone_invalid_syntax(monkeypatch, capsys, serializer, command_line):
     """Перевіряє синтаксичну помилку для невалідної кількості аргументів.
 
     Дано:

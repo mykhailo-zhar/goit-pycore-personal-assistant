@@ -6,7 +6,7 @@ import time_machine
 
 from main import main
 from src.commands.birthdays import BIRTHDAYS_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture

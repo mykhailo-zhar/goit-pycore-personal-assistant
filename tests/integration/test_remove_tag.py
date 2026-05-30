@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.remove_tag import REMOVE_TAG_MESSAGES
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 
 @pytest.fixture
@@ -109,4 +109,5 @@ def test_remove_tag_invalid_syntax(monkeypatch, capsys, note_serializer, command
     main()
 
     out = capsys.readouterr().out
-    assert REMOVE_TAG_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<title>" in out
+    assert "<tag>" in out

@@ -1,7 +1,8 @@
 from enum import Enum
 
+from src.decorators.input_error import input_error
 from src.note_book import NoteBook
-from src.utils.decorators.input_error import input_error
+from src.presenters.note import NotePresenter
 
 FIND_BY_TAG_MESSAGES = {
     "INVALID_SYNTAX": "Tag command should have the following syntax: tag <tag> <order>",
@@ -40,4 +41,4 @@ def find_by_tag(note_book: NoteBook, arguments: list[str]) -> str:
     matched.sort(
         key=lambda note: note.title.value, reverse=order == ValidOrders.DESCENDING.value
     )
-    return "\n".join(str(note) for note in matched)
+    return str(NotePresenter(matched))

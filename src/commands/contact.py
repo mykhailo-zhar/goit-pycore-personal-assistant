@@ -1,5 +1,6 @@
 from src.address_book import AddressBook
-from src.utils.decorators.input_error import input_error
+from src.decorators.input_error import input_error
+from src.presenters.record import RecordPresenter
 
 CONTACT_MESSAGES = {
     "INVALID_SYNTAX": "Contact command should have the following syntax: contact <name>",
@@ -24,4 +25,4 @@ def contact(book: AddressBook, arguments: list[str]) -> str:
     if record is None:
         raise ValueError(CONTACT_MESSAGES["NO_SUCH_CONTACT"])
 
-    return str(record)
+    return str(RecordPresenter(record))

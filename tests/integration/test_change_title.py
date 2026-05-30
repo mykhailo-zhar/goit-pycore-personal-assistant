@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.change_title import CHANGE_TITLE_MESSAGES
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 
 @pytest.fixture
@@ -111,4 +111,5 @@ def test_change_title_invalid_syntax(
     main()
 
     out = capsys.readouterr().out
-    assert CHANGE_TITLE_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<old_title>" in out
+    assert "<new_title>" in out

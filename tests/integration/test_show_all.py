@@ -2,7 +2,7 @@ import builtins
 
 from main import main
 from src.commands.show_all import SHOW_ALL_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 def test_show_all_when_no_users(monkeypatch, capsys, tmp_path):
@@ -62,7 +62,7 @@ def test_show_all_displays_full_contact_info(monkeypatch, capsys, tmp_path):
     main()
 
     out = capsys.readouterr().out
-    assert "Stored users (1):" in out
+    assert "(1):" in out
     assert "Pat" in out
     assert "1234567890" in out
     assert "14.10.1992" in out

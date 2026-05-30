@@ -58,7 +58,7 @@ class Note:
         self._title = title_obj
 
     @property
-    def text(self) -> Text:
+    def text(self) -> Text | None:
         """
         Повертає текст нотатки.
 

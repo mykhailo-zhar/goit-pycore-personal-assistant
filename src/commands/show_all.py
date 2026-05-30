@@ -1,5 +1,6 @@
 from src.address_book import AddressBook
-from src.utils.decorators.input_error import input_error
+from src.decorators.input_error import input_error
+from src.presenters.record import RecordPresenter
 
 SHOW_ALL_MESSAGES = {
     "INVALID_SYNTAX": "Invalid command.",
@@ -25,5 +26,5 @@ def show_all(book: AddressBook, arguments: list[str] = []) -> str:
         raise ValueError(SHOW_ALL_MESSAGES["NO_USERS"])
 
     count_users = len(book.data)
-    users_list = [str(record) for _, record in sorted(book.data.items())]
-    return f"Stored users ({count_users}):\n{'\n'.join(users_list)}"
+    users_list = [record for record in sorted(book.data.values())]
+    return f"Stored contacts ({count_users}):\n{RecordPresenter(users_list)}"

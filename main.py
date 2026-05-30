@@ -1,7 +1,8 @@
-import sys
-from pathlib import Path
+from rich.console import Console
 
+from src.address_book import AddressBook
 from src.commands import (
+    about,
     add_contact,
     add_note,
     add_tag,
@@ -11,11 +12,11 @@ from src.commands import (
     contact,
     contact_address,
     contact_email,
-    exit_command,
+    exit,
     find_by_tag,
     find_contacts_by_address,
     hello,
-    help_command,
+    help,
     insert_address,
     insert_birthday,
     insert_email,
@@ -27,22 +28,16 @@ from src.commands import (
     show_birthday,
     show_note,
     truncate_contact,
-    about_command,
-    )
-from src.utils.decorators.serializes import serializes
-from src.utils.serializers.address_book import AddressBookSerializer
-from src.utils.serializers.note_book import NoteBookSerializer
-
-if __name__ == "__main__":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
-
-from src.address_book import AddressBook
+)
+from src.decorators.serializes import serializes
 from src.note_book import NoteBook
+from src.serializers.address_book import AddressBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 COMMAND_MESSAGES = {
-    "INVALID_COMMAND": "Invalid command.",
-    "GOOD_BYE": "Good bye!",
-    }
+    "INVALID_COMMAND": "Invalid command. Type 'help' for commands list.",
+    "GOOD_BYE": "Good bye! See you later!",
+}
 
 SERIALIZER_PATH = "addressbook.pkl"
 NOTE_SERIALIZER_PATH = "notebook.pkl"
@@ -65,13 +60,13 @@ def parse_input(line: str) -> tuple[str, list[str]]:
 
 
 def handle_command(
-        book: AddressBook,
-        note_book: NoteBook,
-        command: str,
-        arguments: list[str],
-        serializer: AddressBookSerializer = None,
-        note_serializer: NoteBookSerializer = None,
-        ) -> str:
+    book: AddressBook,
+    note_book: NoteBook,
+    command: str,
+    arguments: list[str],
+    serializer: AddressBookSerializer = None,
+    note_serializer: NoteBookSerializer = None,
+) -> str:
     """
     Виконує команду користувача.
 
@@ -103,39 +98,36 @@ def handle_command(
         "show-birthday": show_birthday,
         "birthdays": birthdays,
         "add-note": serializes(
-            lambda _book, args: add_note(note_book, args), note_book,
-            note_serializer
-            ),
+            lambda _book, args: add_note(note_book, args), note_book, note_serializer
+        ),
         "remove-note": serializes(
-            lambda _book, args: remove_note(note_book, args), note_book,
-            note_serializer
-            ),
+            lambda _book, args: remove_note(note_book, args), note_book, note_serializer
+        ),
         "insert-text": serializes(
             lambda _book, args: insert_text(note_book, args),
             note_book,
             note_serializer,
-            ),
+        ),
         "change-title": serializes(
             lambda _book, args: change_title(note_book, args),
             note_book,
             note_serializer,
-            ),
+        ),
         "note": lambda _book, args: show_note(note_book, args),
         "add-tag": serializes(
-            lambda _book, args: add_tag(note_book, args), note_book,
-            note_serializer
-            ),
+            lambda _book, args: add_tag(note_book, args), note_book, note_serializer
+        ),
         "remove-tag": serializes(
             lambda _book, args: remove_tag(note_book, args),
             note_book,
             note_serializer,
-            ),
+        ),
         "tag": lambda _book, args: find_by_tag(note_book, args),
-        "exit": exit_command,
-        "close": exit_command,
-        "help": help_command,
-        "about": about_command,
-        }
+        "exit": exit,
+        "close": exit,
+        "help": help,
+        "about": about,
+    }
 
     if command not in commands:
         return COMMAND_MESSAGES["INVALID_COMMAND"]
@@ -144,22 +136,25 @@ def handle_command(
 
 
 def _print_warning(message: str) -> None:
-    print(message)
+    rich_console.print(f"[bold yellow]{message}[/bold yellow]")
+
+
+rich_console = Console()
 
 
 def main() -> None:
     """Головна функція CLI-бота."""
     serializer: AddressBookSerializer = AddressBookSerializer(
         SERIALIZER_PATH, _print_warning
-        )
+    )
     note_serializer: NoteBookSerializer = NoteBookSerializer(
         NOTE_SERIALIZER_PATH, _print_warning
-        )
+    )
     book: AddressBook = serializer.deserialize()
     note_book: NoteBook = note_serializer.deserialize()
-    print(
+    rich_console.print(
         "Bot is started. Type 'hello' to greet, 'help' for commands list, 'exit' or 'close' to quit."
-        )
+    )
     try:
         while True:
             line = input().strip()
@@ -169,14 +164,14 @@ def main() -> None:
 
             command, arguments = parse_input(line)
             response = handle_command(
-                book, note_book, command, arguments, serializer,
-                note_serializer
-                )
-            print(response)
+                book, note_book, command, arguments, serializer, note_serializer
+            )
             if command in ["exit", "close"]:
+                rich_console.print(f"\n[bold green]{response}[/bold green]")
                 break
+            rich_console.print(response)
     except (KeyboardInterrupt, EOFError):
-        print(f"\n{COMMAND_MESSAGES['GOOD_BYE']}")
+        rich_console.print(f"\n[bold green]{COMMAND_MESSAGES['GOOD_BYE']}[/bold green]")
 
 
 if __name__ == "__main__":

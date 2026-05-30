@@ -2,7 +2,7 @@ import pickle
 from pathlib import Path
 from typing import Any, Callable, TypeVar
 
-from src.utils.serializers.base import Serializer
+from .base import Serializer
 
 T = TypeVar("T")
 
@@ -10,6 +10,7 @@ T = TypeVar("T")
 class PickleSerializer[T](Serializer):
     """
     Серіалізатор pickle.
+
     Аргументи:
         file_path (str): Шлях до файлу збереження.
         send_error_message (Callable[[str], None]): Функція для виводу попереджень.

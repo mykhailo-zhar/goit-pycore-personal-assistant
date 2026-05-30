@@ -1,9 +1,9 @@
-.. goit-pycore-hw-08 documentation master file
+.. Personal Assistant documentation master file
 
-Документація goit-pycore-hw-08
+Документація Personal Assistant
 ===============================
 
-Бот-асистент контактів: адресна книга, поля запису, серіалізація та CLI.
+Personal Assistant: адресна книга, нотатник, серіалізація та CLI.
 Документація API генерується з docstring-ів модулів ``src`` та ``tests``.
 
 .. toctree::

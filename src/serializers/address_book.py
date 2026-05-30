@@ -1,5 +1,6 @@
 from src.address_book import AddressBook
-from src.utils.serializers.pickle import PickleSerializer
+
+from .pickle import PickleSerializer
 
 
 class AddressBookSerializer(PickleSerializer[AddressBook]):

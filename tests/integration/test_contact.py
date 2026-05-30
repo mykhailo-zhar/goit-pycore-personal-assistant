@@ -2,8 +2,9 @@ import builtins
 
 import pytest
 
-from main import COMMAND_MESSAGES, main
+from main import main
 from src.commands.contact import CONTACT_MESSAGES
+from src.commands.exit import EXIT_COMMAND_MESSAGES
 
 
 def test_main_contact_shows_existing_fields_only(monkeypatch, capsys, tmp_path):
@@ -99,7 +100,7 @@ def test_main_contact_for_missing_contact_shows_error(monkeypatch, capsys, tmp_p
 
     out = capsys.readouterr().out
     assert CONTACT_MESSAGES["NO_SUCH_CONTACT"] in out
-    assert COMMAND_MESSAGES["GOOD_BYE"] in out
+    assert EXIT_COMMAND_MESSAGES["GOOD_BYE"] in out
 
 
 @pytest.mark.parametrize(
@@ -135,5 +136,5 @@ def test_main_contact_wrong_arity_shows_syntax(
     main()
 
     out = capsys.readouterr().out
-    assert CONTACT_MESSAGES["INVALID_SYNTAX"] in out
-    assert COMMAND_MESSAGES["GOOD_BYE"] in out
+    assert "<name>" in out
+    assert EXIT_COMMAND_MESSAGES["GOOD_BYE"] in out

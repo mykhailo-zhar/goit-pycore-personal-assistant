@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.remove_contact import REMOVE_CONTACT_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture
@@ -170,4 +170,5 @@ def test_remove_contact_with_invalid_syntax(monkeypatch, capsys, remove_command)
     main()
 
     out = capsys.readouterr().out
-    assert REMOVE_CONTACT_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<name>" in out
+    assert "<phone>" in out

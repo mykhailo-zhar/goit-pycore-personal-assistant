@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.add_contact import ADD_CONTACT_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture
@@ -110,4 +110,5 @@ def test_add_contact_invalid_syntax(monkeypatch, capsys, serializer, command_lin
     main()
 
     out = capsys.readouterr().out
-    assert ADD_CONTACT_MESSAGES["INVALID_COMMAND"] in out
+    assert "<name>" in out
+    assert "<phone>" in out

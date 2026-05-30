@@ -1,5 +1,6 @@
 from src.note_book import NoteBook
-from src.utils.serializers.pickle import PickleSerializer
+
+from .pickle import PickleSerializer
 
 
 class NoteBookSerializer(PickleSerializer[NoteBook]):

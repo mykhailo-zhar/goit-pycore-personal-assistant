@@ -3,8 +3,9 @@ import builtins
 import pytest
 
 from main import main
+from src.commands.add_tag import ADD_TAG_MESSAGES
 from src.commands.find_by_tag import FIND_BY_TAG_MESSAGES
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 
 @pytest.fixture
@@ -40,10 +41,12 @@ def test_find_by_tag_ascending(monkeypatch, capsys, note_serializer):
     main()
 
     note_book = note_serializer.deserialize()
-    alpha = str(note_book.find_note("alpha"))
-    zebra = str(note_book.find_note("zebra"))
+    alpha = note_book.find_note("alpha")
+    zebra = note_book.find_note("zebra")
     out = capsys.readouterr().out
-    assert out.index(alpha) < out.index(zebra)
+    last_command_output_index = out.index(ADD_TAG_MESSAGES["TAG_ADDED"])
+    out = out[last_command_output_index:]
+    assert out.index(alpha.title.value) < out.index(zebra.title.value)
 
 
 def test_find_by_tag_descending(monkeypatch, capsys, note_serializer):
@@ -74,10 +77,12 @@ def test_find_by_tag_descending(monkeypatch, capsys, note_serializer):
     main()
 
     note_book = note_serializer.deserialize()
-    alpha = str(note_book.find_note("alpha"))
-    zebra = str(note_book.find_note("zebra"))
+    alpha = note_book.find_note("alpha")
+    zebra = note_book.find_note("zebra")
     out = capsys.readouterr().out
-    assert out.index(zebra) < out.index(alpha)
+    last_command_output_index = out.index(ADD_TAG_MESSAGES["TAG_ADDED"])
+    out = out[last_command_output_index:]
+    assert out.index(zebra.title.value) < out.index(alpha.title.value)
 
 
 def test_find_by_tag_invalid_order(monkeypatch, capsys, note_serializer):

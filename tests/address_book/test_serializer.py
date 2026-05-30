@@ -5,7 +5,7 @@ import pytest
 
 from src.address_book import AddressBook
 from src.record import Record
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture

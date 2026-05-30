@@ -1,5 +1,6 @@
+from src.decorators.input_error import input_error
 from src.note_book import NoteBook
-from src.utils.decorators.input_error import input_error
+from src.presenters.note import NotePresenter
 
 SHOW_NOTE_MESSAGES = {
     "INVALID_SYNTAX": "Note command should have the following syntax: note <title>",
@@ -27,4 +28,4 @@ def show_note(note_book: NoteBook, arguments: list[str]) -> str:
     if note is None:
         raise KeyError(SHOW_NOTE_MESSAGES["NO_SUCH_NOTE"])
 
-    return str(note)
+    return str(NotePresenter(note))

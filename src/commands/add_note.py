@@ -1,6 +1,6 @@
+from src.decorators.input_error import input_error
 from src.note import Note
 from src.note_book import NoteBook
-from src.utils.decorators.input_error import input_error
 
 ADD_NOTE_MESSAGES = {
     "INVALID_SYNTAX": "Add note command should have the following syntax: add-note <title>",

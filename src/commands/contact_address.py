@@ -1,5 +1,6 @@
 from src.address_book import AddressBook
-from src.utils.decorators.input_error import input_error
+from src.decorators.input_error import input_error
+from src.presenters.record import RecordPresenter
 
 CONTACT_ADDRESS_MESSAGES = {
     "INVALID_SYNTAX": (
@@ -24,7 +25,7 @@ def contact_address(book: AddressBook, arguments: list[str]) -> str:
 
     search_address = " ".join(arguments).lower()
     found_contacts = [
-        str(record)
+        record
         for record in book.data.values()
         if record.address and search_address in record.address.value.lower()
     ]
@@ -32,4 +33,4 @@ def contact_address(book: AddressBook, arguments: list[str]) -> str:
     if not found_contacts:
         raise ValueError(CONTACT_ADDRESS_MESSAGES["NO_SUCH_CONTACT"])
 
-    return "\n".join(found_contacts)
+    return str(RecordPresenter(found_contacts))

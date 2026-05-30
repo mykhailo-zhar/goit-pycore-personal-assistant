@@ -1,20 +1,29 @@
-tests пакет
+tests package
 =============
 
-Підпакети
+Subpackages
 -----------
 
 .. toctree::
    :maxdepth: 4
 
-   tests.fields
    tests.address_book
-   tests.contacts_bot
+   tests.fields
+   tests.integration
+   tests.note_book
 
-Підмодулі
+Submodules
 ----------
 
-tests.test\_record модуль
+tests.test\_note module
+-----------------------
+
+.. automodule:: tests.test_note
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+tests.test\_record module
 -------------------------
 
 .. automodule:: tests.test_record
@@ -22,7 +31,7 @@ tests.test\_record модуль
    :show-inheritance:
    :undoc-members:
 
-Вміст модуля
+Module contents
 ---------------
 
 .. automodule:: tests
