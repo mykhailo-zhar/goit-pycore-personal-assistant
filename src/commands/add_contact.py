@@ -29,7 +29,7 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
     name, phone = arguments
     existing_record = book.find_record(name)
 
-    if existing_record and existing_record.find(phone):
+    if existing_record and existing_record.find_phone(phone):
         raise ValueError(ADD_CONTACT_MESSAGES["PHONE_ALREADY_EXISTS"])
 
     if existing_record:
