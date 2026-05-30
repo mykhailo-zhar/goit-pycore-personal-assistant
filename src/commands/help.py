@@ -42,6 +42,7 @@ def help(_: AddressBook, arguments: list[str]) -> str:
   {_SECTION.format(title="General")}
 {_cmd("hello", desc="Greet the user.")}
 {_cmd("help", desc="Show this help message.")}
+{_cmd("about", desc="Show information about the development team.")}
 {_cmd("all", desc="Show all contacts.")}
 {_cmd("exit, close", desc="Exit the program.")}
 
