@@ -147,7 +147,9 @@ def test_note_book_change_title_not_found_raises_key_error(note_book):
         note_book.change_title("missing", "new-title")
 
 
-def test_note_book_change_title_collision_raises_key_error(note_book, note, valid_title):
+def test_note_book_change_title_collision_raises_key_error(
+    note_book, note, valid_title
+):
     """Перевіряє ``KeyError`` при колізії нового заголовка.
 
     Дано:

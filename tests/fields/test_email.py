@@ -29,6 +29,7 @@ def test_email_is_subclass_of_field():
 def test_email_valid(email):
     assert Email(email).validate()
 
+
 @pytest.mark.parametrize(
     "email",
     [

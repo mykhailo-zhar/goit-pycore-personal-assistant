@@ -21,5 +21,6 @@ def test_address_is_subclass_of_field():
 def test_address_valid(address):
     assert Address(address).validate()
 
+
 def test_address_invalid():
     assert not Address("").validate()
