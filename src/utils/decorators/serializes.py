@@ -17,6 +17,15 @@ def serializes(func, object: Any, serializer=None):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
+        """Викликає команду та серіалізує об'єкт після успішного виконання.
+
+        Аргументи:
+            *args: Позиційні аргументи для обгорнутої функції.
+            **kwargs: Іменовані аргументи для обгорнутої функції.
+
+        Повертає:
+            Any: Результат виконання команди.
+        """
         result = func(*args, **kwargs)
         if serializer:
             serializer.serialize(object)
