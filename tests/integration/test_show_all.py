@@ -2,7 +2,7 @@ import builtins
 
 from main import main
 from src.commands.show_all import SHOW_ALL_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 def test_show_all_when_no_users(monkeypatch, capsys, tmp_path):

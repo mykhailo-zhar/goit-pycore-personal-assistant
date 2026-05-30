@@ -5,7 +5,7 @@ import pytest
 from main import main
 from src.commands.insert_birthday import INSERT_BIRTHDAY_MESSAGES
 from src.record import BIRTHDAY_NOT_VALID_ERROR
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture

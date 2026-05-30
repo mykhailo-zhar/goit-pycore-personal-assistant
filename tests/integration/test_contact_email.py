@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.contact_email import CONTACT_EMAIL_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 def test_main_contact_email_finds_contact_by_full_email(monkeypatch, capsys, tmp_path):

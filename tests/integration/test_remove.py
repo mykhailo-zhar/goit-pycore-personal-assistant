@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.remove_contact import REMOVE_CONTACT_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture

@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.remove_tag import REMOVE_TAG_MESSAGES
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 
 @pytest.fixture

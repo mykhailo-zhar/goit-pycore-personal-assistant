@@ -1,5 +1,5 @@
-from src.utils.decorators.input_error import input_error
 from src.address_book import AddressBook
+from src.decorators.input_error import input_error
 
 
 @input_error

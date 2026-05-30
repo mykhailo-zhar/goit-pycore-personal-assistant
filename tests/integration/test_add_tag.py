@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.add_tag import ADD_TAG_MESSAGES
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 
 @pytest.fixture

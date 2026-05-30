@@ -1,7 +1,7 @@
 import builtins
 
 from main import main
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 
 def test_note_lifecycle(monkeypatch, capsys, tmp_path):

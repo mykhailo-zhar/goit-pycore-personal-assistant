@@ -1,5 +1,5 @@
 from src.address_book import AddressBook
-from src.utils.decorators.input_error import input_error
+from src.decorators.input_error import input_error
 
 FIND_CONTACTS_BY_ADDRESS_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",

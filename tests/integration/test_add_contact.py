@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.add_contact import ADD_CONTACT_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture

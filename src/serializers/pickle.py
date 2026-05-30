@@ -2,7 +2,7 @@ import pickle
 from pathlib import Path
 from typing import Any, Callable, TypeVar
 
-from src.utils.serializers.base import Serializer
+from .base import Serializer
 
 T = TypeVar("T")
 

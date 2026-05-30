@@ -1,6 +1,6 @@
 from src.address_book import AddressBook
+from src.decorators.input_error import input_error
 from src.record import ADDRESS_NOT_VALID_ERROR
-from src.utils.decorators.input_error import input_error
 
 INSERT_ADDRESS_MESSAGES = {
     "INVALID_SYNTAX": "Insert address command should have the following syntax: insert-address <name> <address>",

@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.remove_note import REMOVE_NOTE_MESSAGES
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 
 @pytest.fixture
@@ -57,9 +57,7 @@ def test_remove_note_not_found(monkeypatch, capsys, note_serializer):
     "command_line",
     ["remove-note", "remove-note a b"],
 )
-def test_remove_note_invalid_syntax(
-    monkeypatch, capsys, note_serializer, command_line
-):
+def test_remove_note_invalid_syntax(monkeypatch, capsys, note_serializer, command_line):
     """Перевіряє синтаксичну помилку для невалідної кількості аргументів.
 
     Дано:

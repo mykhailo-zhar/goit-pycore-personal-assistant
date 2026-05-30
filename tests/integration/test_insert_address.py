@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.insert_address import INSERT_ADDRESS_MESSAGES
-from src.utils.serializers.address_book import AddressBookSerializer
+from src.serializers.address_book import AddressBookSerializer
 
 
 @pytest.fixture

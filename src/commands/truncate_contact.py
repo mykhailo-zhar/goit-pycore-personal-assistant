@@ -1,5 +1,5 @@
 from src.address_book import AddressBook
-from src.utils.decorators.input_error import input_error
+from src.decorators.input_error import input_error
 
 TRUNCATE_CONTACT_MESSAGES = {
     "CONTACT_UPDATED": "Contact updated.",

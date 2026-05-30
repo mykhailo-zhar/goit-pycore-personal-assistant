@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.find_by_tag import FIND_BY_TAG_MESSAGES
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 
 @pytest.fixture

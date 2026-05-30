@@ -28,9 +28,9 @@ from src.commands import (
     show_note,
     truncate_contact,
 )
-from src.utils.decorators.serializes import serializes
-from src.utils.serializers.address_book import AddressBookSerializer
-from src.utils.serializers.note_book import NoteBookSerializer
+from src.decorators.serializes import serializes
+from src.serializers.address_book import AddressBookSerializer
+from src.serializers.note_book import NoteBookSerializer
 
 if __name__ == "__main__":
     sys.path.append(str(Path(__file__).resolve().parents[2]))
