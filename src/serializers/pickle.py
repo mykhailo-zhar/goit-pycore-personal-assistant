@@ -10,6 +10,7 @@ T = TypeVar("T")
 class PickleSerializer[T](Serializer):
     """
     Серіалізатор pickle.
+
     Аргументи:
         file_path (str): Шлях до файлу збереження.
         send_error_message (Callable[[str], None]): Функція для виводу попереджень.

@@ -11,7 +11,12 @@ class RecordPresenter:
         self.records = records if isinstance(records, list) else [records]
 
     def __str__(self) -> str:
-        # Using Rich for table rendering, but Rich import is assumed to be handled outside this method.
+        """
+        Повертає рядкове подання запису.
+
+        Повертає:
+            str: Рядкове подання запису у вигляді таблиці.
+        """
 
         table = Table()
         table.add_column("Name", style="bold")

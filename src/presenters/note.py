@@ -11,7 +11,12 @@ class NotePresenter:
         self.notes = notes if isinstance(notes, list) else [notes]
 
     def __str__(self) -> str:
+        """
+        Повертає рядкове подання нотатки.
 
+        Повертає:
+            str: Рядкове подання нотатки у вигляді таблиці.
+        """
         table = Table()
         table.add_column("Title", style="bold")
         table.add_column("Text", style="bold")
