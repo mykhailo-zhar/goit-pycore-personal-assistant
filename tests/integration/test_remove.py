@@ -23,7 +23,7 @@ def test_remove_contact(monkeypatch, capsys, phone, serializer):
     Дано:
         Завантажена адресна книга з двома телефонами для контакту Pat.
     Коли:
-        Запускається команда remove Pat.
+        Запускається команда ``remove Pat``.
     Тоді:
         Контакт Pat видаляється з адресної книги.
     """
@@ -55,9 +55,9 @@ def test_remove_phone(monkeypatch, capsys, phone, serializer):
     Дано:
         Завантажена адресна книга з одним телефоном для контакту Pat.
     Коли:
-        Запускається команда remove Pat {phone}.
+        Виконується команда ``remove Pat`` з номером телефону контакту.
     Тоді:
-        Телефон {phone} видаляється з контакту Pat.
+        Телефон видаляється з контакту Pat.
     """
     lines = iter(
         [
@@ -89,9 +89,9 @@ def test_remove_non_existent_contact(monkeypatch, capsys, phone, serializer):
     Дано:
         Завантажена адресна книга без записів.
     Коли:
-        Запускається команда remove Pat.
+        Запускається команда ``remove Pat``.
     Тоді:
-        Виникає помилка KeyError.
+        Виводиться повідомлення про відсутність контакту.
     """
 
     lines = iter(
@@ -117,9 +117,9 @@ def test_remove_non_existent_phone(monkeypatch, capsys, phone, serializer):
     Дано:
         Завантажена адресна книга з одним телефоном для контакту Pat.
     Коли:
-        Запускається команда remove Pat <other phone>.
+        Запускається команда ``remove Pat`` з неіснуючим номером телефону.
     Тоді:
-        Виникає помилка KeyError.
+        Виводиться повідомлення про відсутність телефону.
     """
     other_phone = "0000000000"
 
@@ -151,14 +151,14 @@ def test_remove_non_existent_phone(monkeypatch, capsys, phone, serializer):
     "remove_command", ["remove", "remove Pat 1234567890 1234567890"]
 )
 def test_remove_contact_with_invalid_syntax(monkeypatch, capsys, remove_command):
-    """Перевіряє видалення контакту з неправильною синтаксисом.
+    """Перевіряє видалення контакту з неправильним синтаксисом.
 
     Дано:
         Завантажена адресна книга з одним телефоном для контакту Pat.
     Коли:
-        Запускається команда remove Pat <invalid syntax>.
+        Запускається команда ``remove`` з неправильним синтаксисом.
     Тоді:
-        Виникає помилка ValueError.
+        Виводиться повідомлення про синтаксичну помилку.
     """
     lines = iter(
         [

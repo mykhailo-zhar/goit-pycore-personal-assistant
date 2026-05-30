@@ -10,7 +10,7 @@ from src.utils.serializers.address_book import AddressBookSerializer
 
 
 def test_main_insert_email_adds_to_existing_contact(monkeypatch, capsys, tmp_path):
-    """Перевіряє додавання email до існуючого контакту через REPL.
+    """Перевіряє додавання email до існуючого контакту через інтерактивний сценарій.
 
     Дано:
         Існуючий контакт без email.
@@ -47,7 +47,7 @@ def test_main_insert_email_adds_to_existing_contact(monkeypatch, capsys, tmp_pat
 
 
 def test_main_insert_email_replaces_existing_email(monkeypatch, capsys, tmp_path):
-    """Перевіряє перезапис існуючого email через REPL.
+    """Перевіряє перезапис існуючого email через інтерактивний сценарій.
 
     Дано:
         Існуючий контакт з email.
@@ -90,14 +90,14 @@ def test_main_insert_email_replaces_existing_email(monkeypatch, capsys, tmp_path
 def test_main_insert_email_for_missing_contact_shows_error(
     monkeypatch, capsys, tmp_path
 ):
-    """Перевіряє помилку для неіснуючого контакту через REPL.
+    """Перевіряє помилку для неіснуючого контакту через інтерактивний сценарій.
 
     Дано:
         Порожня адресна книга.
     Коли:
         Виконується ``insert-email`` для відсутнього контакту.
     Тоді:
-        Показується повідомлення ``No such user``.
+        Показується повідомлення про відсутність користувача.
     """
     file_path = str(tmp_path / "address_book.pkl")
     lines = iter(
@@ -133,9 +133,9 @@ def test_main_insert_email_wrong_arity_shows_syntax(
     Дано:
         Команда ``insert-email`` з неправильною арністю.
     Коли:
-        Запускається сценарій REPL.
+        Запускається інтерактивний сценарій.
     Тоді:
-        Показується syntax-повідомлення для ``insert-email``.
+        Показується повідомлення про синтаксис для ``insert-email``.
     """
     file_path = str(tmp_path / "address_book.pkl")
     lines = iter(

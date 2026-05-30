@@ -6,6 +6,15 @@ from src.utils.serializers.address_book import AddressBookSerializer
 
 
 def test_show_all_when_no_users(monkeypatch, capsys, tmp_path):
+    """Перевіряє виведення повідомлення для порожньої адресної книги.
+
+    Дано:
+        Порожня адресна книга.
+    Коли:
+        Виконується команда ``all``.
+    Тоді:
+        Виводиться повідомлення про відсутність користувачів.
+    """
     lines = iter(
         [
             "all",
@@ -26,6 +35,15 @@ def test_show_all_when_no_users(monkeypatch, capsys, tmp_path):
 
 
 def test_show_all_displays_full_contact_info(monkeypatch, capsys, tmp_path):
+    """Перевіряє виведення повної інформації про контакт.
+
+    Дано:
+        Адресна книга з контактом Pat, телефоном та днем народження.
+    Коли:
+        Виконується команда ``all``.
+    Тоді:
+        У виводі відображаються ім'я, телефон, день народження та порожні email і адреса.
+    """
     lines = iter(
         [
             "add Pat 1234567890",

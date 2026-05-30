@@ -48,7 +48,7 @@ def test_insert_text_no_text(monkeypatch, capsys, note_serializer):
     Коли:
         Виконується команда ``insert-text work`` без тексту.
     Тоді:
-        Виводиться повідомлення ``No text``.
+        Виводиться повідомлення про відсутність тексту.
     """
     lines = iter(["add-note work", "insert-text work", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
@@ -90,7 +90,7 @@ def test_insert_text_invalid_syntax(monkeypatch, capsys, note_serializer):
     Дано:
         Команда ``insert-text`` без аргументів.
     Коли:
-        Запускається сценарій REPL.
+        Запускається інтерактивний сценарій.
     Тоді:
         Виводиться повідомлення про синтаксис команди.
     """
