@@ -1,56 +1,151 @@
-# goit-pycore-hw-08
+# Personal Assistant
 
-Бот-асистент контактів на OOP: `Record`, `AddressBook`, типізовані поля (`Name`, `Phone`, `Birthday`). Дані зберігаються між сесіями через pickle ([`AddressBookSerializer`](src/utils/address_book_serializer.py)). Точка входу — [`main.py`](main.py), CLI — [`src/scripts/contacts_bot.py`](src/scripts/contacts_bot.py).
+CLI-бот для керування контактами та нотатками на Python з використанням OOP.
 
-## Запуск
+Проєкт реалізує адресну книгу (`AddressBook`, `Record`) з типізованими полями (`Name`, `Phone`, `Birthday`, `Email`, `Address`) та окремий нотатник (`NoteBook`, `Note`) з підтримкою тегів. Дані зберігаються між сесіями через pickle-серіалізацію. Точка входу — [`main.py`](main.py).
+
+## Завантаження з репозиторію
+
+```bash
+git clone https://github.com/mykhailo-zhar/goit-pycore-personal-assistant.git
+cd goit-pycore-personal-assistant
+```
+
+### Вимоги
+
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/) — менеджер залежностей
+- [mise](https://mise.jdx.dev/) — опційно, для задач розробки (тести, лінт, документація)
+
+### Встановлення залежностей
+
+**Мінімальний варіант (лише uv):**
 
 ```bash
 uv sync
-uv run python main.py
 ```
 
-Одна команда на рядок; завершення — `exit` або `close`. Файл даних за замовчуванням: **`addressbook.pkl`** у поточній директорії.
-
-## Команди
-
-| Команда | Синтаксис | Успішна відповідь | Зберігає |
-|---------|-----------|-------------------|----------|
-| hello | `hello` | `How can I help you?` | — |
-| add | `add <ім'я> <телефон>` | `Contact added.` | так |
-| update | `update <ім'я> <телефон>` | `Contact updated.` | так |
-| phone | `phone <ім'я>` | номер(и) через `; ` | — |
-| all | `all` | список користувачів | — |
-| add-birthday | `add-birthday <ім'я> DD.MM.YYYY` | підтвердження | так |
-| show-birthday | `show-birthday <ім'я>` | дата народження | — |
-| birthdays | `birthdays` | найближчі ДН (7 днів) | — |
-| exit / close | `exit` | `Good bye!` | — |
-
-Телефон — 10 цифр; дата народження — `DD.MM.YYYY`. Команди нечутливі до регістру.
-
-## Серіалізація
-
-При старті бот завантажує `addressbook.pkl` (якщо є); після `add`, `update`, `add-birthday` — зберігає книгу. Помилки I/O лише виводяться як попередження. Деталі — [`address_book_serializer.py`](src/utils/address_book_serializer.py), тести — [`tests/address_book/test_serializer.py`](tests/address_book/test_serializer.py).
-
-## Розробка
-
-Потрібні [mise](https://mise.jdx.dev/) та Python 3.12 ([mise.toml](mise.toml)):
+**Повний варіант для розробки (mise + uv):**
 
 ```bash
 mise trust && mise install
 uv sync
-mise run pre-commit-install   # один раз на клон
+mise run pre-commit-install   # один раз після клонування
 ```
+
+## Запуск
+
+```bash
+uv run python main.py
+```
+
+Після старту вводьте одну команду на рядок. Завершення роботи — `exit` або `close` (також `Ctrl+C`).
+
+Команди нечутливі до регістру. Для списку всіх команд у CLI введіть `help`.
+
+## Формати даних
+
+| Поле | Формат |
+|------|--------|
+| Телефон | рівно 10 цифр |
+| День народження | `DD.MM.YYYY` |
+| Email | `user@domain.com` (латиниця, нижній регістр) |
+
+Аргументи з позначкою `*` (наприклад, `<address*>`, `<text*>`) можуть містити пробіли — усе після першого аргументу вважається одним значенням.
+
+## Команди
+
+Позначка **💾** означає, що команда зберігає зміни на диск.
+
+### Загальні
+
+| Команда | Синтаксис | Опис |
+|---------|-----------|------|
+| `hello` | `hello` | Привітання |
+| `help` | `help` | Довідка по командах |
+| `all` | `all` | Список усіх контактів |
+| `exit` / `close` | `exit` | Завершення роботи |
+
+### Контакти
+
+| Команда | Синтаксис | Опис | Зберігає |
+|---------|-----------|------|----------|
+| `add` | `add <ім'я> <телефон>` | Додати контакт або телефон до існуючого | 💾 |
+| `truncate` | `truncate <ім'я> <телефон>` | Замінити всі телефони одним новим | 💾 |
+| `change-phone` | `change-phone <ім'я> <старий> <новий>` | Змінити один номер телефону | 💾 |
+| `remove` | `remove <ім'я> [<телефон>]` | Видалити контакт або один телефон | 💾 |
+| `contact` | `contact <ім'я>` | Повна інформація про контакт | — |
+| `contact-address` | `contact-address <адреса*>` | Знайти контакти за частиною адреси | — |
+| `contact-email` | `contact-email <email>` | Знайти контакт за email | — |
+| `find-address` | `find-address <адреса*>` | Список контактів за частиною адреси | — |
+| `insert-address` | `insert-address <ім'я> <адреса*>` | Додати або замінити адресу | 💾 |
+| `insert-email` | `insert-email <ім'я> <email>` | Додати або замінити email | 💾 |
+
+### Дні народження
+
+| Команда | Синтаксис | Опис | Зберігає |
+|---------|-----------|------|----------|
+| `insert-birthday` | `insert-birthday <ім'я> DD.MM.YYYY` | Додати або замінити день народження | 💾 |
+| `show-birthday` | `show-birthday <ім'я>` | Показати день народження контакту | — |
+| `birthdays` | `birthdays <днів>` | Найближчі дні народження за N днів | — |
+
+### Нотатки
+
+| Команда | Синтаксис | Опис | Зберігає |
+|---------|-----------|------|----------|
+| `add-note` | `add-note <заголовок>` | Створити порожню нотатку | 💾 |
+| `remove-note` | `remove-note <заголовок>` | Видалити нотатку | 💾 |
+| `insert-text` | `insert-text <заголовок> <текст*>` | Додати або замінити текст нотатки | 💾 |
+| `change-title` | `change-title <старий> <новий>` | Перейменувати нотатку | 💾 |
+| `note` | `note <заголовок>` | Показати нотатку (заголовок, текст, теги) | — |
+
+### Теги
+
+| Команда | Синтаксис | Опис | Зберігає |
+|---------|-----------|------|----------|
+| `add-tag` | `add-tag <заголовок> <тег>` | Додати тег до нотатки | 💾 |
+| `remove-tag` | `remove-tag <заголовок> <тег>` | Видалити тег з нотатки | 💾 |
+| `tag` | `tag <тег> <ascending\|descending>` | Нотатки з тегом, відсортовані за заголовком | — |
+
+### Приклади
+
+```text
+add John 1234567890
+insert-birthday Jane 25.12.1990
+insert-address John Khreshchatyk 1 Kyiv
+add-note ideas
+insert-text ideas Buy milk and bread
+add-tag ideas urgent
+tag urgent ascending
+birthdays 7
+```
+
+## Серіалізація
+
+При старті бот завантажує два файли з поточної директорії (якщо вони існують):
+
+| Файл | Зміст |
+|------|-------|
+| `addressbook.pkl` | Адресна книга |
+| `notebook.pkl` | Книга нотаток |
+
+Після успішного виконання команд із позначкою 💾 відповідний файл автоматично перезаписується. Помилки I/O виводяться як попередження, не перериваючи роботу програми.
+
+Реалізація: [`src/serializers/`](src/serializers/).
+
+## Розробка
 
 | Задача | Команда |
 |--------|---------|
-| Тести | `mise run test` |
+| Тести | `mise run test` або `uv run pytest tests/` |
 | Лінт | `mise run lint` |
 | Збірка HTML-доків | `mise run build-docs` |
 | Регенерація apidoc | `mise run generate-docs` |
+| Pre-commit | `mise run pre-commit-run` |
 
-**Документація:** HTML у `docs/build/`. Після `generate-docs` заголовки в `.rst` перезаписуються англійською — локалізуйте їх знову або не регенеруйте без потреби.
+HTML-документація збирається в `docs/build/html/`. Після `generate-docs` заголовки в `.rst` перезаписуються англійською — локалізуйте їх знову або не регенеруйте без потреби.
 
-**CI:** тести на PR/push до `main` / `master` — [`.github/workflows/tests.yml`](.github/workflows/tests.yml).
+**CI:** тести на PR/push до `main` / `master` — [`.github/workflows/tests.yml`](.github/workflows/tests.yml). Документація публікується на GitHub Pages — [`.github/workflows/gh-pages.yml`](.github/workflows/gh-pages.yml).
 
 ## Ліцензія
 
