@@ -28,7 +28,7 @@ def test_birthdays_shows_upcoming(monkeypatch, capsys, serializer):
     lines = iter(
         [
             "add Pat 1234567890",
-            "add-birthday Pat 02.06.1990",
+            "insert-birthday Pat 02.06.1990",
             "birthdays 7",
             "exit",
         ]
@@ -56,7 +56,7 @@ def test_birthdays_no_upcoming(monkeypatch, capsys, serializer):
     lines = iter(
         [
             "add Pat 1234567890",
-            "add-birthday Pat 02.06.1990",
+            "insert-birthday Pat 02.06.1990",
             "birthdays 0",
             "exit",
         ]

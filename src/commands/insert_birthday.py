@@ -1,7 +1,7 @@
 from src.address_book import AddressBook
 from src.utils.decorators.input_error import input_error
 
-ADD_BIRTHDAY_MESSAGES = {
+INSERT_BIRTHDAY_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
     "BIRTHDAY_ADDED": "Birthday added. Replacing {old_birthday} with {new_birthday} for {name}",
     "NO_SUCH_USER": "No such user",
@@ -9,7 +9,7 @@ ADD_BIRTHDAY_MESSAGES = {
 
 
 @input_error
-def add_birthday(book: AddressBook, arguments: list[str]) -> str:
+def insert_birthday(book: AddressBook, arguments: list[str]) -> str:
     """Додає день народження контакту.
 
     Аргументи:
@@ -23,14 +23,14 @@ def add_birthday(book: AddressBook, arguments: list[str]) -> str:
         ValueError: Якщо синтаксис команди невірний або контакт не знайдено.
     """
     if len(arguments) != 2:
-        raise ValueError(ADD_BIRTHDAY_MESSAGES["INVALID_COMMAND"])
+        raise ValueError(INSERT_BIRTHDAY_MESSAGES["INVALID_COMMAND"])
     name, birthday = arguments
     record = book.find_record(name)
     if not record:
-        raise ValueError(ADD_BIRTHDAY_MESSAGES["NO_SUCH_USER"])
+        raise ValueError(INSERT_BIRTHDAY_MESSAGES["NO_SUCH_USER"])
     old_birthday = record.birthday.value if record.birthday else None
     record.add_birthday(birthday)
-    return ADD_BIRTHDAY_MESSAGES["BIRTHDAY_ADDED"].format(
+    return INSERT_BIRTHDAY_MESSAGES["BIRTHDAY_ADDED"].format(
         old_birthday=old_birthday,
         new_birthday=birthday,
         name=name,
