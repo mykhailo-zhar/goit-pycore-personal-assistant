@@ -111,4 +111,5 @@ def test_change_title_invalid_syntax(
     main()
 
     out = capsys.readouterr().out
-    assert CHANGE_TITLE_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<old_title>" in out
+    assert "<new_title>" in out

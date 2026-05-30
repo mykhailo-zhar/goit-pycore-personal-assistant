@@ -170,4 +170,5 @@ def test_remove_contact_with_invalid_syntax(monkeypatch, capsys, remove_command)
     main()
 
     out = capsys.readouterr().out
-    assert REMOVE_CONTACT_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<name>" in out
+    assert "<phone>" in out

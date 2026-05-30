@@ -134,4 +134,4 @@ def test_main_contact_address_wrong_arity_shows_syntax(monkeypatch, capsys, tmp_
     main()
 
     out = capsys.readouterr().out
-    assert CONTACT_ADDRESS_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<address>" in out

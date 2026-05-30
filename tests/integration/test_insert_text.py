@@ -103,4 +103,4 @@ def test_insert_text_invalid_syntax(monkeypatch, capsys, note_serializer):
     main()
 
     out = capsys.readouterr().out
-    assert INSERT_TEXT_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<title>" in out

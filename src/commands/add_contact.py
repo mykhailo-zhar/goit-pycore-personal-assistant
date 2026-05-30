@@ -3,9 +3,9 @@ from src.decorators.input_error import input_error
 from src.record import Record
 
 ADD_CONTACT_MESSAGES = {
-    "INVALID_COMMAND": "Invalid command.",
     "CONTACT_ADDED": "Contact added.",
     "PHONE_ALREADY_EXISTS": "Phone already exists",
+    "INVALID_SYNTAX": "Invalid syntax. Usage: add <name> <phone>",
 }
 
 
@@ -24,7 +24,7 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
         ValueError: Якщо синтаксис команди невірний або телефон уже існує.
     """
     if len(arguments) != 2:
-        raise ValueError(ADD_CONTACT_MESSAGES["INVALID_COMMAND"])
+        raise ValueError(ADD_CONTACT_MESSAGES["INVALID_SYNTAX"])
 
     name, phone = arguments
     existing_record = book.find_record(name)

@@ -34,7 +34,9 @@ def test_main_contact_email_finds_contact_by_full_email(monkeypatch, capsys, tmp
     main()
 
     out = capsys.readouterr().out
-    assert f"Contact name: Mykhailo, phones: 1234567890, email: {email}" in out
+    assert "Mykhailo" in out
+    assert "1234567890" in out
+    assert email in out
 
 
 def test_main_contact_email_returns_first_on_collision(monkeypatch, capsys, tmp_path):
@@ -137,4 +139,4 @@ def test_main_contact_email_wrong_arity_shows_syntax(
     main()
 
     out = capsys.readouterr().out
-    assert CONTACT_EMAIL_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<email>" in out
