@@ -47,7 +47,7 @@ def test_show_all_displays_full_contact_info(monkeypatch, capsys, tmp_path):
     lines = iter(
         [
             "add Pat 1234567890",
-            "add-birthday Pat 14.10.1992",
+            "insert-birthday Pat 14.10.1992",
             "all",
             "exit",
         ]
