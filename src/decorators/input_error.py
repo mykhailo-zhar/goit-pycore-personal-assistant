@@ -19,7 +19,5 @@ def input_error(func):
             return func(*args, **kwargs)
         except (ValueError, TypeError, IndexError, KeyError) as e:
             return f"[red]Error: {e}[/red]"
-        except Exception as e:
-            return f"[bold red]An unexpected error occurred: {e}[/bold red]"
 
     return wrapper
