@@ -1,3 +1,5 @@
+from rich.console import Console
+
 from src.address_book import AddressBook
 from src.commands import (
     add_contact,
@@ -32,8 +34,8 @@ from src.serializers.address_book import AddressBookSerializer
 from src.serializers.note_book import NoteBookSerializer
 
 COMMAND_MESSAGES = {
-    "INVALID_COMMAND": "Invalid command.",
-    "GOOD_BYE": "Good bye!",
+    "INVALID_COMMAND": "Invalid command. Type 'help' for commands list.",
+    "GOOD_BYE": "Good bye! See you later!",
 }
 
 SERIALIZER_PATH = "addressbook.pkl"
@@ -132,7 +134,10 @@ def handle_command(
 
 
 def _print_warning(message: str) -> None:
-    print(message)
+    rich_console.print(f"[bold yellow]{message}[/bold yellow]")
+
+
+rich_console = Console()
 
 
 def main() -> None:
@@ -145,7 +150,7 @@ def main() -> None:
     )
     book: AddressBook = serializer.deserialize()
     note_book: NoteBook = note_serializer.deserialize()
-    print(
+    rich_console.print(
         "Bot is started. Type 'hello' to greet, 'help' for commands list, 'exit' or 'close' to quit."
     )
     try:
@@ -159,11 +164,12 @@ def main() -> None:
             response = handle_command(
                 book, note_book, command, arguments, serializer, note_serializer
             )
-            print(response)
             if command in ["exit", "close"]:
+                rich_console.print(f"\n[bold green]{response}[/bold green]")
                 break
+            rich_console.print(response)
     except (KeyboardInterrupt, EOFError):
-        print(f"\n{COMMAND_MESSAGES['GOOD_BYE']}")
+        rich_console.print(f"\n[bold green]{COMMAND_MESSAGES['GOOD_BYE']}[/bold green]")
 
 
 if __name__ == "__main__":
