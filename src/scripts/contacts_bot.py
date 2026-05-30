@@ -1,20 +1,38 @@
 import sys
-from functools import wraps
 from pathlib import Path
 
+from src.commands import (
+    add_note,
+    add_tag,
+    change_title,
+    find_by_tag,
+    insert_address,
+    insert_email,
+    insert_text,
+    remove_contact,
+    remove_tag,
+    show_all,
+    show_note,
+    help_command,
+    remove_note,
+    )
 from src.record import Record
-from src.utils.address_book_serializer import AddressBookSerializer
+from src.utils.decorators.input_error import input_error
+from src.utils.decorators.serializes import serializes
+from src.utils.serializers.address_book import AddressBookSerializer
+from src.utils.serializers.note_book import NoteBookSerializer
 
 if __name__ == "__main__":
-    sys.path.append(str(Path(__file__).parent[3].absolute()))
-
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from src.address_book import AddressBook
+from src.note_book import NoteBook
 
 COMMAND_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
     "CONTACT_ADDED": "Contact added.",
     "CONTACT_UPDATED": "Contact updated.",
+    "ADDRESS_ADDED": "Address added.",
     "BIRTHDAY_ADDED": "Birthday added. Replacing {old_birthday} with {new_birthday} for {name}",
     "NO_BIRTHDAY_SET": "No birthday set for {name}",
     "BIRTHDAY_SHOWED": "Birthday for {name} is {birthday}",
@@ -22,48 +40,22 @@ COMMAND_MESSAGES = {
     "NO_SUCH_USER": "No such user",
     "PLEASE_CHANGE_USER": "Please change the user",
     "GOOD_BYE": "Good bye!",
-    "NO_USERS": "There are no users",
     "HELLO": "How can I help you?",
     "PHONE_ALREADY_EXISTS": "Phone already exists",
-}
+    "NO_CONTACTS_BY_ADDRESS": "No contacts found by address",
+    "CONTACTS_BY_ADDRESS": "Contacts by address:\n{contacts}",
+    "PHONE_CHANGED": "Phone was changed",
+    "PHONE_CHANGE_SYNTAX": "Syntax: change-phone <name> <old phone> <new phone>",
+    "BIRTHDAYS_SYNTAX": "Syntax: birthdays <days>",
+    "BIRTHDAYS_DAYS": "Days must be a non-negative integer.",
+    "BIRTHDAYS_NO_UPCOMMING": "No upcoming birthdays.",
+    "BIRTHDAYS_FORMAT": "%d.%m.%Y",
+    "PHONES_TRUNCATED": "Phones updated for {name}: {phone}",
+    "TRUNCATE_SYNTAX": "Syntax: truncate <name> <new_phone>",
+    }
 
 SERIALIZER_PATH = "addressbook.pkl"
-
-
-def input_error(func):
-    """Декоратор для обробки помилок введення."""
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except (ValueError, TypeError, IndexError, KeyError) as e:
-            return str(e)
-
-    return wrapper
-
-
-def serializes(func, object, serializer=None):
-    """
-    Декоратор для збереження адресної книги після команди.
-
-    Аргументи:
-        func (Callable): Функція-обробник.
-        object (Any): Об'єкт для серіалізації.
-        serializer (AddressBookSerializer | None): Серіалізатор.
-
-    Повертає:
-        Callable: Обгорнута функція.
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
-        if serializer:
-            serializer.serialize(object)
-        return result
-
-    return wrapper
+NOTE_SERIALIZER_PATH = "notebook.pkl"
 
 
 def parse_input(line: str) -> tuple[str, list[str]]:
@@ -118,11 +110,10 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
     name, phone = arguments
     existing_record = book.find_record(name)
 
-    if existing_record:
-        for existing_phone in existing_record.phones:
-            if existing_phone.value == phone:
-                raise ValueError(COMMAND_MESSAGES["PHONE_ALREADY_EXISTS"])
+    if existing_record and existing_record.find(phone):
+        raise ValueError(COMMAND_MESSAGES["PHONE_ALREADY_EXISTS"])
 
+    if existing_record:
         existing_record.add_phone(phone)
     else:
         record = Record(name)
@@ -133,30 +124,54 @@ def add_contact(book: AddressBook, arguments: list[str]) -> str:
 
 
 @input_error
-def update_contact(book: AddressBook, arguments: list[str]) -> str:
+def change_phone(book: AddressBook, arguments: list[str]) -> str:
     """
-    Оновлює телефони контакту.
+    Змінює телефон контакту.
 
     Аргументи:
         book (AddressBook): Адресна книга.
-        arguments (list[str]): Ім'я та новий телефон.
+        arguments (list[str]): Ім'я, старий телефон та новий телефон.
 
     Повертає:
         str: Відповідь на команду.
-
-    Примітки:
-        Замінює всі телефони контакту одним вказаним номером.
     """
+    if len(arguments) != 3:
+        raise ValueError(COMMAND_MESSAGES["PHONE_CHANGE_SYNTAX"])
+
+    name, old_phone, new_phone = arguments
+
+    record = book.find_record(name)
+    if record is None:
+        raise KeyError(COMMAND_MESSAGES["NO_SUCH_USER"])
+
+    record.edit_phone(old_phone, new_phone)
+
+    return COMMAND_MESSAGES["PHONE_CHANGED"]
+
+
+@input_error
+def truncate_contact(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Очищає всі телефони контакту і додає один новий.
+    """
+
     if len(arguments) != 2:
-        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+        raise ValueError(COMMAND_MESSAGES["TRUNCATE_SYNTAX"])
+
     name, phone = arguments
-    record = Record(name)
-    record.add_phone(phone)
 
-    if not book.remove_record(name):
-        raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
+    record = book.find_record(name)
 
-    book.add_record(record)
+    if record is None:
+        raise KeyError(COMMAND_MESSAGES["NO_SUCH_USER"])
+    old_phones = record.phones.copy()
+
+    try:
+        record.phones.clear()
+        record.add_phone(phone)
+    except ValueError:
+        record.phones.extend(old_phones)
+        raise
 
     return COMMAND_MESSAGES["CONTACT_UPDATED"]
 
@@ -185,6 +200,58 @@ def add_birthday(book: AddressBook, arguments: list[str]) -> str:
         old_birthday=old_birthday,
         new_birthday=birthday,
         name=name,
+        )
+
+
+@input_error
+def add_address(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Додає адресу до існуючого контакту.
+
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Ім'я контакту та адреса.
+
+    Повертає:
+        str: Відповідь на команду.
+    """
+    if len(arguments) < 2:
+        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+    name = arguments[0]
+    address = " ".join(arguments[1:])
+    record = book.find_record(name)
+    if not record:
+        raise ValueError(COMMAND_MESSAGES["NO_SUCH_USER"])
+    record.add_address(address)
+    return COMMAND_MESSAGES["ADDRESS_ADDED"]
+
+
+@input_error
+def find_contacts_by_address(book: AddressBook, arguments: list[str]) -> str:
+    """
+    Шукає контакти за адресою.
+
+    Аргументи:
+        book (AddressBook): Адресна книга.
+        arguments (list[str]): Адреса або частина адреси для пошуку.
+
+    Повертає:
+        str: Знайдені контакти або повідомлення, що контактів немає.
+    """
+    if len(arguments) < 1:
+        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
+    search_address = " ".join(arguments).lower()
+    found_contacts = [
+        str(record)
+        for record in book.data.values()
+        if record.address and search_address in record.address.value.lower()
+    ]
+
+    if not found_contacts:
+        return COMMAND_MESSAGES["NO_CONTACTS_BY_ADDRESS"]
+
+    return COMMAND_MESSAGES["CONTACTS_BY_ADDRESS"].format(
+        contacts="\n".join(found_contacts)
     )
 
 
@@ -210,7 +277,7 @@ def show_birthday(book: AddressBook, arguments: list[str]) -> str:
         raise ValueError(COMMAND_MESSAGES["NO_BIRTHDAY_SET"].format(name=name))
     return COMMAND_MESSAGES["BIRTHDAY_SHOWED"].format(
         name=name, birthday=record.birthday.value
-    )
+        )
 
 
 @input_error
@@ -235,7 +302,7 @@ def show_phone(book: AddressBook, arguments: list[str]) -> str:
 
 
 @input_error
-def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
+def birthdays(book: AddressBook, arguments: list[str]) -> str:
     """
     Показує найближчі дні народження.
 
@@ -246,45 +313,23 @@ def birthdays(book: AddressBook, arguments: list[str] = []) -> str:
     Повертає:
         str: Відповідь на команду.
     """
-    if arguments:
-        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
-    if not book.data:
-        raise ValueError(COMMAND_MESSAGES["NO_USERS"])
-    upcoming_birthdays = book.get_upcoming_birthdays()
-    return COMMAND_MESSAGES["UPCOMING_BIRTHDAYS"].format(
-        birthdays="\n".join(
-            "{birthday} {name}".format(
-                birthday=record.birthday.format(book.today),
-                name=record.name,
-            )
-            for record in upcoming_birthdays
-        )
-    )
+    if len(arguments) != 1:
+        raise ValueError(COMMAND_MESSAGES["BIRTHDAYS_SYNTAX"])
+    if not arguments[0].isdigit():
+        raise ValueError(COMMAND_MESSAGES["BIRTHDAYS_DAYS"])
 
+    days = int(arguments[0])
 
-@input_error
-def show_all(book: AddressBook, arguments: list[str] = []) -> str:
-    """
-    Показує всіх контактів.
+    processed_records = book.get_upcoming_birthdays(days)
 
-    Аргументи:
-        book (AddressBook): Адресна книга.
-        arguments (list[str]): Аргументи команди.
+    if not processed_records:
+        return COMMAND_MESSAGES["BIRTHDAYS_NO_UPCOMMING"]
 
-    Повертає:
-        str: Відповідь на команду.
-    """
-    if arguments:
-        raise ValueError(COMMAND_MESSAGES["INVALID_COMMAND"])
-    if not book.data:
-        raise ValueError(COMMAND_MESSAGES["NO_USERS"])
-
-    count_users = len(book.data)
-    users_list = [
-        f"{record.name}: {'; '.join(phone.value for phone in record.phones)}"
-        for _, record in sorted(book.data.items())
-    ]
-    return f"Stored users ({count_users}):\n{'\n'.join(users_list)}"
+    lines = [
+        f"{pr.record.name.value}: {pr.congratulation_date.strftime(COMMAND_MESSAGES['BIRTHDAYS_FORMAT'])}"
+        for pr in processed_records
+        ]
+    return "\n".join(lines)
 
 
 @input_error
@@ -305,19 +350,23 @@ def exit(_: AddressBook, arguments: list[str] = []) -> str:
 
 
 def handle_command(
-    book: AddressBook,
-    command: str,
-    arguments: list[str],
-    serializer: AddressBookSerializer = None,
-) -> str:
+        book: AddressBook,
+        note_book: NoteBook,
+        command: str,
+        arguments: list[str],
+        serializer: AddressBookSerializer = None,
+        note_serializer: NoteBookSerializer = None,
+        ) -> str:
     """
     Виконує команду користувача.
 
     Аргументи:
         book (AddressBook): Адресна книга.
+        note_book (NoteBook): Книга нотаток.
         command (str): Назва команди.
         arguments (list[str]): Аргументи команди.
-        serializer (AddressBookSerializer | None): Серіалізатор для збереження.
+        serializer (AddressBookSerializer | None): Серіалізатор адресної книги.
+        note_serializer (NoteBookSerializer | None): Серіалізатор книги нотаток.
 
     Повертає:
         str: Відповідь на команду.
@@ -325,15 +374,51 @@ def handle_command(
     commands = {
         "hello": hello,
         "add": serializes(add_contact, book, serializer),
-        "update": serializes(update_contact, book, serializer),
+        "truncate": serializes(truncate_contact, book, serializer),
+        "change-phone": serializes(change_phone, book, serializer),
+        "remove": serializes(remove_contact, book, serializer),
+        "insert-address": serializes(insert_address, book, serializer),
         "phone": show_phone,
         "all": show_all,
         "add-birthday": serializes(add_birthday, book, serializer),
+        "add-address": serializes(add_address, book, serializer),
+        "find-address": find_contacts_by_address,
+        "insert-email": serializes(insert_email, book, serializer),
         "show-birthday": show_birthday,
         "birthdays": birthdays,
+        "add-note": serializes(
+            lambda _book, args: add_note(note_book, args), note_book,
+            note_serializer
+            ),
+        "remove-note": serializes(
+            lambda _book, args: remove_note(note_book, args), note_book,
+            note_serializer
+            ),
+        "insert-text": serializes(
+            lambda _book, args: insert_text(note_book, args),
+            note_book,
+            note_serializer,
+            ),
+        "change-title": serializes(
+            lambda _book, args: change_title(note_book, args),
+            note_book,
+            note_serializer,
+            ),
+        "note": lambda _book, args: show_note(note_book, args),
+        "add-tag": serializes(
+            lambda _book, args: add_tag(note_book, args), note_book,
+            note_serializer
+            ),
+        "remove-tag": serializes(
+            lambda _book, args: remove_tag(note_book, args),
+            note_book,
+            note_serializer,
+            ),
+        "tag": lambda _book, args: find_by_tag(note_book, args),
         "exit": exit,
         "close": exit,
-    }
+        "help": help_command,
+        }
 
     if command not in commands:
         return COMMAND_MESSAGES["INVALID_COMMAND"]
@@ -341,19 +426,39 @@ def handle_command(
     return commands[command](book, arguments)
 
 
+def _print_warning(message: str) -> None:
+    print(message)
+
+
 def main() -> None:
     """Головна функція CLI-бота."""
     serializer: AddressBookSerializer = AddressBookSerializer(
-        SERIALIZER_PATH, lambda message: print(message)
-    )
+        SERIALIZER_PATH, _print_warning
+        )
+    note_serializer: NoteBookSerializer = NoteBookSerializer(
+        NOTE_SERIALIZER_PATH, _print_warning
+        )
     book: AddressBook = serializer.deserialize()
-    while True:
-        line = input()
-        command, arguments = parse_input(line)
-        response = handle_command(book, command, arguments, serializer)
-        print(response)
-        if command in ["exit", "close"]:
-            break
+    note_book: NoteBook = note_serializer.deserialize()
+    print(
+        f"Bot is started. Type 'hello' to greet, 'help' for commands list, 'exit' or 'close' to quit.")
+    try:
+        while True:
+            line = input().strip()
+
+            if not line:
+                continue
+
+            command, arguments = parse_input(line)
+            response = handle_command(
+                book, note_book, command, arguments, serializer,
+                note_serializer
+                )
+            print(response)
+            if command in ["exit", "close"]:
+                break
+    except (KeyboardInterrupt, EOFError):
+        print(f"\n{COMMAND_MESSAGES['GOOD_BYE']}")
 
 
 if __name__ == "__main__":
