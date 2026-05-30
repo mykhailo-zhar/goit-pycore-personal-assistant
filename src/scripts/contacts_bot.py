@@ -14,6 +14,7 @@ from src.commands import (
     show_all,
     show_note,
     help_command,
+    remove_note,
     )
 from src.record import Record
 from src.utils.decorators.input_error import input_error
@@ -47,7 +48,7 @@ COMMAND_MESSAGES = {
     "BIRTHDAYS_FORMAT": "%d.%m.%Y",
     "PHONES_TRUNCATED": "Phones updated for {name}: {phone}",
     "TRUNCATE_SYNTAX": "Syntax: truncate <name> <new_phone>",
-}
+    }
 
 SERIALIZER_PATH = "addressbook.pkl"
 NOTE_SERIALIZER_PATH = "notebook.pkl"
@@ -323,6 +324,10 @@ def handle_command(
         "birthdays": birthdays,
         "add-note": serializes(
             lambda _book, args: add_note(note_book, args), note_book,
+            note_serializer
+            ),
+        "remove-note": serializes(
+            lambda _book, args: remove_note(note_book, args), note_book,
             note_serializer
             ),
         "insert-text": serializes(

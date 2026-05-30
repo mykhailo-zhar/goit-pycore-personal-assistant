@@ -10,6 +10,7 @@ from .remove_tag import remove_tag
 from .show_all import show_all
 from .show_note import show_note
 from .help_command import help_command
+from .remove_note import remove_note
 
 __all__ = [
     "add_note",
@@ -24,4 +25,5 @@ __all__ = [
     "show_all",
     "show_note",
     "help_command",
+    "remove_note"
     ]
