@@ -102,6 +102,15 @@
     class NotesBookSerializer
     class AddressBookSerializer
 
+    class NotePresenter {
+      +\__init__(notes list~Note~ | Note)
+      +\__str__(self) str
+    }
+    class RecordPresenter {
+      +\__init__(records list~Record~ | Record)
+      +\__str__(self) str
+    }
+
     Field <|-- Name
     Field <|-- Phone
     Field <|-- Birthday
@@ -140,6 +149,7 @@
     note for AddressBook "Записи за іменем контакту. <br/> get_upcoming_birthdays() — ДН у наступні 7 днів."
     note for ProcessedRecord "Запис із датою привітання з урахуванням вихідних. <br/> Фільтрація та сортування найближчих ДН."
     note for PickleSerializer "Збереження T через pickle. <br/> При помилці I/O — попередження через send_error_message."
+
 Зв'язки
 -------
 

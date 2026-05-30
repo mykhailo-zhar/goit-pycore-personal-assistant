@@ -1,20 +1,23 @@
-src пакет
+src package
 ===========
 
-Підпакети
+Subpackages
 -----------
 
 .. toctree::
    :maxdepth: 4
 
+   src.commands
+   src.decorators
    src.fields
+   src.presenters
+   src.serializers
    src.utils
-   src.scripts
 
-Підмодулі
+Submodules
 ----------
 
-src.address\_book модуль
+src.address\_book module
 ------------------------
 
 .. automodule:: src.address_book
@@ -22,7 +25,23 @@ src.address\_book модуль
    :show-inheritance:
    :undoc-members:
 
-src.record модуль
+src.note module
+---------------
+
+.. automodule:: src.note
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.note\_book module
+---------------------
+
+.. automodule:: src.note_book
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.record module
 -----------------
 
 .. automodule:: src.record
@@ -30,7 +49,7 @@ src.record модуль
    :show-inheritance:
    :undoc-members:
 
-Вміст модуля
+Module contents
 ---------------
 
 .. automodule:: src
