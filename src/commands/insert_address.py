@@ -20,10 +20,12 @@ def insert_address(book: AddressBook, arguments: list[str]) -> str:
         book (AddressBook): Адресна книга.
         arguments (list[str]): Ім'я та адреса.
     """
-    if len(arguments) != 2:
+    if len(arguments) < 2:
         raise ValueError(INSERT_ADDRESS_MESSAGES["INVALID_SYNTAX"])
 
-    name, address = arguments
+    name = arguments[0]
+    address = " ".join(arguments[1:])
+
     record = book.find_record(name)
     if not record:
         raise ValueError(INSERT_ADDRESS_MESSAGES["NO_SUCH_CONTACT"])

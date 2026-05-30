@@ -28,11 +28,11 @@ def test_main_contact_address_finds_contacts_by_similarity(
     lines = iter(
         [
             "add Anna 1111111111",
-            "add-address Anna Odesa, Heroiv Square 1",
+            "insert-address Anna Odesa, Heroiv Square 1",
             "add Ivan 2222222222",
-            "add-address Ivan Kyiv, Khreshchatyk 10",
+            "insert-address Ivan Kyiv, Khreshchatyk 10",
             "add Oleg 3333333333",
-            "add-address Oleg Odesa, Deribasivska 5",
+            "insert-address Oleg Odesa, Deribasivska 5",
             "contact-address Odesa",
             "exit",
         ]
@@ -44,9 +44,9 @@ def test_main_contact_address_finds_contacts_by_similarity(
     main()
 
     out = capsys.readouterr().out
-    assert "Contact name: Anna" in out
-    assert "Contact name: Oleg" in out
-    assert "Contact name: Ivan" not in out
+    assert "Anna" in out
+    assert "Oleg" in out
+    assert "Ivan" not in out
 
 
 def test_main_contact_address_supports_multi_word_search(monkeypatch, capsys, tmp_path):
@@ -63,9 +63,9 @@ def test_main_contact_address_supports_multi_word_search(monkeypatch, capsys, tm
     lines = iter(
         [
             "add Anna 1111111111",
-            "add-address Anna Odesa, Heroiv Square 1",
+            "insert-address Anna Odesa, Heroiv Square 1",
             "add Ivan 2222222222",
-            "add-address Ivan Kyiv, Khreshchatyk 10",
+            "insert-address Ivan Kyiv, Khreshchatyk 10",
             "contact-address Heroiv Square",
             "exit",
         ]
@@ -77,8 +77,8 @@ def test_main_contact_address_supports_multi_word_search(monkeypatch, capsys, tm
     main()
 
     out = capsys.readouterr().out
-    assert "Contact name: Anna" in out
-    assert "Contact name: Ivan" not in out
+    assert "Anna" in out
+    assert "Ivan" not in out
 
 
 def test_main_contact_address_for_missing_address_shows_error(

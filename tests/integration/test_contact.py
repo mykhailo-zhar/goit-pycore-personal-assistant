@@ -54,7 +54,7 @@ def test_main_contact_shows_all_fields(monkeypatch, capsys, tmp_path):
         [
             "add Pat 1234567890",
             "insert-email Pat pat@example.com",
-            "add-address Pat Odesa",
+            "insert-address Pat Odesa",
             "insert-birthday Pat 14.10.1992",
             "contact Pat",
             "exit",
