@@ -13,6 +13,7 @@ from src.commands import (
     remove_tag,
     show_all,
     show_note,
+    help_command,
     remove_note,
     )
 from src.record import Record
@@ -352,7 +353,7 @@ def handle_command(
         "tag": lambda _book, args: find_by_tag(note_book, args),
         "exit": exit,
         "close": exit,
-
+        "help": help_command,
         }
 
     if command not in commands:
