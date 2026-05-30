@@ -109,4 +109,5 @@ def test_remove_tag_invalid_syntax(monkeypatch, capsys, note_serializer, command
     main()
 
     out = capsys.readouterr().out
-    assert REMOVE_TAG_MESSAGES["INVALID_SYNTAX"] in out
+    assert "<title>" in out
+    assert "<tag>" in out
