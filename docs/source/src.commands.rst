@@ -4,6 +4,14 @@ src.commands package
 Submodules
 ----------
 
+src.commands.about module
+-------------------------
+
+.. automodule:: src.commands.about
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 src.commands.add\_contact module
 --------------------------------
 
@@ -217,6 +225,5 @@ Module contents
 
 .. automodule:: src.commands
    :members:
-   :noindex:
    :show-inheritance:
    :undoc-members:

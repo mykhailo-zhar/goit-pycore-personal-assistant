@@ -1,3 +1,4 @@
+from .about import about
 from .add_contact import add_contact
 from .add_note import add_note
 from .add_tag import add_tag
@@ -55,4 +56,5 @@ __all__ = [
     "truncate_contact",
     "help",
     "remove_note",
+    "about",
 ]

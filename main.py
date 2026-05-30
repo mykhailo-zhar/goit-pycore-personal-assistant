@@ -2,6 +2,7 @@ from rich.console import Console
 
 from src.address_book import AddressBook
 from src.commands import (
+    about,
     add_contact,
     add_note,
     add_tag,
@@ -125,6 +126,7 @@ def handle_command(
         "exit": exit,
         "close": exit,
         "help": help,
+        "about": about,
     }
 
     if command not in commands:
