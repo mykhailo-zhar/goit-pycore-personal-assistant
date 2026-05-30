@@ -31,9 +31,8 @@ def test_show_note_title_only(monkeypatch, capsys, note_serializer):
     main()
 
     note = note_serializer.deserialize().find_note("work")
-    expected = str(note)
     out = capsys.readouterr().out
-    assert expected in out
+    assert note.title.value in out
 
 
 def test_show_note_full(monkeypatch, capsys, note_serializer):
@@ -63,9 +62,10 @@ def test_show_note_full(monkeypatch, capsys, note_serializer):
     main()
 
     note = note_serializer.deserialize().find_note("work")
-    expected = str(note)
     out = capsys.readouterr().out
-    assert expected in out
+    assert note.title.value in out
+    assert note.text.value in out
+    assert note.show_tags() in out
 
 
 def test_show_note_no_such_note(monkeypatch, capsys, note_serializer):

@@ -39,6 +39,7 @@ def test_note_lifecycle(monkeypatch, capsys, tmp_path):
     assert note.text.value == "First line of notes"
     assert note_book.find_note("work") is None
 
-    expected = str(note)
     out = capsys.readouterr().out
-    assert expected in out
+    assert note.title.value in out
+    assert note.text.value in out
+    assert note.show_tags() in out

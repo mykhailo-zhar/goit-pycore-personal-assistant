@@ -18,9 +18,9 @@ class NotePresenter:
         table.add_column("Tags", style="bold")
 
         for note in self.notes:
-            title = note.title.value if note.title else "None"
-            text = note.text.value if note.text else "None"
-            tags = ", ".join(tag.value for tag in note.tags) if note.tags else "None"
+            title = note.title if note.title else "None"
+            text = note.text if getattr(note, "text", None) else "None"
+            tags = note.show_tags()
             table.add_row(str(title), str(text), tags)
 
         console_file = StringIO()

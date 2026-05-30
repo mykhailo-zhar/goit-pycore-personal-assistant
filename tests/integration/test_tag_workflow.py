@@ -39,4 +39,6 @@ def test_tag_workflow(monkeypatch, capsys, tmp_path):
     assert note.show_tags() == "urgent"
 
     out = capsys.readouterr().out
-    assert str(note) in out
+
+    assert note.title.value in out
+    assert note.show_tags() in out
