@@ -2,8 +2,8 @@ import builtins
 
 import pytest
 
+from main import main
 from src.commands.add_tag import ADD_TAG_MESSAGES
-from src.scripts.contacts_bot import main
 from src.utils.serializers.note_book import NoteBookSerializer
 
 
@@ -25,16 +25,14 @@ def test_add_tag_success(monkeypatch, capsys, note_serializer):
     lines = iter(["add-note ideas", "add-tag ideas urgent", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
 
     out = capsys.readouterr().out
     assert ADD_TAG_MESSAGES["TAG_ADDED"] in out
-    assert (
-        note_serializer.deserialize().find_note("ideas").show_tags() == "urgent"
-    )
+    assert note_serializer.deserialize().find_note("ideas").show_tags() == "urgent"
 
 
 def test_add_tag_duplicate(monkeypatch, capsys, note_serializer):
@@ -57,7 +55,7 @@ def test_add_tag_duplicate(monkeypatch, capsys, note_serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -79,7 +77,7 @@ def test_add_tag_no_such_note(monkeypatch, capsys, note_serializer):
     lines = iter(["add-tag missing urgent", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -105,7 +103,7 @@ def test_add_tag_invalid_syntax(monkeypatch, capsys, note_serializer, command_li
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()

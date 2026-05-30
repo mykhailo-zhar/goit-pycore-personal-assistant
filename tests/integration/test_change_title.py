@@ -2,8 +2,8 @@ import builtins
 
 import pytest
 
+from main import main
 from src.commands.change_title import CHANGE_TITLE_MESSAGES
-from src.scripts.contacts_bot import main
 from src.utils.serializers.note_book import NoteBookSerializer
 
 
@@ -25,7 +25,7 @@ def test_change_title_success(monkeypatch, capsys, note_serializer):
     lines = iter(["add-note work", "change-title work personal", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -48,7 +48,7 @@ def test_change_title_no_such_note(monkeypatch, capsys, note_serializer):
     lines = iter(["change-title missing new-title", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -77,7 +77,7 @@ def test_change_title_collision(monkeypatch, capsys, note_serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -105,7 +105,7 @@ def test_change_title_invalid_syntax(
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()

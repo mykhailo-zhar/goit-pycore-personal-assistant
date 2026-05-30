@@ -2,8 +2,8 @@ import builtins
 
 import pytest
 
+from main import main
 from src.commands.show_note import SHOW_NOTE_MESSAGES
-from src.scripts.contacts_bot import main
 from src.utils.serializers.note_book import NoteBookSerializer
 
 
@@ -25,7 +25,7 @@ def test_show_note_title_only(monkeypatch, capsys, note_serializer):
     lines = iter(["add-note work", "note work", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -57,7 +57,7 @@ def test_show_note_full(monkeypatch, capsys, note_serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -81,7 +81,7 @@ def test_show_note_no_such_note(monkeypatch, capsys, note_serializer):
     lines = iter(["note missing", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -103,7 +103,7 @@ def test_show_note_invalid_syntax(monkeypatch, capsys, note_serializer):
     lines = iter(["note", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()

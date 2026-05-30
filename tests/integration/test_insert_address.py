@@ -2,8 +2,8 @@ import builtins
 
 import pytest
 
+from main import main
 from src.commands.insert_address import INSERT_ADDRESS_MESSAGES
-from src.scripts.contacts_bot import main
 from src.utils.serializers.address_book import AddressBookSerializer
 
 
@@ -31,7 +31,7 @@ def test_insert_address_success(monkeypatch, capsys, serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.SERIALIZER_PATH",
+        "main.SERIALIZER_PATH",
         serializer.file_path,
     )
     main()
@@ -61,7 +61,7 @@ def test_insert_address_replaces_existing(monkeypatch, capsys, serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.SERIALIZER_PATH",
+        "main.SERIALIZER_PATH",
         serializer.file_path,
     )
     main()

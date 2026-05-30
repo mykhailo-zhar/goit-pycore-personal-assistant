@@ -2,8 +2,8 @@ import builtins
 
 import pytest
 
+from main import main
 from src.commands.find_by_tag import FIND_BY_TAG_MESSAGES
-from src.scripts.contacts_bot import main
 from src.utils.serializers.note_book import NoteBookSerializer
 
 
@@ -34,7 +34,7 @@ def test_find_by_tag_ascending(monkeypatch, capsys, note_serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -68,7 +68,7 @@ def test_find_by_tag_descending(monkeypatch, capsys, note_serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -95,7 +95,7 @@ def test_find_by_tag_invalid_order(monkeypatch, capsys, note_serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -117,7 +117,7 @@ def test_find_by_tag_no_notes(monkeypatch, capsys, note_serializer):
     lines = iter(["tag missing ascending", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -143,7 +143,7 @@ def test_find_by_tag_invalid_syntax(monkeypatch, capsys, note_serializer, comman
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()

@@ -2,8 +2,8 @@ import builtins
 
 import pytest
 
+from main import main
 from src.commands.remove_contact import REMOVE_CONTACT_MESSAGES
-from src.scripts.contacts_bot import main
 from src.utils.serializers.address_book import AddressBookSerializer
 
 
@@ -37,7 +37,7 @@ def test_remove_contact(monkeypatch, capsys, phone, serializer):
 
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.SERIALIZER_PATH",
+        "main.SERIALIZER_PATH",
         serializer.file_path,
     )
     main()
@@ -68,7 +68,7 @@ def test_remove_phone(monkeypatch, capsys, phone, serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.SERIALIZER_PATH",
+        "main.SERIALIZER_PATH",
         serializer.file_path,
     )
     main()
@@ -102,7 +102,7 @@ def test_remove_non_existent_contact(monkeypatch, capsys, phone, serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.SERIALIZER_PATH",
+        "main.SERIALIZER_PATH",
         serializer.file_path,
     )
     main()
@@ -132,7 +132,7 @@ def test_remove_non_existent_phone(monkeypatch, capsys, phone, serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.SERIALIZER_PATH",
+        "main.SERIALIZER_PATH",
         serializer.file_path,
     )
     main()

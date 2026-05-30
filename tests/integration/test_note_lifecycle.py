@@ -1,6 +1,6 @@
 import builtins
 
-from src.scripts.contacts_bot import main
+from main import main
 from src.utils.serializers.note_book import NoteBookSerializer
 
 
@@ -28,7 +28,7 @@ def test_note_lifecycle(monkeypatch, capsys, tmp_path):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()

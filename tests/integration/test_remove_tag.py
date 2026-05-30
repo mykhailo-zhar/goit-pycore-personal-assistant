@@ -2,8 +2,8 @@ import builtins
 
 import pytest
 
+from main import main
 from src.commands.remove_tag import REMOVE_TAG_MESSAGES
-from src.scripts.contacts_bot import main
 from src.utils.serializers.note_book import NoteBookSerializer
 
 
@@ -32,7 +32,7 @@ def test_remove_tag_success(monkeypatch, capsys, note_serializer):
     )
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -55,7 +55,7 @@ def test_remove_tag_no_tag_on_note(monkeypatch, capsys, note_serializer):
     lines = iter(["add-note ideas", "remove-tag ideas work", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -77,7 +77,7 @@ def test_remove_tag_no_such_note(monkeypatch, capsys, note_serializer):
     lines = iter(["remove-tag missing work", "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()
@@ -90,9 +90,7 @@ def test_remove_tag_no_such_note(monkeypatch, capsys, note_serializer):
     "command_line",
     ["remove-tag", "remove-tag ideas"],
 )
-def test_remove_tag_invalid_syntax(
-    monkeypatch, capsys, note_serializer, command_line
-):
+def test_remove_tag_invalid_syntax(monkeypatch, capsys, note_serializer, command_line):
     """Перевіряє синтаксичну помилку для невалідної кількості аргументів.
 
     Дано:
@@ -105,7 +103,7 @@ def test_remove_tag_invalid_syntax(
     lines = iter([command_line, "exit"])
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.NOTE_SERIALIZER_PATH",
+        "main.NOTE_SERIALIZER_PATH",
         note_serializer.file_path,
     )
     main()

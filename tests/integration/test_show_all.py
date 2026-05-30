@@ -1,7 +1,7 @@
 import builtins
 
+from main import main
 from src.commands.show_all import SHOW_ALL_MESSAGES
-from src.scripts.contacts_bot import main
 from src.utils.serializers.address_book import AddressBookSerializer
 
 
@@ -16,7 +16,7 @@ def test_show_all_when_no_users(monkeypatch, capsys, tmp_path):
 
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.SERIALIZER_PATH",
+        "main.SERIALIZER_PATH",
         serializer.file_path,
     )
     main()
@@ -38,7 +38,7 @@ def test_show_all_displays_full_contact_info(monkeypatch, capsys, tmp_path):
 
     monkeypatch.setattr(builtins, "input", lambda: next(lines))
     monkeypatch.setattr(
-        "src.scripts.contacts_bot.SERIALIZER_PATH",
+        "main.SERIALIZER_PATH",
         serializer.file_path,
     )
     main()
