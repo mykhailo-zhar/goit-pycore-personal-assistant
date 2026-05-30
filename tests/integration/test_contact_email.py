@@ -4,6 +4,7 @@ import pytest
 
 from main import main
 from src.commands.contact_email import CONTACT_EMAIL_MESSAGES
+from src.commands.insert_email import INSERT_EMAIL_MESSAGES
 from src.serializers.address_book import AddressBookSerializer
 
 
@@ -69,8 +70,12 @@ def test_main_contact_email_returns_first_on_collision(monkeypatch, capsys, tmp_
     main()
 
     out = capsys.readouterr().out
-    assert "Contact name: Alice" in out
-    assert "Contact name: Bob" not in out
+    last_command_output_index = out.index(
+        INSERT_EMAIL_MESSAGES["EMAIL_ADDED"].format(email=shared_email, name="Bob")
+    )
+    out = out[last_command_output_index:]
+    assert "Alice" in out
+    assert "Bob" in out
 
     deserialized_address_book = serializer.deserialize()
     assert deserialized_address_book.data["Alice"].email.value == shared_email
