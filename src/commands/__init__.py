@@ -23,6 +23,7 @@ from .show_all import show_all
 from .show_birthday import show_birthday
 from .show_note import show_note
 from .truncate_contact import truncate_contact
+from .about_command import about_command
 
 __all__ = [
     "add_address",
@@ -55,4 +56,5 @@ __all__ = [
     "truncate_contact",
     "help_command",
     "remove_note",
-]
+    "about_command",
+    ]

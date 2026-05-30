@@ -27,7 +27,8 @@ from src.commands import (
     show_birthday,
     show_note,
     truncate_contact,
-)
+    about_command,
+    )
 from src.utils.decorators.serializes import serializes
 from src.utils.serializers.address_book import AddressBookSerializer
 from src.utils.serializers.note_book import NoteBookSerializer
@@ -41,7 +42,7 @@ from src.note_book import NoteBook
 COMMAND_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
     "GOOD_BYE": "Good bye!",
-}
+    }
 
 SERIALIZER_PATH = "addressbook.pkl"
 NOTE_SERIALIZER_PATH = "notebook.pkl"
@@ -64,13 +65,13 @@ def parse_input(line: str) -> tuple[str, list[str]]:
 
 
 def handle_command(
-    book: AddressBook,
-    note_book: NoteBook,
-    command: str,
-    arguments: list[str],
-    serializer: AddressBookSerializer = None,
-    note_serializer: NoteBookSerializer = None,
-) -> str:
+        book: AddressBook,
+        note_book: NoteBook,
+        command: str,
+        arguments: list[str],
+        serializer: AddressBookSerializer = None,
+        note_serializer: NoteBookSerializer = None,
+        ) -> str:
     """
     Виконує команду користувача.
 
@@ -102,35 +103,39 @@ def handle_command(
         "show-birthday": show_birthday,
         "birthdays": birthdays,
         "add-note": serializes(
-            lambda _book, args: add_note(note_book, args), note_book, note_serializer
-        ),
+            lambda _book, args: add_note(note_book, args), note_book,
+            note_serializer
+            ),
         "remove-note": serializes(
-            lambda _book, args: remove_note(note_book, args), note_book, note_serializer
-        ),
+            lambda _book, args: remove_note(note_book, args), note_book,
+            note_serializer
+            ),
         "insert-text": serializes(
             lambda _book, args: insert_text(note_book, args),
             note_book,
             note_serializer,
-        ),
+            ),
         "change-title": serializes(
             lambda _book, args: change_title(note_book, args),
             note_book,
             note_serializer,
-        ),
+            ),
         "note": lambda _book, args: show_note(note_book, args),
         "add-tag": serializes(
-            lambda _book, args: add_tag(note_book, args), note_book, note_serializer
-        ),
+            lambda _book, args: add_tag(note_book, args), note_book,
+            note_serializer
+            ),
         "remove-tag": serializes(
             lambda _book, args: remove_tag(note_book, args),
             note_book,
             note_serializer,
-        ),
+            ),
         "tag": lambda _book, args: find_by_tag(note_book, args),
         "exit": exit_command,
         "close": exit_command,
         "help": help_command,
-    }
+        "about": about_command,
+        }
 
     if command not in commands:
         return COMMAND_MESSAGES["INVALID_COMMAND"]
@@ -146,15 +151,15 @@ def main() -> None:
     """Головна функція CLI-бота."""
     serializer: AddressBookSerializer = AddressBookSerializer(
         SERIALIZER_PATH, _print_warning
-    )
+        )
     note_serializer: NoteBookSerializer = NoteBookSerializer(
         NOTE_SERIALIZER_PATH, _print_warning
-    )
+        )
     book: AddressBook = serializer.deserialize()
     note_book: NoteBook = note_serializer.deserialize()
     print(
         "Bot is started. Type 'hello' to greet, 'help' for commands list, 'exit' or 'close' to quit."
-    )
+        )
     try:
         while True:
             line = input().strip()
@@ -164,8 +169,9 @@ def main() -> None:
 
             command, arguments = parse_input(line)
             response = handle_command(
-                book, note_book, command, arguments, serializer, note_serializer
-            )
+                book, note_book, command, arguments, serializer,
+                note_serializer
+                )
             print(response)
             if command in ["exit", "close"]:
                 break
