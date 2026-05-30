@@ -8,7 +8,7 @@ EXIT_COMMAND_MESSAGES = {
 
 
 @input_error
-def exit_command(_: AddressBook, arguments: list[str] = []) -> str:
+def exit(_: AddressBook, arguments: list[str] = []) -> str:
     """Завершує роботу програми.
 
     Аргументи:

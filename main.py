@@ -1,6 +1,4 @@
-import sys
-from pathlib import Path
-
+from src.address_book import AddressBook
 from src.commands import (
     add_contact,
     add_note,
@@ -11,11 +9,11 @@ from src.commands import (
     contact,
     contact_address,
     contact_email,
-    exit_command,
+    exit,
     find_by_tag,
     find_contacts_by_address,
     hello,
-    help_command,
+    help,
     insert_address,
     insert_birthday,
     insert_email,
@@ -29,14 +27,9 @@ from src.commands import (
     truncate_contact,
 )
 from src.decorators.serializes import serializes
+from src.note_book import NoteBook
 from src.serializers.address_book import AddressBookSerializer
 from src.serializers.note_book import NoteBookSerializer
-
-if __name__ == "__main__":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
-
-from src.address_book import AddressBook
-from src.note_book import NoteBook
 
 COMMAND_MESSAGES = {
     "INVALID_COMMAND": "Invalid command.",
@@ -127,9 +120,9 @@ def handle_command(
             note_serializer,
         ),
         "tag": lambda _book, args: find_by_tag(note_book, args),
-        "exit": exit_command,
-        "close": exit_command,
-        "help": help_command,
+        "exit": exit,
+        "close": exit,
+        "help": help,
     }
 
     if command not in commands:

@@ -3,7 +3,7 @@ from src.decorators.input_error import input_error
 
 
 @input_error
-def help_command(_: AddressBook, arguments: list[str]) -> str:
+def help(_: AddressBook, arguments: list[str]) -> str:
     """
     Показує довідку по командам.
 

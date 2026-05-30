@@ -7,11 +7,11 @@ from .change_title import change_title
 from .contact import contact
 from .contact_address import contact_address
 from .contact_email import contact_email
-from .exit_command import exit_command
+from .exit import exit
 from .find_by_tag import find_by_tag
 from .find_contacts_by_address import find_contacts_by_address
 from .hello import hello
-from .help_command import help_command
+from .help import help
 from .insert_address import insert_address
 from .insert_birthday import insert_birthday
 from .insert_email import insert_email
@@ -33,7 +33,7 @@ __all__ = [
     "birthdays",
     "change_phone",
     "change_title",
-    "exit_command",
+    "exit",
     "contact",
     "change_title",
     "contact_address",
@@ -41,7 +41,7 @@ __all__ = [
     "find_by_tag",
     "find_contacts_by_address",
     "hello",
-    "help_command",
+    "help",
     "insert_address",
     "insert_email",
     "insert_text",
@@ -53,6 +53,6 @@ __all__ = [
     "show_note",
     "show_phone",
     "truncate_contact",
-    "help_command",
+    "help",
     "remove_note",
 ]

@@ -4,7 +4,7 @@ import pytest
 
 from main import main
 from src.commands.add_contact import ADD_CONTACT_MESSAGES
-from src.commands.exit_command import EXIT_COMMAND_MESSAGES
+from src.commands.exit import EXIT_COMMAND_MESSAGES
 from src.commands.insert_email import INSERT_EMAIL_MESSAGES
 from src.serializers.address_book import AddressBookSerializer
 
