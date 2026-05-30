@@ -1,5 +1,3 @@
-from .add_address import add_address
-from .add_birthday import add_birthday
 from .add_contact import add_contact
 from .add_note import add_note
 from .add_tag import add_tag
@@ -12,6 +10,7 @@ from .find_contacts_by_address import find_contacts_by_address
 from .hello import hello
 from .help_command import help_command
 from .insert_address import insert_address
+from .insert_birthday import insert_birthday
 from .insert_email import insert_email
 from .insert_text import insert_text
 from .remove_contact import remove_contact
@@ -20,12 +19,11 @@ from .remove_tag import remove_tag
 from .show_all import show_all
 from .show_birthday import show_birthday
 from .show_note import show_note
-from .show_phone import show_phone
 from .truncate_contact import truncate_contact
 
 __all__ = [
     "add_address",
-    "add_birthday",
+    "insert_birthday",
     "add_contact",
     "add_note",
     "add_tag",

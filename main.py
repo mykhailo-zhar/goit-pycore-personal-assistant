@@ -2,8 +2,6 @@ import sys
 from pathlib import Path
 
 from src.commands import (
-    add_address,
-    add_birthday,
     add_contact,
     add_note,
     add_tag,
@@ -16,6 +14,7 @@ from src.commands import (
     hello,
     help_command,
     insert_address,
+    insert_birthday,
     insert_email,
     insert_text,
     remove_contact,
@@ -24,7 +23,6 @@ from src.commands import (
     show_all,
     show_birthday,
     show_note,
-    show_phone,
     truncate_contact,
 )
 from src.utils.decorators.serializes import serializes
@@ -89,12 +87,10 @@ def handle_command(
         "add": serializes(add_contact, book, serializer),
         "truncate": serializes(truncate_contact, book, serializer),
         "change-phone": serializes(change_phone, book, serializer),
-        "remove": serializes(remove_contact, book, serializer),
         "insert-address": serializes(insert_address, book, serializer),
-        "phone": show_phone,
+        "insert-birthday": serializes(insert_birthday, book, serializer),
+        "remove": serializes(remove_contact, book, serializer),
         "all": show_all,
-        "add-birthday": serializes(add_birthday, book, serializer),
-        "add-address": serializes(add_address, book, serializer),
         "find-address": find_contacts_by_address,
         "insert-email": serializes(insert_email, book, serializer),
         "show-birthday": show_birthday,
