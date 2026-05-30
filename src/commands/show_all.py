@@ -25,5 +25,5 @@ def show_all(book: AddressBook, arguments: list[str] = []) -> str:
         raise ValueError(SHOW_ALL_MESSAGES["NO_USERS"])
 
     count_users = len(book.data)
-    users_list = [str(record) for _, record in sorted(book.data.items())]
+    users_list = [str(record) for record in sorted(book.data.values())]
     return f"Stored users ({count_users}):\n{'\n'.join(users_list)}"
