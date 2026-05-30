@@ -2,8 +2,10 @@ import builtins
 
 import pytest
 
+from src.commands.add_contact import ADD_CONTACT_MESSAGES
+from src.commands.exit_command import EXIT_COMMAND_MESSAGES
 from src.commands.insert_email import INSERT_EMAIL_MESSAGES
-from src.scripts.contacts_bot import COMMAND_MESSAGES, main
+from src.scripts.contacts_bot import main
 from src.utils.serializers.address_book import AddressBookSerializer
 
 
@@ -33,12 +35,12 @@ def test_main_insert_email_adds_to_existing_contact(monkeypatch, capsys, tmp_pat
     main()
 
     out = capsys.readouterr().out
-    assert COMMAND_MESSAGES["CONTACT_ADDED"] in out
+    assert ADD_CONTACT_MESSAGES["CONTACT_ADDED"] in out
     assert (
         INSERT_EMAIL_MESSAGES["EMAIL_ADDED"].format(email="pat@example.com", name="Pat")
         in out
     )
-    assert COMMAND_MESSAGES["GOOD_BYE"] in out
+    assert EXIT_COMMAND_MESSAGES["GOOD_BYE"] in out
 
     deserialized_address_book = serializer.deserialize()
     assert deserialized_address_book.data["Pat"].email.value == "pat@example.com"
@@ -79,7 +81,7 @@ def test_main_insert_email_replaces_existing_email(monkeypatch, capsys, tmp_path
         )
         in out
     )
-    assert COMMAND_MESSAGES["GOOD_BYE"] in out
+    assert EXIT_COMMAND_MESSAGES["GOOD_BYE"] in out
 
     deserialized_address_book = serializer.deserialize()
     assert deserialized_address_book.data["Pat"].email.value == "new@example.com"
@@ -112,7 +114,7 @@ def test_main_insert_email_for_missing_contact_shows_error(
 
     out = capsys.readouterr().out
     assert INSERT_EMAIL_MESSAGES["NO_SUCH_USER"] in out
-    assert COMMAND_MESSAGES["GOOD_BYE"] in out
+    assert EXIT_COMMAND_MESSAGES["GOOD_BYE"] in out
 
 
 @pytest.mark.parametrize(
@@ -150,4 +152,4 @@ def test_main_insert_email_wrong_arity_shows_syntax(
 
     out = capsys.readouterr().out
     assert INSERT_EMAIL_MESSAGES["INVALID_SYNTAX"] in out
-    assert COMMAND_MESSAGES["GOOD_BYE"] in out
+    assert EXIT_COMMAND_MESSAGES["GOOD_BYE"] in out
